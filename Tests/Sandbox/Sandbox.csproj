@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.7.82" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\HealthAssistApp.Common\HealthAssistApp.Common.csproj" />
+    <ProjectReference Include="..\..\Data\HealthAssistApp.Data.Common\HealthAssistApp.Data.Common.csproj" />
+    <ProjectReference Include="..\..\Data\HealthAssistApp.Data.Models\HealthAssistApp.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\HealthAssistApp.Data\HealthAssistApp.Data.csproj" />
+    <ProjectReference Include="..\..\Services\HealthAssistApp.Services.Data\HealthAssistApp.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\HealthAssistApp.Services.Mapping\HealthAssistApp.Services.Mapping.csproj" />
+    <ProjectReference Include="..\..\Services\HealthAssistApp.Services.Messaging\HealthAssistApp.Services.Messaging.csproj" />
+    <ProjectReference Include="..\..\Services\HealthAssistApp.Services\HealthAssistApp.Services.csproj" />
+  </ItemGroup>
+
+</Project>
