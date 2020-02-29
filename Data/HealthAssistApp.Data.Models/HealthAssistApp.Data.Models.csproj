@@ -23,4 +23,8 @@
     <ProjectReference Include="..\HealthAssistApp.Data.Common\HealthAssistApp.Data.Common.csproj" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Folder Include="FoodModels\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
 </Project>
