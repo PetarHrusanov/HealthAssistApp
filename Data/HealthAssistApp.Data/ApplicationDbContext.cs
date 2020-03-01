@@ -26,6 +26,23 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        //Disease
+        public DbSet<Disease> Diseases { get; set; }
+        public DbSet<BodySystem> BodySystems { get; set; }
+        public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
+        public DbSet<Symptom> Symptoms { get; set; }
+
+        public DbSet<Exercise> Exercises { get; set;}
+        public DbSet<HealthDosier> HealthDosiers { get; set;}
+        public DbSet<HealthParameters> HealthParameters { get; set; }
+
+        //Food
+        public DbSet<FoodRegimen> FoodRegimens { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Meal> Meals { get; set;}
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -72,6 +89,38 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            builder.Entity<RecipeIngredients>(entity =>
+            {
+                entity.HasKey(e => new { e.RecipeId, e.IngredientId });
+
+                entity.HasOne(d => d.Recipe)
+                    .WithMany(p => p.RecipeIngredients)
+                    .HasForeignKey(d => d.RecipeId)
+                    .HasConstraintName("FK_Recipe_RecipeIngredients");
+
+                entity.HasOne(d => d.Ingredient)
+                    .WithMany(p => p.RecipeIngredients)
+                    .HasForeignKey(d => d.IngredientId)
+                    .HasConstraintName("FK_Ingredient_RecipeIngredients");
+            });
+
+            builder.Entity<DiseaseSymptom>(entity =>
+            {
+                entity.HasKey(e => new { e.DiseaseId, e.SymptomId });
+
+                entity.HasOne(d => d.Disease)
+                    .WithMany(p => p.DiseaseSymptoms)
+                    .HasForeignKey(d => d.DiseaseId)
+                    .HasConstraintName("FK_Disease_DiseaseSymptoms");
+
+                entity.HasOne(d => d.Symptom)
+                    .WithMany(p => p.DiseaseSymptoms)
+                    .HasForeignKey(d => d.SymptomId)
+                    .HasConstraintName("FK_Symptom_DiseaseSymptoms");
+            });
+
+
         }
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)

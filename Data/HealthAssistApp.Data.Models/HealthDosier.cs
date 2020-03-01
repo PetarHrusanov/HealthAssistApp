@@ -12,8 +12,8 @@
             Exercises = new HashSet<Exercise>();
         }
 
-        public string ApplicationUserId { get; set; }
 
+        public string ApplicationUserId { get; set; }
         public virtual ApplicationUser ApplicationUser { get;set;}
 
         public HealthParameters HealthParameters { get; set; }
@@ -25,6 +25,7 @@
         public bool Smoker { get; set; }
 
         public ICollection<Disease> Diseases { get; set; }
+
 
         //To Do Risk From Diseases
 

@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using HealthAssistApp.Data.Common.Models;
 
-    public class Meal: BaseDeletableModel<int>
+    public class Meal: BaseModel<int>
     {
 
         public Meal()

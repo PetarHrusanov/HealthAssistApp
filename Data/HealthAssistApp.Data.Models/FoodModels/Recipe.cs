@@ -4,7 +4,7 @@
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models.Enums;
 
-    public class Recipe: BaseDeletableModel<int>
+    public class Recipe: BaseModel<int>
     {
 
         public Recipe()
@@ -12,6 +12,8 @@
             this.RecipeIngredients = new HashSet<RecipeIngredients>();
             this.Allergens = new HashSet<Allergen>();
         }
+
+        public string Name { get; set; }
 
         public string InstructionForPreparation { get; set; }
 

@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using HealthAssistApp.Data.Common.Models;
 
-    public class FoodRegimen :BaseDeletableModel<string>
+    public class FoodRegimen :BaseModel<string>
     {
 
         public FoodRegimen()
