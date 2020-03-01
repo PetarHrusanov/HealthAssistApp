@@ -8,7 +8,7 @@
 
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models;
-
+    using HealthAssistApp.Data.Models.FoodModels;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +35,8 @@
         public DbSet<Exercise> Exercises { get; set;}
         public DbSet<HealthDosier> HealthDosiers { get; set;}
         public DbSet<HealthParameters> HealthParameters { get; set; }
+
+        public DbSet<Allergies> Allergies { get; set; }
 
         //Food
         public DbSet<FoodRegimen> FoodRegimens { get; set; }

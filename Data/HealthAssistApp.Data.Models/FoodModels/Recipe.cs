@@ -10,7 +10,6 @@
         public Recipe()
         {
             this.RecipeIngredients = new HashSet<RecipeIngredients>();
-            this.Allergens = new HashSet<Allergen>();
         }
 
         public string Name { get; set; }
@@ -27,7 +26,8 @@
 
         public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
 
-        public ICollection<Allergen> Allergens { get; set; }
+        //do the connection
+        public ICollection<string> Allergens { get; set; }
 
     }
 }
