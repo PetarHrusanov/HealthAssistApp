@@ -26,8 +26,5 @@
 
         public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
 
-        //do the connection
-        public ICollection<string> Allergens { get; set; }
-
     }
 }

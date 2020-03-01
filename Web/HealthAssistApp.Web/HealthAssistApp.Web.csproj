@@ -39,4 +39,14 @@
     <ProjectReference Include="..\HealthAssistApp.Web.Infrastructure\HealthAssistApp.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\HealthAssistApp.Web.ViewModels\HealthAssistApp.Web.ViewModels.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Recipes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Recipes\All.cs" />
+    <Content Remove="Views\Recipes\All.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Views\Recipes\Index.cshtml.cs" />
+  </ItemGroup>
 </Project>
