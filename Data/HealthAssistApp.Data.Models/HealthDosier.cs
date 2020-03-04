@@ -13,10 +13,6 @@
             Exercises = new HashSet<Exercise>();
         }
 
-
-        public string ApplicationUserId { get; set; }
-        public virtual ApplicationUser ApplicationUser { get;set;}
-
         public HealthParameters HealthParameters { get; set; }
 
         public FoodRegimen FoodRegimen { get; set; }
