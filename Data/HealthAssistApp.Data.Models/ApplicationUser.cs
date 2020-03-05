@@ -34,8 +34,5 @@ namespace HealthAssistApp.Data.Models
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-        public string HealthDosierId { get; set; }
-        public virtual HealthDosier HealthDosier { get; set; }
-
     }
 }

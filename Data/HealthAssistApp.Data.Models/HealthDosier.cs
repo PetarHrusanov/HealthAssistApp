@@ -27,6 +27,9 @@
         public int AllergiesId { get; set; }
         public Allergies Allergies { get; set; }
 
+        //da obmislq predimstwa i nedostataci na tazi vrazka
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         //To Do Risk From Diseases
 

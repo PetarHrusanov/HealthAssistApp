@@ -4,14 +4,16 @@ using HealthAssistApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthAssistApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200305195852_UserToHealthDosierReversed")]
+    partial class UserToHealthDosierReversed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,6 +87,9 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("HealthDosierId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -125,6 +130,8 @@ namespace HealthAssistApp.Data.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HealthDosierId");
 
                     b.HasIndex("IsDeleted");
 
@@ -316,9 +323,6 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<int>("AllergiesId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -343,8 +347,6 @@ namespace HealthAssistApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AllergiesId");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("FoodRegimenId");
 
@@ -673,6 +675,13 @@ namespace HealthAssistApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("HealthAssistApp.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("HealthAssistApp.Data.Models.HealthDosier", "HealthDosier")
+                        .WithMany()
+                        .HasForeignKey("HealthDosierId");
+                });
+
             modelBuilder.Entity("HealthAssistApp.Data.Models.Disease", b =>
                 {
                     b.HasOne("HealthAssistApp.Data.Models.HealthDosier", null)
@@ -711,10 +720,6 @@ namespace HealthAssistApp.Data.Migrations
                         .HasForeignKey("AllergiesId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("HealthAssistApp.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", "FoodRegimen")
                         .WithMany()
