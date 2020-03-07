@@ -1,5 +1,4 @@
-﻿
-@using HealthAssistApp.Common
+﻿@using HealthAssistApp.Common
 @model HealthAssistApp.Web.ViewModels.Recipes.IndexRecipesViewModel
 @{
     this.ViewData["Title"] = "Recipes";
@@ -16,7 +15,7 @@
             <img src="@recipe.ImageUrl" width="100" class="mr-3" alt="@recipe.Name">
             <div class="media-body">
                 <h5 class="mt-0">
-                    <a href="@recipe.ImageUrl">
+                    <a href="/Recipes/ByName/@recipe.Name">
                         @recipe.Name
                     </a>
                 </h5>

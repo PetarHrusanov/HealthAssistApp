@@ -21,6 +21,7 @@ namespace HealthAssistApp.Web.Controllers
 
         public IActionResult Index()
         {
+
             var viewModel = new IndexRecipesViewModel
             {
                 Recipes = this.recipesService.GetAll<RecipeViewModel>(),
