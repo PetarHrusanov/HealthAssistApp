@@ -16,6 +16,8 @@
 
         public string InstructionForPreparation { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public bool Vegan { get; set; }
 
         public bool Vegetarian { get; set; }

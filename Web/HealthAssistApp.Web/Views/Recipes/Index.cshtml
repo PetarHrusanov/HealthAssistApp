@@ -1,7 +1,27 @@
-﻿@using HealthAssistApp.Data
+﻿
+@using HealthAssistApp.Common
+@model HealthAssistApp.Web.ViewModels.Recipes.IndexRecipesViewModel
 @{
     this.ViewData["Title"] = "Recipes";
 }
-@{
 
-}
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+
+<div class="row">
+    @foreach (var recipe in Model.Recipes)
+    {
+        <div class="col-md-4 media">
+            <img src="@recipe.ImageUrl" width="100" class="mr-3" alt="@recipe.Name">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a href="@recipe.ImageUrl">
+                        @recipe.Name
+                    </a>
+                </h5>
+                @recipe.InstructionForPreparation
+            </div>
+        </div>
+    }
+</div>

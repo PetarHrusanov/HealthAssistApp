@@ -10,6 +10,7 @@
 
         public HealthDosier()
         {
+            this.Id = Guid.NewGuid().ToString();
             Exercises = new HashSet<Exercise>();
         }
 
