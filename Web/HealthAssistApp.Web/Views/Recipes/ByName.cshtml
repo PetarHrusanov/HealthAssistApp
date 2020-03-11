@@ -6,5 +6,50 @@
 
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
-    <h2 class="display-3">@Model.InstructionForPreparation</h2>
+</div>
+<div class="mb-3 row">
+    <div class="col-md-3">
+        <img class="mw-100" src="@this.Model.ImageUrl" alt="Max-width 100%">
+    </div>
+    <!--
+    <div class="col-sm-4">@foreach (var item in Model.Ingredients)
+    {
+        <lo>@item.Name</lo>
+    }</div>
+    -->
+    <div class="col-sm-4">@Model.InstructionForPreparation</div>
+</div>
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Glycemic Index</th>
+                <th>Calories</th>
+                <th>Vegan</th>
+                <th>Vegetarian</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.GlycemicIndex</td>
+                <td>@Model.Calories</td>
+                @if (Model.Vegan)
+                {
+                    <td>Yes</td>
+                }
+                @if (!Model.Vegan)
+                {
+                    <td>No</td>
+                }
+                @if (Model.Vegetarian)
+                {
+                    <td>Yes</td>
+                }
+                @if (!Model.Vegetarian)
+                {
+                    <td>No</td>
+                }
+            </tr>
+        </tbody>
+    </table>
 </div>

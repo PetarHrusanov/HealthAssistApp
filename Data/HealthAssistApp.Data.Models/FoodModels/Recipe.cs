@@ -10,6 +10,7 @@
         public Recipe()
         {
             this.RecipeIngredients = new HashSet<RecipeIngredients>();
+            this.Ingredients = new HashSet<Ingredient>();
         }
 
         public string Name { get; set; }
@@ -27,6 +28,7 @@
         public int Calories { get; set; }
 
         public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
 
     }
 }

@@ -1,0 +1,16 @@
+﻿@using HealthAssistApp.Common
+@model HealthAssistApp.Web.ViewModels.Diseases.DiseaseViewModel
+@{
+    this.ViewData["Title"] = Model.Name;
+}
+
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+<div class="mb-3 row">
+    <div class="col-sm-4">@Model.Description</div>
+</div>
+<div class="mb-3 row">
+    <div class="col-sm-4">@Model.Advice</div>
+</div>
+

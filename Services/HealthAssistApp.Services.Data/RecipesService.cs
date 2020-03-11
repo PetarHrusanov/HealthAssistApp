@@ -4,6 +4,7 @@
     using System.Linq;
 
     using HealthAssistApp.Data.Common.Repositories;
+    using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Services.Mapping;
@@ -11,6 +12,8 @@
     public class RecipesService : IRecipesService
     {
         private readonly IRepository<Recipe> recipesRepository;
+        //private readonly ApplicationDbContext dbContext;
+        
 
         public RecipesService(IRepository<Recipe> recipesRepository)
         {

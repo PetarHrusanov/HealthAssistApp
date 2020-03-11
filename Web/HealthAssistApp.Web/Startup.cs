@@ -62,7 +62,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
 
             services.AddTransient<IRecipesService, RecipesService>();
-
+            services.AddTransient<IDiseasesService, DiseasesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,6 +109,7 @@
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("recipesDetails", "Recipes/{name:minlength(3)}", new { controller = "Recipes", action = "ByName" });
+                        endpoints.MapControllerRoute("diseasesDetails", "Diseases/{name:minlength(3)}", new { controller = "Diseases", action = "ByName" });
                         endpoints.MapRazorPages();
                     });
         }
