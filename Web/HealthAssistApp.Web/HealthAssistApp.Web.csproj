@@ -42,6 +42,7 @@
   <ItemGroup>
     <Folder Include="Views\Recipes\" />
     <Folder Include="Views\Diseases\" />
+    <Folder Include="Views\HealthDosier\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />

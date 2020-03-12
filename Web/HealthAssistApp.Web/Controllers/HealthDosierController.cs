@@ -28,14 +28,16 @@ namespace HealthAssistApp.Web.Controllers
 
             var healthDosier = this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefault();
 
-            if (healthDosier == null)
-            {
-                return this.RedirectToPage("Create");
-            }
-            else
-            {
-                return this.View();
-            }
+            return this.View();
+
+            //    if (healthDosier == null)
+            //    {
+            //        return this.RedirectToPage("Create");
+            //    }
+            //    else
+            //    {
+            //        return this.View();
+            //    }
         }
     }
 }
