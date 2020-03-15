@@ -27,5 +27,6 @@
     <Folder Include="FoodModels\" />
     <Folder Include="Enums\" />
     <Folder Include="DiseaseModels\" />
+    <Folder Include="WorkingOut\" />
   </ItemGroup>
 </Project>

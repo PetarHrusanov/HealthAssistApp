@@ -9,6 +9,7 @@
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.FoodModels;
+    using HealthAssistApp.Data.Models.WorkingOut;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,11 @@
         public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
 
+        //Exercise
         public DbSet<Exercise> Exercises { get; set;}
+        public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
+        public DbSet<ExerciseWorkoutProgram> ExerciseWorkoutPrograms { get; set; }
+
         public DbSet<HealthDosier> HealthDosiers { get; set;}
         public DbSet<HealthParameters> HealthParameters { get; set; }
 
@@ -105,6 +110,21 @@
                     .WithMany(p => p.RecipeIngredients)
                     .HasForeignKey(d => d.IngredientId)
                     .HasConstraintName("FK_Ingredient_RecipeIngredients");
+            });
+
+            builder.Entity<ExerciseWorkoutProgram>(entity =>
+            {
+                entity.HasKey(e => new { e.ExerciseId, e.WorkoutProgramId });
+
+                entity.HasOne(d => d.Exercise)
+                    .WithMany(p => p.ExerciseWorkoutPrograms)
+                    .HasForeignKey(d => d.ExerciseId)
+                    .HasConstraintName("FK_Exercise_ExrciseWorkoutProgram");
+
+                entity.HasOne(d => d.WorkoutProgram)
+                    .WithMany(p => p.ExerciseWorkoutPrograms)
+                    .HasForeignKey(d => d.WorkoutProgramId)
+                    .HasConstraintName("FK_WorkoutProgram_ExerciseWorkoutProgram");
             });
 
             builder.Entity<DiseaseSymptom>(entity =>

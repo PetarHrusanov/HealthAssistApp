@@ -44,4 +44,14 @@
     <ProjectReference Include="..\HealthAssistApp.Data.Models\HealthAssistApp.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200315002221_NewDatabaseWithModifications.cs" />
+    <Compile Remove="Migrations\20200314231243_FoodRegimensCorrection.cs" />
+    <Compile Remove="Migrations\20200314231518_HealthDosierModified.cs" />
+    <Compile Remove="Migrations\20200314225358_ImprovedRelationsHealthDosier.cs" />
+    <Compile Remove="Migrations\20200314231243_FoodRegimensCorrection.Designer.cs" />
+    <Compile Remove="Migrations\20200314231518_HealthDosierModified.Designer.cs" />
+    <Compile Remove="Migrations\20200314225358_ImprovedRelationsHealthDosier.Designer.cs" />
+    <Compile Remove="Migrations\20200315002221_NewDatabaseWithModifications.Designer.cs" />
+  </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models.FoodModels;
+    using HealthAssistApp.Data.Models.WorkingOut;
 
     public class HealthDosier: BaseDeletableModel<string>
     {
@@ -11,14 +12,16 @@
         public HealthDosier()
         {
             this.Id = Guid.NewGuid().ToString();
-            Exercises = new HashSet<Exercise>();
         }
 
+        public int HealthParametersId { get; set; }
         public HealthParameters HealthParameters { get; set; }
 
-        public FoodRegimen FoodRegimen { get; set; }
+        public string FoodRegimenId { get; set; }
+        public virtual FoodRegimen FoodRegimen { get; set; }
 
-        public ICollection<Exercise> Exercises { get; set; }
+        public int WorkoutProgramId { get; set; }
+        public virtual WorkoutProgram WorkoutProgram { get; set; }
 
         public bool Smoker { get; set; }
 
