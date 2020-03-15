@@ -1,9 +1,10 @@
 ﻿namespace HealthAssistApp.Data.Models
 {
+    using System;
     using System.Collections.Generic;
     using HealthAssistApp.Data.Common.Models;
 
-    public class FoodRegimen :BaseModel<string>
+    public class FoodRegimen :BaseModel<int>
     {
 
         public FoodRegimen()

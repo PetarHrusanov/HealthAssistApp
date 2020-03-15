@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthAssistApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200308221914_RecipesModified")]
-    partial class RecipesModified
+    [Migration("20200315173317_InitialCreateImproved")]
+    partial class InitialCreateImproved
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -220,38 +220,6 @@ namespace HealthAssistApp.Data.Migrations
                     b.ToTable("DiseaseSymptoms");
                 });
 
-            modelBuilder.Entity("HealthAssistApp.Data.Models.Exercise", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ExerciseComplexity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("HealthDosierId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Instructions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HealthDosierId");
-
-                    b.ToTable("Exercises");
-                });
-
             modelBuilder.Entity("HealthAssistApp.Data.Models.FoodModels.Allergies", b =>
                 {
                     b.Property<int>("Id")
@@ -296,8 +264,10 @@ namespace HealthAssistApp.Data.Migrations
 
             modelBuilder.Entity("HealthAssistApp.Data.Models.FoodRegimen", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -327,10 +297,10 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FoodRegimenId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FoodRegimenId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("HealthParametersId")
+                    b.Property<int>("HealthParametersId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -341,6 +311,9 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.Property<bool>("Smoker")
                         .HasColumnType("bit");
+
+                    b.Property<int>("WorkoutProgramId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -353,6 +326,8 @@ namespace HealthAssistApp.Data.Migrations
                     b.HasIndex("HealthParametersId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("WorkoutProgramId");
 
                     b.ToTable("HealthDosiers");
                 });
@@ -449,8 +424,8 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FoodRegimenId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("FoodRegimenId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -577,6 +552,66 @@ namespace HealthAssistApp.Data.Migrations
                     b.HasIndex("BodySystemId");
 
                     b.ToTable("Symptoms");
+                });
+
+            modelBuilder.Entity("HealthAssistApp.Data.Models.WorkingOut.Exercise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExerciseComplexity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Instructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exercises");
+                });
+
+            modelBuilder.Entity("HealthAssistApp.Data.Models.WorkingOut.ExerciseWorkoutProgram", b =>
+                {
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkoutProgramId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExerciseId", "WorkoutProgramId");
+
+                    b.HasIndex("WorkoutProgramId");
+
+                    b.ToTable("ExerciseWorkoutPrograms");
+                });
+
+            modelBuilder.Entity("HealthAssistApp.Data.Models.WorkingOut.WorkoutProgram", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkoutPrograms");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -707,13 +742,6 @@ namespace HealthAssistApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HealthAssistApp.Data.Models.Exercise", b =>
-                {
-                    b.HasOne("HealthAssistApp.Data.Models.HealthDosier", null)
-                        .WithMany("Exercises")
-                        .HasForeignKey("HealthDosierId");
-                });
-
             modelBuilder.Entity("HealthAssistApp.Data.Models.HealthDosier", b =>
                 {
                     b.HasOne("HealthAssistApp.Data.Models.FoodModels.Allergies", "Allergies")
@@ -728,11 +756,21 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", "FoodRegimen")
                         .WithMany()
-                        .HasForeignKey("FoodRegimenId");
+                        .HasForeignKey("FoodRegimenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("HealthAssistApp.Data.Models.HealthParameters", "HealthParameters")
                         .WithMany()
-                        .HasForeignKey("HealthParametersId");
+                        .HasForeignKey("HealthParametersId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthAssistApp.Data.Models.WorkingOut.WorkoutProgram", "WorkoutProgram")
+                        .WithMany()
+                        .HasForeignKey("WorkoutProgramId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HealthAssistApp.Data.Models.Ingredient", b =>
@@ -778,6 +816,23 @@ namespace HealthAssistApp.Data.Migrations
                     b.HasOne("HealthAssistApp.Data.Models.BodySystem", "BodySystem")
                         .WithMany("Symptoms")
                         .HasForeignKey("BodySystemId");
+                });
+
+            modelBuilder.Entity("HealthAssistApp.Data.Models.WorkingOut.ExerciseWorkoutProgram", b =>
+                {
+                    b.HasOne("HealthAssistApp.Data.Models.WorkingOut.Exercise", "Exercise")
+                        .WithMany("ExerciseWorkoutPrograms")
+                        .HasForeignKey("ExerciseId")
+                        .HasConstraintName("FK_Exercise_ExrciseWorkoutProgram")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthAssistApp.Data.Models.WorkingOut.WorkoutProgram", "WorkoutProgram")
+                        .WithMany("ExerciseWorkoutPrograms")
+                        .HasForeignKey("WorkoutProgramId")
+                        .HasConstraintName("FK_WorkoutProgram_ExerciseWorkoutProgram")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

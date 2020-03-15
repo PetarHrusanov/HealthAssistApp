@@ -53,5 +53,10 @@
     <Compile Remove="Migrations\20200314231518_HealthDosierModified.Designer.cs" />
     <Compile Remove="Migrations\20200314225358_ImprovedRelationsHealthDosier.Designer.cs" />
     <Compile Remove="Migrations\20200315002221_NewDatabaseWithModifications.Designer.cs" />
+    <Compile Remove="Migrations\20200315132029_FoodRegimenId.cs" />
+    <Compile Remove="Migrations\20200315132029_FoodRegimenId.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

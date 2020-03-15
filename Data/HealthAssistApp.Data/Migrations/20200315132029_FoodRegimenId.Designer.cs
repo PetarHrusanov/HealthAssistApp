@@ -4,14 +4,16 @@ using HealthAssistApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthAssistApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200315132029_FoodRegimenId")]
+    partial class FoodRegimenId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,8 +264,10 @@ namespace HealthAssistApp.Data.Migrations
 
             modelBuilder.Entity("HealthAssistApp.Data.Models.FoodRegimen", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -293,8 +297,8 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FoodRegimenId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("FoodRegimenId")
+                        .HasColumnType("int");
 
                     b.Property<int>("HealthParametersId")
                         .HasColumnType("int");
@@ -420,8 +424,8 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FoodRegimenId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("FoodRegimenId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -752,7 +756,9 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", "FoodRegimen")
                         .WithMany()
-                        .HasForeignKey("FoodRegimenId");
+                        .HasForeignKey("FoodRegimenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("HealthAssistApp.Data.Models.HealthParameters", "HealthParameters")
                         .WithMany()
