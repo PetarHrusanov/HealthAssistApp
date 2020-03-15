@@ -146,7 +146,7 @@
 
             builder.Entity<HealthDosierDisease>(entity =>
             {
-                entity.HasKey(e => new { e.DiseaseId, e.HealthDosierId });
+                entity.HasKey(e => new { e.HealthDosierId, e.DiseaseId });
 
                 entity.HasOne(d => d.Disease)
                     .WithMany(p => p.HealthDosierDiseases)
