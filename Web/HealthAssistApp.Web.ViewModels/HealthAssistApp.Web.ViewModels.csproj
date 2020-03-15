@@ -29,5 +29,6 @@
   <ItemGroup>
     <Folder Include="Recipes\" />
     <Folder Include="Diseases\" />
+    <Folder Include="HealthParameters\" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,27 @@
+﻿@using HealthAssistApp.Common
+@model HealthAssistApp.Web.ViewModels.HealthParameters.InputHealthParameters
+@{
+    this.ViewData["Title"] = "Health Parameters";
+}
+
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+<div class="text-center ">
+    <p>Please enter the following health parameters!</p>
+</div>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Weight"></label>
+        <input asp-for="Weight" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Height"></label>
+        <input asp-for="Height" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
