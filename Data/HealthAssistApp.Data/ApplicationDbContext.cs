@@ -8,6 +8,7 @@
 
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Data.Models.WorkingOut;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -32,6 +33,7 @@
         public DbSet<BodySystem> BodySystems { get; set; }
         public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
+        public DbSet<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
         //Exercise
         public DbSet<Exercise> Exercises { get; set;}
@@ -142,6 +144,20 @@
                     .HasConstraintName("FK_Symptom_DiseaseSymptoms");
             });
 
+            builder.Entity<HealthDosierDisease>(entity =>
+            {
+                entity.HasKey(e => new { e.DiseaseId, e.HealthDosierId });
+
+                entity.HasOne(d => d.Disease)
+                    .WithMany(p => p.HealthDosierDiseases)
+                    .HasForeignKey(d => d.DiseaseId)
+                    .HasConstraintName("FK_Disease_HealthDosierDisease");
+
+                entity.HasOne(d => d.HealthDosier)
+                    .WithMany(p => p.HealthDosierDiseases)
+                    .HasForeignKey(d => d.HealthDosierId)
+                    .HasConstraintName("FK_Health_HealthDosierDisease");
+            });
 
         }
 

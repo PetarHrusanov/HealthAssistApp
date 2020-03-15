@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using HealthAssistApp.Data.Common.Models;
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Data.Models.WorkingOut;
 
@@ -13,6 +14,7 @@
         public HealthDosier()
         {
             this.Id = Guid.NewGuid().ToString();
+            this.HealthDosierDiseases = new HashSet<HealthDosierDisease>();
         }
 
         public int HealthParametersId { get; set; }
@@ -27,7 +29,7 @@
 
         public bool Smoker { get; set; }
 
-        public ICollection<Disease> Diseases { get; set; }
+        public ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
         //da go pomislq
         public int AllergiesId { get; set; }

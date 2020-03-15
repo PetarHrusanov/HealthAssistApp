@@ -10,7 +10,7 @@ namespace HealthAssistApp.Web.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
-    using HealthAssistApp.Web.ViewModels.HealthParameters;
+    //using HealthAssistApp.Web.ViewModels.HealthParameters;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
@@ -61,28 +61,28 @@ namespace HealthAssistApp.Web.Controllers
             return this.View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> HealthParameters(InputHealthParameters healthParameters)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                foreach (var error in this.ModelState.Values.SelectMany(e => e.Errors))
-                {
-                    return this.View();
-                }
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> HealthParameters()
+        //{
+        //    if (!this.ModelState.IsValid)
+        //    {
+        //        foreach (var error in this.ModelState.Values.SelectMany(e => e.Errors))
+        //        {
+        //            return this.View();
+        //        }
+        //    }
 
-            var healthParametersForDb = new HealthParameters
-            {
-                Age = healthParameters.Age,
-                Height = healthParameters.Height,
-                Weight = healthParameters.Weight,
-            };
-            await this.db.HealthParameters.AddAsync(healthParametersForDb);
-            await this.db.SaveChangesAsync();
-            await this.db.SaveChangesAsync();
+        //    var healthParametersForDb = new HealthParameters
+        //    {
+        //        //Age = healthParameters.Age,
+        //        //Height = healthParameters.Height,
+        //        //Weight = healthParameters.Weight,
+        //    };
+        //    await this.db.HealthParameters.AddAsync(healthParametersForDb);
+        //    await this.db.SaveChangesAsync();
+        //    await this.db.SaveChangesAsync();
 
-            return Redirect("/");
-        }
+        //    return Redirect("/");
+        //}
     }
 }

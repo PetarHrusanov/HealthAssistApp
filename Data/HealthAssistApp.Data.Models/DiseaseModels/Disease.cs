@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HealthAssistApp.Data.Common.Models;
+using HealthAssistApp.Data.Models.DiseaseModels;
 using HealthAssistApp.Data.Models.Enums;
 
 namespace HealthAssistApp.Data.Models
@@ -10,6 +11,7 @@ namespace HealthAssistApp.Data.Models
         public Disease()
         {
             this.DiseaseSymptoms = new HashSet<DiseaseSymptom>();
+            this.HealthDosierDiseases = new HashSet<HealthDosierDisease>();
         }
 
         public string Name { get; set; }
@@ -21,6 +23,8 @@ namespace HealthAssistApp.Data.Models
         public GlycemicIndex? GlycemicIndex { get; set; }
 
         public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
+
+        public ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
     }
 }
