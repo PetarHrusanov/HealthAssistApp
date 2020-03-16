@@ -11,7 +11,6 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
-    //using HealthAssistApp.Web.ViewModels.HealthParameters;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
@@ -69,7 +68,7 @@ namespace HealthAssistApp.Web.Controllers
             {
                 foreach (var error in this.ModelState.Values.SelectMany(e => e.Errors))
                 {
-                    return this.View();
+                    return this.View(healthParameters);
                 }
             }
 
@@ -82,10 +81,10 @@ namespace HealthAssistApp.Web.Controllers
                 BodyMassIndex = 703 * (healthParameters.Weight / healthParameters.Height),
             };
 
-            await this.db.HealthParameters.AddAsync(healthParametersForDb);
+            this.db.HealthParameters.Add(healthParametersForDb);
             await this.db.SaveChangesAsync();
 
-            return this.Redirect("/");
+            return this.Redirect("/HealthDosier/Success");
         }
     }
 }

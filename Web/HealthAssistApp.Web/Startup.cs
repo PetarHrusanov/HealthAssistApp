@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Web
+﻿// <copyright file="Startup.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Web
 {
     using System.Reflection;
 
