@@ -10,6 +10,8 @@ namespace HealthAssistApp.Web.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.FoodModels;
+    using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -37,16 +39,6 @@ namespace HealthAssistApp.Web.Controllers
 
             if (healthDosier == null)
             {
-                //var halthDosier = new HealthDosier
-                //{
-                //    ApplicationUserId = userId,
-                //    FoodRegimenId = 1,
-                //    AllergiesId = 1,
-                //    HealthParametersId = 2,
-                //};
-                //await this.db.HealthDosiers.AddAsync(healthDosier);
-                //await this.db.SaveChangesAsync();
-                //await this.HealthParameters();
                 return this.Redirect("/HealthDosier/HealthParameters");
             }
 
@@ -65,12 +57,14 @@ namespace HealthAssistApp.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> HealthParameters(InputHealthParameters healthParameters)
+        public async Task<IActionResult> HealthParameters(HealthParametersInputModel healthParameters)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(healthParameters);
             }
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var healthParametersForDb = new HealthParameters
             {
@@ -79,18 +73,53 @@ namespace HealthAssistApp.Web.Controllers
                 Weight = healthParameters.Weight,
                 WaterPerDay = healthParameters.Weight * 0.33M,
                 BodyMassIndex = 703 * (healthParameters.Weight / healthParameters.Height),
+                ApplicationUserId = userId,
             };
 
             this.db.HealthParameters.Add(healthParametersForDb);
             await this.db.SaveChangesAsync();
 
-            return this.Redirect("/HealthDosier/Success");
+            return this.RedirectToAction("Allergies");
             //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
 
+        [Authorize]
         public async Task<IActionResult> Allergies(int allergiesId)
         {
-            return this.View(allergiesId);
+            return this.View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Allergies(AllergiesInputModel allergiesInput)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(allergiesInput);
+            }
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var allergiesInputForDb = new Allergies
+            {
+                Milk = allergiesInput.Milk,
+                Eggs = allergiesInput.Eggs,
+                Fish = allergiesInput.Fish,
+                Crustacean = allergiesInput.Crustacean,
+                TreeNuts = allergiesInput.TreeNuts,
+                Peanuts = allergiesInput.Peanuts,
+                Wheat = allergiesInput.Wheat,
+                Soybeans = allergiesInput.Soybeans,
+                ApplicationUserId = userId,
+            };
+
+            this.db.Allergies.Add(allergiesInputForDb);
+            await this.db.SaveChangesAsync();
+
+            return this.Redirect("/HealthDosier/Success");
+
+            //return this.RedirectToAction("Allergies");
+            //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
     }
 }

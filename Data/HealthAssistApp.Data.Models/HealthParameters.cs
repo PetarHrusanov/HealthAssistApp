@@ -13,7 +13,10 @@
 
         public decimal BodyMassIndex { get; set; }
 
-        public decimal WaterPerDay { get; set; } 
+        public decimal WaterPerDay { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
     }
 }

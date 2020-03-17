@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HealthAssistApp.Web.ViewModels.HealthParameters
 {
-    public class InputHealthParameters
+    public class HealthParametersInputModel
     {
         [Required]
         [Range(8, 120, ErrorMessage = "Value for {0} must be between {1} and {2}.")]

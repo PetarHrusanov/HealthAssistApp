@@ -1,5 +1,5 @@
 ﻿@using HealthAssistApp.Common
-@model HealthAssistApp.Web.ViewModels.HealthParameters.InputHealthParameters
+@model HealthAssistApp.Web.ViewModels.Allergies.AllergiesInputModel
 @{
     this.ViewData["Title"] = "Allergies";
 }
@@ -7,21 +7,41 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
-<div class="text-center ">
-    <p>Please enter the following health parameters!</p>
+<div class="text-left ">
+    <p>Please check if you have any of these allergies!</p>
 </div>
-<form asp-action="HealthParameters" method="post">
+<form asp-action="Allergies" method="post">
     <div class="form-group">
-        <label asp-for ="Age"></label>
-        <input asp-for="Age" class="form-control" />
+        <label asp-for="Milk"></label>
+        <input asp-for="Milk" type="checkbox" />
     </div>
     <div class="form-group">
-        <label asp-for="Weight"></label>
-        <input asp-for="Weight" class="form-control" />
+        <label asp-for="Eggs"></label>
+        <input asp-for="Eggs" type="checkbox" />
     </div>
     <div class="form-group">
-        <label asp-for="Height"></label>
-        <input asp-for="Height" class="form-control" />
+        <label asp-for="Fish"></label>
+        <input asp-for="Fish" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Crustacean"></label>
+        <input asp-for="Crustacean" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TreeNuts"></label>
+        <input asp-for="TreeNuts" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Peanuts"></label>
+        <input asp-for="Peanuts" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Wheat"></label>
+        <input asp-for="Wheat" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Soybeans"></label>
+        <input asp-for="Soybeans" type="checkbox" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
