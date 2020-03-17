@@ -1,7 +1,7 @@
 ﻿@using HealthAssistApp.Common
 @model HealthAssistApp.Web.ViewModels.HealthParameters.InputHealthParameters
 @{
-    this.ViewData["Title"] = "Health Parameters";
+    this.ViewData["Title"] = "Allergies";
 }
 
 <div class="text-center ">
@@ -12,19 +12,16 @@
 </div>
 <form asp-action="HealthParameters" method="post">
     <div class="form-group">
-        <label asp-for="Age"></label>
+        <label asp-for ="Age"></label>
         <input asp-for="Age" class="form-control" />
-        <div><span asp-validation-for="Age" class="text-danger"></span></div>
     </div>
     <div class="form-group">
         <label asp-for="Weight"></label>
         <input asp-for="Weight" class="form-control" />
-        <div><span asp-validation-for="Weight" class="text-danger"></span></div>
     </div>
     <div class="form-group">
         <label asp-for="Height"></label>
         <input asp-for="Height" class="form-control" />
-        <div><span asp-validation-for="Weight" class="text-danger"></span></div>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

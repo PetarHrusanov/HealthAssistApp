@@ -11,6 +11,7 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ namespace HealthAssistApp.Web.Controllers
             //this.healtDosier = healthDosier;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -44,7 +46,7 @@ namespace HealthAssistApp.Web.Controllers
                 //};
                 //await this.db.HealthDosiers.AddAsync(healthDosier);
                 //await this.db.SaveChangesAsync();
-
+                //await this.HealthParameters();
                 return this.Redirect("/HealthDosier/HealthParameters");
             }
 
@@ -62,14 +64,12 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> HealthParameters(InputHealthParameters healthParameters)
         {
             if (!this.ModelState.IsValid)
             {
-                foreach (var error in this.ModelState.Values.SelectMany(e => e.Errors))
-                {
-                    return this.View(healthParameters);
-                }
+                return this.View(healthParameters);
             }
 
             var healthParametersForDb = new HealthParameters
@@ -85,6 +85,12 @@ namespace HealthAssistApp.Web.Controllers
             await this.db.SaveChangesAsync();
 
             return this.Redirect("/HealthDosier/Success");
+            //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
+        }
+
+        public async Task<IActionResult> Allergies(int allergiesId)
+        {
+            return this.View(allergiesId);
         }
     }
 }
