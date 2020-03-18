@@ -52,6 +52,14 @@ namespace HealthAssistApp.Web.Controllers
 
         public async Task<IActionResult> HealthParameters()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var healthParamCheckModel = await this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            if (healthParamCheckModel != null)
+            {
+                return this.RedirectToAction("Allergies");
+            }
+
             return this.View();
         }
 
@@ -84,7 +92,7 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Allergies(int allergiesId)
+        public async Task<IActionResult> Allergies()
         {
             return this.View();
         }
@@ -121,5 +129,16 @@ namespace HealthAssistApp.Web.Controllers
             //return this.RedirectToAction("Allergies");
             //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
+
+        //[Authorize]
+        //public async Task<IActionResult> Diseases()
+        //{
+        //    var bodySystems = this.db.BodySystems.ToList();
+        //    foreach (var item in bodySystems)
+        //    {
+        //        return this.View();
+        //    }
+
+        //}
     }
 }
