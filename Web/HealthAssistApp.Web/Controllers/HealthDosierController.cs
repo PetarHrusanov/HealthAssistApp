@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
+    using HealthAssistApp.Web.ViewModels.Symptom;
+    using HealthAssistApp.Web.ViewModels.Systems;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -20,12 +23,22 @@ namespace HealthAssistApp.Web.Controllers
     public class HealthDosierController : BaseController
     {
         private readonly ApplicationDbContext db;
+        private readonly IList<SymptomsForSystems> symptomsForSystems;
+        private readonly IList<SystemsWithSymptomsQuestionnaire> systemsForTests;
         //da pomislq dali da go ostavq
         //private readonly HealthDosier healthDosier;
 
         public HealthDosierController(ApplicationDbContext db)
         {
             this.db = db;
+            this.systemsForTests = this.db.BodySystems.Select(b => new SystemsWithSymptomsQuestionnaire
+            {
+                Name = b.Name,
+                Symptoms = b.Symptoms.Select(s => new SymptomsForSystems
+                {
+                    Description = s.Description,
+                }).ToList(),
+            }).ToList();
             //da vidq dali da e taka
             //this.healtDosier = healthDosier;
         }
@@ -39,7 +52,7 @@ namespace HealthAssistApp.Web.Controllers
 
             if (healthDosier == null)
             {
-                return this.Redirect("/HealthDosier/HealthParameters");
+                return this.RedirectToAction("HealthParametersInput");
             }
 
             //if (healthDosier.HealthParameters == null)
@@ -50,14 +63,15 @@ namespace HealthAssistApp.Web.Controllers
             return this.View();
         }
 
-        public async Task<IActionResult> HealthParameters()
+        [Authorize]
+        public async Task<IActionResult> HealthParametersInput()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var healthParamCheckModel = await this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
-                return this.RedirectToAction("Allergies");
+                return this.RedirectToAction("AllergiesInput");
             }
 
             return this.View();
@@ -65,7 +79,7 @@ namespace HealthAssistApp.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> HealthParameters(HealthParametersInputModel healthParameters)
+        public async Task<IActionResult> HealthParametersInput(HealthParametersInputModel healthParameters)
         {
             if (!this.ModelState.IsValid)
             {
@@ -87,19 +101,18 @@ namespace HealthAssistApp.Web.Controllers
             this.db.HealthParameters.Add(healthParametersForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("Allergies");
-            //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
+            return this.RedirectToAction("AllergiesInput");
         }
 
         [Authorize]
-        public async Task<IActionResult> Allergies()
+        public async Task<IActionResult> AllergiesInput()
         {
             return this.View();
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Allergies(AllergiesInputModel allergiesInput)
+        public async Task<IActionResult> AllergiesInput(AllergiesInputModel allergiesInput)
         {
             if (!this.ModelState.IsValid)
             {
@@ -124,21 +137,16 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.Redirect("/HealthDosier/Success");
+            return this.RedirectToAction("Disease", "symptomsForSystems", systemsForTests[0]);
 
             //return this.RedirectToAction("Allergies");
             //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
 
-        //[Authorize]
-        //public async Task<IActionResult> Diseases()
-        //{
-        //    var bodySystems = this.db.BodySystems.ToList();
-        //    foreach (var item in bodySystems)
-        //    {
-        //        return this.View();
-        //    }
-
-        //}
+        [Authorize]
+        public async Task<IActionResult> Diseases(SymptomsForSystems systemsForTests)
+        {
+            return this.View(systemsForTests);
+        }
     }
 }

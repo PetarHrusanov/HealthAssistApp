@@ -31,5 +31,6 @@
     <Folder Include="Diseases\" />
     <Folder Include="HealthParameters\" />
     <Folder Include="Allergies\" />
+    <Folder Include="Systems\" />
   </ItemGroup>
 </Project>
