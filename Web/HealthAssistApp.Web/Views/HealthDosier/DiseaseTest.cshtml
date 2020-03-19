@@ -1,0 +1,16 @@
+﻿@using HealthAssistApp.Common
+@model HealthAssistApp.Web.ViewModels.Systems.SystemsWithSymptomsQuestionnaire
+@{
+    this.ViewData["Title"] = @Model.Name;
+}
+
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+
+<div class="row">
+    @foreach (var symptoms in Model.Symptoms)
+    {
+        <div><p>@symptoms.Description</p></div>
+    }
+</div>

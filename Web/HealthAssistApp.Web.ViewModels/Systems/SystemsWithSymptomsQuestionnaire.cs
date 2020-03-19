@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HealthAssistApp.Web.ViewModels.Systems;
 
-namespace HealthAssistApp.Web.ViewModels.Symptom
+namespace HealthAssistApp.Web.ViewModels.Systems
 {
     public class SystemsWithSymptomsQuestionnaire
     {

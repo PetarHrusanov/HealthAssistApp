@@ -14,7 +14,6 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
-    using HealthAssistApp.Web.ViewModels.Symptom;
     using HealthAssistApp.Web.ViewModels.Systems;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -137,14 +136,14 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("Disease", "symptomsForSystems", systemsForTests[0]);
+            return this.RedirectToAction("DiseaseTest", systemsForTests[0]);
 
             //return this.RedirectToAction("Allergies");
             //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
 
         [Authorize]
-        public async Task<IActionResult> Diseases(SymptomsForSystems systemsForTests)
+        public async Task<IActionResult> DiseaseTest(SystemsWithSymptomsQuestionnaire systemsForTests)
         {
             return this.View(systemsForTests);
         }
