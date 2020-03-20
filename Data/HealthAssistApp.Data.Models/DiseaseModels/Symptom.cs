@@ -18,7 +18,7 @@ namespace HealthAssistApp.Data.Models
         public int BodySystemId { get; set; }
         public virtual BodySystem BodySystem { get; set; }
 
-        public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
+        public virtual ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
 
     }
 }

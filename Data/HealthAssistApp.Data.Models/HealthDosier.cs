@@ -29,7 +29,7 @@
 
         public bool Smoker { get; set; }
 
-        public ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
+        public virtual ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
         //da go pomislq
         public int AllergiesId { get; set; }

@@ -7,7 +7,13 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
-    @foreach (var symptoms in Model.Symptoms)
+<div class="text-left ">
+    <p>Please check if you feel any of the following symptoms:</p>
+</div>
+    @foreach (var symptom in Model.Symptoms)
     {
-    <li class="list-group-item">@symptoms.Description</li>
+        <li>
+            <label asp-for=@symptom.Description></label>
+            <input asp-for=@symptom.Seleced type="checkbox" />
+        </li>
     }

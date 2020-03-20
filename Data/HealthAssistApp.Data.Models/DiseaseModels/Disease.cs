@@ -22,9 +22,9 @@ namespace HealthAssistApp.Data.Models
 
         public GlycemicIndex? GlycemicIndex { get; set; }
 
-        public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
+        public virtual ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
 
-        public ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
+        public virtual ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
     }
 }

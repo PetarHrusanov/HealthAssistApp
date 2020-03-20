@@ -20,7 +20,7 @@
 
         public Allergen Allergen { get; set; }
 
-        public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
+        public virtual ICollection<RecipeIngredients> RecipeIngredients { get; set; }
 
         public bool Vegan { get; set; }
         public bool Vegetarian { get; set;}

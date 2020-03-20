@@ -27,8 +27,8 @@
 
         public int Calories { get; set; }
 
-        public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public virtual ICollection<RecipeIngredients> RecipeIngredients { get; set; }
+        public virtual ICollection<Ingredient> Ingredients { get; set; }
 
     }
 }

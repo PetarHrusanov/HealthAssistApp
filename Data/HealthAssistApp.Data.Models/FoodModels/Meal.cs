@@ -11,6 +11,6 @@
             this.Recipes = new HashSet<Recipe>();
         }
 
-        public ICollection<Recipe> Recipes { get; set; }
+        public virtual ICollection<Recipe> Recipes { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace HealthAssistApp.Data.Models
 
         public string Name { get; set; }
 
-        public ICollection<Symptom> Symptoms { get; set; }
+        public virtual ICollection<Symptom> Symptoms { get; set; }
 
     }
 }

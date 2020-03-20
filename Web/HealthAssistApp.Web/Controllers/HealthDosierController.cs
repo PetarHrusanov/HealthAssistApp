@@ -33,11 +33,21 @@ namespace HealthAssistApp.Web.Controllers
             this.systemsForTests = this.db.BodySystems.Select(b => new SystemsWithSymptomsQuestionnaire
             {
                 Name = b.Name,
-                Symptoms = b.Symptoms.Select(s => new SymptomsForSystems
+                Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
                 {
-                    Description = s.Description,
-                }).ToList(),
+                    Description = sy.Description,
+                    Seleced = false,
+                }),
             }).ToList();
+            //this.systemsForTests = this.db.BodySystems.Select(b => new SystemsWithSymptomsQuestionnaire
+            //{
+            //    Name = b.Name,
+            //    Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
+            //    {
+            //        Description = sy.Description,
+            //        Seleced = false,
+            //    }).ToList() as ICollection<SymptomsForSystems>,
+            //}).ToList();
         }
 
         [Authorize]
