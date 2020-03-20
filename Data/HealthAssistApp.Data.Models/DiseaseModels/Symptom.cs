@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using HealthAssistApp.Data.Common.Models;
 
 namespace HealthAssistApp.Data.Models
@@ -13,7 +14,9 @@ namespace HealthAssistApp.Data.Models
 
         public string Description { get; set; }
 
-        public BodySystem BodySystem { get; set; }
+        [ForeignKey("BodySystem")]
+        public int BodySystemId { get; set; }
+        public virtual BodySystem BodySystem { get; set; }
 
         public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
 

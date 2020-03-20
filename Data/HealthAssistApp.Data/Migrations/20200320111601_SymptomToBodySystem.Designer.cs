@@ -4,14 +4,16 @@ using HealthAssistApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthAssistApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320111601_SymptomToBodySystem")]
+    partial class SymptomToBodySystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -553,7 +555,7 @@ namespace HealthAssistApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BodySystemId")
+                    b.Property<int?>("BodySystemId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -865,9 +867,7 @@ namespace HealthAssistApp.Data.Migrations
                 {
                     b.HasOne("HealthAssistApp.Data.Models.BodySystem", "BodySystem")
                         .WithMany("Symptoms")
-                        .HasForeignKey("BodySystemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("BodySystemId");
                 });
 
             modelBuilder.Entity("HealthAssistApp.Data.Models.WorkingOut.ExerciseWorkoutProgram", b =>

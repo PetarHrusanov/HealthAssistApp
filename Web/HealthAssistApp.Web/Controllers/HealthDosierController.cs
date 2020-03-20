@@ -22,8 +22,8 @@ namespace HealthAssistApp.Web.Controllers
     public class HealthDosierController : BaseController
     {
         private readonly ApplicationDbContext db;
-        private readonly IList<SymptomsForSystems> symptomsForSystems;
         private readonly IList<SystemsWithSymptomsQuestionnaire> systemsForTests;
+        private readonly IList<SymptomsForSystems> symptomsForSystems;
         //da pomislq dali da go ostavq
         //private readonly HealthDosier healthDosier;
 
@@ -38,8 +38,6 @@ namespace HealthAssistApp.Web.Controllers
                     Description = s.Description,
                 }).ToList(),
             }).ToList();
-            //da vidq dali da e taka
-            //this.healtDosier = healthDosier;
         }
 
         [Authorize]
@@ -106,6 +104,13 @@ namespace HealthAssistApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AllergiesInput()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var healthParamCheckModel = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            if (healthParamCheckModel != null)
+            {
+                return this.RedirectToAction("DiseaseTest", systemsForTests[0]);
+            }
+
             return this.View();
         }
 
@@ -145,6 +150,10 @@ namespace HealthAssistApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> DiseaseTest(SystemsWithSymptomsQuestionnaire systemsForTests)
         {
+            //testovi shemi
+            //var symptom = this.db.BodySystems.Select(s => s.Symptoms).ToList();
+            //return Redirect("/HealthDosier/Success");
+
             return this.View(systemsForTests);
         }
     }
