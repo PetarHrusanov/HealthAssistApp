@@ -12,6 +12,6 @@ namespace HealthAssistApp.Web.ViewModels.Systems
         //}
         public string Name { get; set; }
 
-        public IEnumerable<SymptomsForSystems> Symptoms { get; set; }
+        public IList<SymptomsForSystems> Symptoms { get; set; }
     }
 }

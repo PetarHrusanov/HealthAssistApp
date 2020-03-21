@@ -9,11 +9,13 @@
 </div>
 <div class="text-left ">
     <p>Please check if you feel any of the following symptoms:</p>
+    <form asp-action="AllergiesInput" method="post">
+        <ul>
+            @foreach (var symptom in Model.Symptoms)
+            {
+                <li>@symptom.Description <input asp-for=@symptom.Selected type="checkbox" /></li>
+            }
+        </ul>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
-    @foreach (var symptom in Model.Symptoms)
-    {
-        <li>
-            <label asp-for=@symptom.Description></label>
-            <input asp-for=@symptom.Seleced type="checkbox" />
-        </li>
-    }

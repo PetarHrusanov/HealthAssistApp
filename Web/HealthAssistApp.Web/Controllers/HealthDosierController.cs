@@ -22,7 +22,7 @@ namespace HealthAssistApp.Web.Controllers
     public class HealthDosierController : BaseController
     {
         private readonly ApplicationDbContext db;
-        private readonly IList<SystemsWithSymptomsQuestionnaire> systemsForTests;
+        public IList<string> systemsForTests;
         private readonly IList<SymptomsForSystems> symptomsForSystems;
         //da pomislq dali da go ostavq
         //private readonly HealthDosier healthDosier;
@@ -30,24 +30,7 @@ namespace HealthAssistApp.Web.Controllers
         public HealthDosierController(ApplicationDbContext db)
         {
             this.db = db;
-            this.systemsForTests = this.db.BodySystems.Select(b => new SystemsWithSymptomsQuestionnaire
-            {
-                Name = b.Name,
-                Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
-                {
-                    Description = sy.Description,
-                    Seleced = false,
-                }),
-            }).ToList();
-            //this.systemsForTests = this.db.BodySystems.Select(b => new SystemsWithSymptomsQuestionnaire
-            //{
-            //    Name = b.Name,
-            //    Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
-            //    {
-            //        Description = sy.Description,
-            //        Seleced = false,
-            //    }).ToList() as ICollection<SymptomsForSystems>,
-            //}).ToList();
+            this.systemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
         }
 
         [Authorize]
@@ -118,7 +101,10 @@ namespace HealthAssistApp.Web.Controllers
             var healthParamCheckModel = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
-                return this.RedirectToAction("DiseaseTest", systemsForTests[0]);
+                return RedirectToAction("DiseaseTest", "HealthDosier", new { symptom = systemsForTests[0] });
+
+                //return RedirectToAction("DiseaseTest");
+                //return RedirectToAction("DiseaseTest", "HealthDosier", new { @id = systemsForTests[0].ToString() });
             }
 
             return this.View();
@@ -151,20 +137,45 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("DiseaseTest", systemsForTests[0]);
+            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { symptom = systemsForTests[0] });
 
+            //return RedirectToAction("DiseaseTest");
+            //return RedirectToAction("DiseaseTest", "HealthDosier", new { @id = systemsForTests[0] });
+            //return RedirectToAction("DiseaseTest", "HealthDosier", symptomsForSystems[0]);
             //return this.RedirectToAction("Allergies");
             //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
         }
 
         [Authorize]
-        public async Task<IActionResult> DiseaseTest(SystemsWithSymptomsQuestionnaire systemsForTests)
+        public async Task<IActionResult> DiseaseTest(string symptom)
         {
-            //testovi shemi
-            //var symptom = this.db.BodySystems.Select(s => s.Symptoms).ToList();
-            //return Redirect("/HealthDosier/Success");
+            SystemsWithSymptomsQuestionnaire bodySystem = this.db.BodySystems.Where(b => b.Name == symptom).Select(b => new SystemsWithSymptomsQuestionnaire
+            {
+                Name = b.Name,
+                Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
+                {
+                    Description = sy.Description,
+                }).ToList(),
+            }).FirstOrDefault();
 
-            return this.View(systemsForTests);
+            return this.View(bodySystem);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DiseaseTest(SystemsWithSymptomsQuestionnaire systems)
+        {
+            foreach (var item in systems.Symptoms)
+            {
+                if (item.Selected == true)
+                {
+                    this.symptomsForSystems.Add(item);
+                }
+            }
+
+            this.symptomsForSystems.Remove(this.symptomsForSystems[0]);
+
+            return this.RedirectToAction("DiseaseTest");
         }
     }
 }

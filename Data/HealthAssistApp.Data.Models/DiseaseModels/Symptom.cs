@@ -16,7 +16,7 @@ namespace HealthAssistApp.Data.Models
 
         [ForeignKey("BodySystem")]
         public int BodySystemId { get; set; }
-        public virtual BodySystem BodySystem { get; set; }
+        public BodySystem BodySystem { get; set; }
 
         public virtual ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
 
