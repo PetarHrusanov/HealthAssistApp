@@ -140,12 +140,21 @@ namespace HealthAssistApp.Web.Controllers
 
         private string GetNext(IList<string> items, string curr)
         {
-            if (String.IsNullOrWhiteSpace(curr))
-                return items[0];
+            if (string.IsNullOrWhiteSpace(curr))
+            {
+                return "Empty";
+            }
 
             var index = items.IndexOf(curr);
             if (index == -1)
-                return items[0];
+            {
+                return "Empty";
+            }
+
+            if (index + 1 >= items.Count)
+            {
+                return "Empty";
+            }
 
             return items[(index + 1) % items.Count];
         }
@@ -161,13 +170,15 @@ namespace HealthAssistApp.Web.Controllers
 
             if (userSymptoms != null)
             {
-                foreach (var item in userSymptoms)
+                if (userSymptoms.Contains(system))
                 {
-                    if (system == item)
+                    string nextSystem = this.GetNext(this.systemsForTests, system);
+                    if (nextSystem == "Empty")
                     {
-                        string nextSystem = this.GetNext(this.systemsForTests, system);
-                        return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
+                        return this.Redirect("/HealthDosier/Success");
                     }
+
+                    return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
                 }
             }
 
@@ -191,7 +202,7 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (systems.Symptoms.Count>0)
+            if (systems.Symptoms.Count > 0)
             {
                 foreach (var item in systems.Symptoms)
                 {
@@ -210,11 +221,23 @@ namespace HealthAssistApp.Web.Controllers
                 }
             }
 
-            string nextSystem = this.GetNext(this.systemsForTests, systems.Name);
-            int indexOfNext = this.systemsForTests.IndexOf(nextSystem);
-            if (indexOfNext >= this.systemsForTests.Count)
+            if (systems.Symptoms.Count == 0)
             {
-                return this.View("/HealthDosier/Success");
+                var userSymptom = new UserSymptoms
+                {
+                    Description = "Nothing",
+                    SystemName = systems.Name,
+                    ApplicationUserId = userId,
+                };
+
+                await this.db.UserSymptoms.AddAsync(userSymptom);
+                await this.db.SaveChangesAsync();
+            }
+
+            string nextSystem = this.GetNext(this.systemsForTests, systems.Name);
+            if (nextSystem == "Empty")
+            {
+                return this.Redirect("/HealthDosier/Success");
             }
 
             return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });

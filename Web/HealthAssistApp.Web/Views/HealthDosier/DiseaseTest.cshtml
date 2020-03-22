@@ -20,10 +20,12 @@
             {
                 <tr>
                     <td>
-                        <input type="hidden" name="Symptoms[i].Description" value="Symptoms[[Description" />
                         @Model.Symptoms[i].Description
                     </td>
-                    <td><input asp-for=@Model.Symptoms[i].Selected type="checkbox" /></td>
+                    <td>
+                    <input asp-for=@Model.Symptoms[i].Selected type="checkbox" />
+                        <input type="hidden" asp-for="@Model.Symptoms[i].Description" />
+                    </td>
                 </tr>
             }
         </table>
