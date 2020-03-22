@@ -5,7 +5,7 @@ namespace HealthAssistApp.Data.Models
     using System.Collections.Generic;
 
     using HealthAssistApp.Data.Common.Models;
-
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity

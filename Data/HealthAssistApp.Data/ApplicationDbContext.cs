@@ -34,6 +34,7 @@
         public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
         public DbSet<Symptom> Symptoms { get; set; }
         public DbSet<HealthDosierDisease> HealthDosierDiseases { get; set; }
+        public DbSet<UserSymptoms> UserSymptoms { get; set; }
 
         //Exercise
         public DbSet<Exercise> Exercises { get; set;}

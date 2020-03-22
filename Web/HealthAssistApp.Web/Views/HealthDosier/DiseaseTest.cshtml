@@ -9,13 +9,24 @@
 </div>
 <div class="text-left ">
     <p>Please check if you feel any of the following symptoms:</p>
-    <form asp-action="AllergiesInput" method="post">
-        <ul>
-            @foreach (var symptom in Model.Symptoms)
+    <form asp-action="DiseaseTest" method="post">
+        <input type ="hidden" name="Name"value="@Model.Name">
+        <table class="table">
+            <tr>
+                <th>Symptom Name</th>
+                <th>Present</th>
+            </tr>
+            @for (var i = 0; i < Model.Symptoms.Count(); i++)
             {
-                <li>@symptom.Description <input asp-for=@symptom.Selected type="checkbox" /></li>
+                <tr>
+                    <td>
+                        <input type="hidden" name="Symptoms[i].Description" value="Symptoms[[Description" />
+                        @Model.Symptoms[i].Description
+                    </td>
+                    <td><input asp-for=@Model.Symptoms[i].Selected type="checkbox" /></td>
+                </tr>
             }
-        </ul>
+        </table>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>

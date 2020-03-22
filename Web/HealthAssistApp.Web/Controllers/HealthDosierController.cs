@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -11,6 +12,7 @@ namespace HealthAssistApp.Web.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
@@ -38,17 +40,14 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthDosier = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthDosier = await this.db.HealthDosiers
+                .Where(x => x.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
 
             if (healthDosier == null)
             {
                 return this.RedirectToAction("HealthParametersInput");
             }
-
-            //if (healthDosier.HealthParameters == null)
-            //{
-            //    await this.HealthParameters();
-            //}
 
             return this.View();
         }
@@ -58,7 +57,9 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthParamCheckModel = await this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthParamCheckModel = await this.db.HealthParameters
+                .Where(x => x.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
                 return this.RedirectToAction("AllergiesInput");
@@ -101,10 +102,7 @@ namespace HealthAssistApp.Web.Controllers
             var healthParamCheckModel = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
-                return RedirectToAction("DiseaseTest", "HealthDosier", new { symptom = systemsForTests[0] });
-
-                //return RedirectToAction("DiseaseTest");
-                //return RedirectToAction("DiseaseTest", "HealthDosier", new { @id = systemsForTests[0].ToString() });
+                return RedirectToAction("DiseaseTest", "HealthDosier", new { system = systemsForTests[0] });
             }
 
             return this.View();
@@ -137,19 +135,45 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { symptom = systemsForTests[0] });
+            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = systemsForTests[0] });
+        }
 
-            //return RedirectToAction("DiseaseTest");
-            //return RedirectToAction("DiseaseTest", "HealthDosier", new { @id = systemsForTests[0] });
-            //return RedirectToAction("DiseaseTest", "HealthDosier", symptomsForSystems[0]);
-            //return this.RedirectToAction("Allergies");
-            //return this.Redirect($"/HealthDosier/Allergies/{healthParametersForDb.Id}");
+        private string GetNext(IList<string> items, string curr)
+        {
+            if (String.IsNullOrWhiteSpace(curr))
+                return items[0];
+
+            var index = items.IndexOf(curr);
+            if (index == -1)
+                return items[0];
+
+            return items[(index + 1) % items.Count];
         }
 
         [Authorize]
-        public async Task<IActionResult> DiseaseTest(string symptom)
+        public async Task<IActionResult> DiseaseTest(string system)
         {
-            SystemsWithSymptomsQuestionnaire bodySystem = this.db.BodySystems.Where(b => b.Name == symptom).Select(b => new SystemsWithSymptomsQuestionnaire
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userSymptoms = await this.db.UserSymptoms
+                .Where(x => x.ApplicationUserId == userId)
+                .Select(u => u.SystemName)
+                .ToListAsync();
+
+            if (userSymptoms != null)
+            {
+                foreach (var item in userSymptoms)
+                {
+                    if (system == item)
+                    {
+                        string nextSystem = this.GetNext(this.systemsForTests, system);
+                        return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
+                    }
+                }
+            }
+
+            SystemsWithSymptomsQuestionnaire bodySystem = this.db.BodySystems
+                .Where(b => b.Name == system)
+                .Select(b => new SystemsWithSymptomsQuestionnaire
             {
                 Name = b.Name,
                 Symptoms = b.Symptoms.Select(sy => new SymptomsForSystems
@@ -165,17 +189,35 @@ namespace HealthAssistApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> DiseaseTest(SystemsWithSymptomsQuestionnaire systems)
         {
-            foreach (var item in systems.Symptoms)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (systems.Symptoms.Count>0)
             {
-                if (item.Selected == true)
+                foreach (var item in systems.Symptoms)
                 {
-                    this.symptomsForSystems.Add(item);
+                    if (item.Selected == true)
+                    {
+                        var userSymptom = new UserSymptoms
+                        {
+                            Description = item.Description,
+                            SystemName = systems.Name,
+                            ApplicationUserId = userId,
+                        };
+
+                        await this.db.UserSymptoms.AddAsync(userSymptom);
+                        await this.db.SaveChangesAsync();
+                    }
                 }
             }
 
-            this.symptomsForSystems.Remove(this.symptomsForSystems[0]);
+            string nextSystem = this.GetNext(this.systemsForTests, systems.Name);
+            int indexOfNext = this.systemsForTests.IndexOf(nextSystem);
+            if (indexOfNext >= this.systemsForTests.Count)
+            {
+                return this.View("/HealthDosier/Success");
+            }
 
-            return this.RedirectToAction("DiseaseTest");
+            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
         }
     }
 }
