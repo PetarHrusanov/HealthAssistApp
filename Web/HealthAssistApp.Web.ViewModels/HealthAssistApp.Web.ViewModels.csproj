@@ -32,5 +32,6 @@
     <Folder Include="HealthParameters\" />
     <Folder Include="Allergies\" />
     <Folder Include="Systems\" />
+    <Folder Include="HealthDosier\" />
   </ItemGroup>
 </Project>

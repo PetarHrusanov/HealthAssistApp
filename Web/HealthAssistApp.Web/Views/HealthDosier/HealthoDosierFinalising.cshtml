@@ -1,0 +1,27 @@
+﻿@using HealthAssistApp.Common
+@using HealthAssistApp.Data.Models.Enums
+@model HealthAssistApp.Web.ViewModels.HealthDosier.HealthDosierInputModel
+@{
+    this.ViewData["Title"] = "Health Dosier Finalisation";
+}
+
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+<div class="text-left ">
+    <p>Please check the following details</p>
+</div>
+<form asp-action="HealthoDosierFinalising" method="post">
+    <div class="form-group">
+        <label asp-for="Smoker"></label>
+        <input asp-for="Smoker" type="checkbox" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DrinkAlcohol">Do you drink more than 100 ml of </label>
+        <input asp-for="DrinkAlcohol" type="checkbox" />
+    </div>
+    <select asp-for="Complexity" asp-items="Html.GetEnumSelectList<ExerciseComplexity>()">
+        <option selected="selected" value="">Please select</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

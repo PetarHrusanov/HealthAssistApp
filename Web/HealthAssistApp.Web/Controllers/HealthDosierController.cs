@@ -24,7 +24,7 @@ namespace HealthAssistApp.Web.Controllers
     public class HealthDosierController : BaseController
     {
         private readonly ApplicationDbContext db;
-        public IList<string> systemsForTests;
+        public IList<string> SystemsForTests;
         private readonly IList<SymptomsForSystems> symptomsForSystems;
         //da pomislq dali da go ostavq
         //private readonly HealthDosier healthDosier;
@@ -32,7 +32,7 @@ namespace HealthAssistApp.Web.Controllers
         public HealthDosierController(ApplicationDbContext db)
         {
             this.db = db;
-            this.systemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
+            this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
         }
 
         [Authorize]
@@ -102,7 +102,7 @@ namespace HealthAssistApp.Web.Controllers
             var healthParamCheckModel = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
-                return RedirectToAction("DiseaseTest", "HealthDosier", new { system = systemsForTests[0] });
+                return RedirectToAction("DiseaseTest", "HealthDosier", new { system = SystemsForTests[0] });
             }
 
             return this.View();
@@ -135,7 +135,7 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = systemsForTests[0] });
+            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = SystemsForTests[0] });
         }
 
         private string GetNext(IList<string> items, string curr)
@@ -172,10 +172,10 @@ namespace HealthAssistApp.Web.Controllers
             {
                 if (userSymptoms.Contains(system))
                 {
-                    string nextSystem = this.GetNext(this.systemsForTests, system);
+                    string nextSystem = this.GetNext(this.SystemsForTests, system);
                     if (nextSystem == "Empty")
                     {
-                        return this.Redirect("/HealthDosier/Success");
+                        return this.Redirect("HealthoDosierFinalising");
                     }
 
                     return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
@@ -234,13 +234,45 @@ namespace HealthAssistApp.Web.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            string nextSystem = this.GetNext(this.systemsForTests, systems.Name);
+            string nextSystem = this.GetNext(this.SystemsForTests, systems.Name);
             if (nextSystem == "Empty")
             {
-                return this.Redirect("/HealthDosier/Success");
+                return this.RedirectToAction("HealthoDosierFinalising");
             }
 
             return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = nextSystem });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> HealthoDosierFinalising()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var healthDosierCheck = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            if (healthDosierCheck != null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> HealthoDosierFinalising(HealthParametersInputModel parametersInputModel)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var healthDosierCheck = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            if (healthDosierCheck != null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
+            var healthParameters = this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var allergies = this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+
+            //da opravq vzimaneto na User i tn da stava s metod 
+
+            return this.View();
         }
     }
 }

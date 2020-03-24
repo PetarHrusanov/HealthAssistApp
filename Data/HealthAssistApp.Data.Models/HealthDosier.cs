@@ -29,6 +29,8 @@
 
         public bool Smoker { get; set; }
 
+        public bool DrinkAlcohol { get; set; }
+
         public virtual ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
         //da go pomislq
