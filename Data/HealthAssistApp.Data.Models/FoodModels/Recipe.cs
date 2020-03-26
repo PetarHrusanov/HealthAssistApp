@@ -30,5 +30,10 @@
 
         public virtual ICollection<RecipeIngredients> RecipeIngredients { get; set; }
 
+        public virtual ICollection<Meal> Breakfasts { get; set; }
+
+        public virtual ICollection<Meal> Lunches { get; set; }
+
+        public virtual ICollection<Meal> Diners { get; set; }
     }
 }

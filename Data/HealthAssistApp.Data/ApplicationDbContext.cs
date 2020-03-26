@@ -160,6 +160,23 @@
                     .HasConstraintName("FK_Health_HealthDosierDisease");
             });
 
+            builder.Entity<Meal>(entity =>
+            {
+                entity.HasOne(m => m.Breakfast)
+                    .WithMany(r => r.Breakfasts)
+                    .HasForeignKey(d => d.BreakfastId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(m => m.Lunch)
+                    .WithMany(r => r.Lunches)
+                    .HasForeignKey(d => d.LunchId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(m => m.Diner)
+                    .WithMany(r => r.Diners)
+                    .HasForeignKey(d => d.DinerId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
         }
 
         private static void ConfigureUserIdentityRelations(ModelBuilder builder)
