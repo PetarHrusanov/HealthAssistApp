@@ -299,14 +299,14 @@ namespace HealthAssistApp.Web.Controllers
 
             // da proverq dali raboti
             var recipes = this.db.Recipes
-                .Where(i => i.Ingredients.Any(i => i.Crustacean.Equals(allergies.Crustacean)))
-                .Where(i => i.Ingredients.Any(i => i.Eggs.Equals(allergies.Eggs)))
-                .Where(i => i.Ingredients.Any(i => i.Fish.Equals(allergies.Fish)))
-                .Where(i => i.Ingredients.Any(i => i.Milk.Equals(allergies.Milk)))
-                .Where(i => i.Ingredients.Any(i => i.Peanuts.Equals(allergies.Peanuts)))
-                .Where(i => i.Ingredients.Any(i => i.Soybeans.Equals(allergies.Soybeans)))
-                .Where(i => i.Ingredients.Any(i => i.TreeNuts.Equals(allergies.TreeNuts)))
-                .Where(i => i.Ingredients.Any(i => i.Wheat.Equals(allergies.Wheat)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Milk.Equals(allergies.Milk)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Crustacean.Equals(allergies.Crustacean)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Eggs.Equals(allergies.Eggs)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Fish.Equals(allergies.Fish)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Peanuts.Equals(allergies.Peanuts)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Soybeans.Equals(allergies.Soybeans)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.TreeNuts.Equals(allergies.TreeNuts)))
+                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Wheat.Equals(allergies.Wheat)))
                 .ToListAsync();
 
             // var recipeс = this.db.Recipes.Where(i => i.Ingredients.Where(i => i.Crustacean == allergies.Crustacean

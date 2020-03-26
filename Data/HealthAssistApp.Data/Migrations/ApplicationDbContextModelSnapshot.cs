@@ -468,9 +468,6 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<bool>("Peanuts")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Soybeans")
                         .HasColumnType("bit");
 
@@ -488,8 +485,6 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecipeId");
-
                     b.ToTable("Ingredients");
                 });
 
@@ -500,10 +495,19 @@ namespace HealthAssistApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BreakfastId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DinerId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("FoodRegimenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LunchId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -511,7 +515,13 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BreakfastId");
+
+                    b.HasIndex("DinerId");
+
                     b.HasIndex("FoodRegimenId");
+
+                    b.HasIndex("LunchId");
 
                     b.ToTable("Meals");
                 });
@@ -538,9 +548,6 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<string>("InstructionForPreparation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MealId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -557,8 +564,6 @@ namespace HealthAssistApp.Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MealId");
 
                     b.ToTable("Recipes");
                 });
@@ -894,25 +899,29 @@ namespace HealthAssistApp.Data.Migrations
                         .HasForeignKey("ApplicationUserId");
                 });
 
-            modelBuilder.Entity("HealthAssistApp.Data.Models.Ingredient", b =>
-                {
-                    b.HasOne("HealthAssistApp.Data.Models.Recipe", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId");
-                });
-
             modelBuilder.Entity("HealthAssistApp.Data.Models.Meal", b =>
                 {
+                    b.HasOne("HealthAssistApp.Data.Models.Recipe", "Breakfast")
+                        .WithMany("Breakfasts")
+                        .HasForeignKey("BreakfastId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("HealthAssistApp.Data.Models.Recipe", "Diner")
+                        .WithMany("Diners")
+                        .HasForeignKey("DinerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", null)
                         .WithMany("Meals")
                         .HasForeignKey("FoodRegimenId");
-                });
 
-            modelBuilder.Entity("HealthAssistApp.Data.Models.Recipe", b =>
-                {
-                    b.HasOne("HealthAssistApp.Data.Models.Meal", null)
-                        .WithMany("Recipes")
-                        .HasForeignKey("MealId");
+                    b.HasOne("HealthAssistApp.Data.Models.Recipe", "Lunch")
+                        .WithMany("Lunches")
+                        .HasForeignKey("LunchId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HealthAssistApp.Data.Models.RecipeIngredients", b =>
