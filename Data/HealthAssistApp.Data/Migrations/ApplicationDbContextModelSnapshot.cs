@@ -438,17 +438,26 @@ namespace HealthAssistApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Allergen")
-                        .HasColumnType("int");
-
                     b.Property<int>("Calories")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Crustacean")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Eggs")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Fish")
+                        .HasColumnType("bit");
+
                     b.Property<int>("GlycemicIndex")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Milk")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -456,13 +465,25 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Peanuts")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("RecipeId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Soybeans")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("TreeNuts")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Vegan")
                         .HasColumnType("bit");
 
                     b.Property<bool>("Vegetarian")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Wheat")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -525,6 +546,9 @@ namespace HealthAssistApp.Data.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PartOfMeal")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Vegan")
                         .HasColumnType("bit");

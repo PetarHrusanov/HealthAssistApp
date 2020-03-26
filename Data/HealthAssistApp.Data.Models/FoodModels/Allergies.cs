@@ -1,11 +1,11 @@
 ﻿namespace HealthAssistApp.Data.Models.FoodModels
 {
     using System;
+
     using HealthAssistApp.Data.Common.Models;
 
     public class Allergies : BaseModel<int>
     {
-
         public bool Milk { get; set; }
 
         public bool Eggs { get; set; }
@@ -23,6 +23,7 @@
         public bool Soybeans { get; set; }
 
         public string ApplicationUserId { get; set; }
+
         public virtual ApplicationUser ApplicationUser {get;set;}
 
     }
