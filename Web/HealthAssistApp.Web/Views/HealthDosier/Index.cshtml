@@ -1,4 +1,5 @@
 ﻿@using HealthAssistApp.Common
+@using System.Linq;
 @model HealthAssistApp.Web.ViewModels.HealthDosier.HealthDosierOverview
 @{
     this.ViewData["Title"] = "Health Dosier";
@@ -7,59 +8,63 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
-<div class="text-left ">
-    <p>Your Health Parameters"</p>
-    <table class="table">
-        <tr>
-            <th>Age</th>
-            <th>Weight</th>
-            <th>Height</th>
-            <th>Body Mass Index</th>
-            <th>Water Per Day</th>
-        </tr>
-        <tr>
-            <th>@Model.HealthParameters.Age</th>
-            <th>@Model.HealthParameters.Weight</th>
-            <th>@Model.HealthParameters.Height</th>
-            <th>@Model.HealthParameters.BodyMassIndex</th>
-            <th>@Model.HealthParameters.WaterPerDay</th>
-        </tr>
-    </table>
+<div class="card-header">
+    <div class="text-left ">
+        <h2 class="text-center">Your Health Parameters</h2>
+        <table class="table">
+            <tr>
+                <th>Age</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Body Mass Index</th>
+                <th>Water Per Day</th>
+            </tr>
+            <tr>
+                <td>@Model.HealthParameters.Age</td>
+                <td>@Model.HealthParameters.Weight</td>
+                <td>@Model.HealthParameters.Height</td>
+                <td>@Model.HealthParameters.BodyMassIndex</td>
+                <td>@Model.HealthParameters.WaterPerDay</td>
+            </tr>
+        </table>
+    </div>
 </div>
-<div class="text-left ">
-    <p>Your Allergies</p>
-    <table class="table">
-        <tr>
-            <th>@Model.Allergies.Milk.ToString()</th>
-            <th>@Model.Allergies.Milk</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Eggs.ToString()</th>
-            <th>@Model.Allergies.Eggs</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Fish.ToString()</th>
-            <th>@Model.Allergies.Fish</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Crustacean.ToString()</th>
-            <th>@Model.Allergies.Crustacean</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.TreeNuts.ToString()</th>
-            <th>@Model.Allergies.TreeNuts</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Peanuts.ToString()</th>
-            <th>@Model.Allergies.Peanuts</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Wheat.ToString()</th>
-            <th>@Model.Allergies.Wheat</th>
-        </tr>
-        <tr>
-            <th>@Model.Allergies.Soybeans.ToString()</th>
-            <th>@Model.Allergies.Soybeans</th>
-        </tr>
-    </table>
+<div class="card-header">
+    <div class="text-left ">
+        <h2 class="text-center">Your Allergies</h2>
+        <table class="table">
+            <tr>
+                <th>Milk</th>
+                <td>@Model.Allergies.Milk</td>
+            </tr>
+            <tr>
+                <th>Eggs</th>
+                <td>@Model.Allergies.Eggs</td>
+            </tr>
+            <tr>
+                <th>Fish</th>
+                <td>@Model.Allergies.Fish</td>
+            </tr>
+            <tr>
+                <th>Crustacean</th>
+                <td>@Model.Allergies.Crustacean</td>
+            </tr>
+            <tr>
+                <th>TreeNuts</th>
+                <td>@Model.Allergies.TreeNuts</td>
+            </tr>
+            <tr>
+                <th>Peanuts</th>
+                <td>@Model.Allergies.Peanuts</td>
+            </tr>
+            <tr>
+                <th>Wheat</th>
+                <td>@Model.Allergies.Wheat</td>
+            </tr>
+            <tr>
+                <th>Soybeans</th>
+                <td>@Model.Allergies.Soybeans</td>
+            </tr>
+        </table>
+    </div>
 </div>

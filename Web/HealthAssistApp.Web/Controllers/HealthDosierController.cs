@@ -51,17 +51,30 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("HealthParametersInput");
             }
 
+            // trqbva da dobavq koncepciq za informaciq- ako body mass index-a e zle da se puska enum che e zle
+            // da ima butoni za promqna
+
+            // Allergies Output- da vidq dali ne moje da se vzima direktno ot healthDosier
+            var allergies = await this.db.Allergies
+                .Where(a => a.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
+
             var allergiesOutput = new AllergiesViewModel
             {
-                Milk = healthDosier.Allergies.Milk,
-                Eggs = healthDosier.Allergies.Eggs,
-                Fish = healthDosier.Allergies.Fish,
-                Crustacean = healthDosier.Allergies.Crustacean,
-                TreeNuts = healthDosier.Allergies.TreeNuts,
-                Peanuts = healthDosier.Allergies.Peanuts,
-                Wheat = healthDosier.Allergies.Wheat,
-                Soybeans = healthDosier.Allergies.Soybeans,
+                Milk = allergies.Milk,
+                Eggs = allergies.Eggs,
+                Fish = allergies.Fish,
+                Crustacean = allergies.Crustacean,
+                TreeNuts = allergies.TreeNuts,
+                Peanuts = allergies.Peanuts,
+                Wheat = allergies.Wheat,
+                Soybeans = allergies.Soybeans,
             };
+
+            // Health Parameters Logic- da vidq dali ne moje da se vzima direktno ot healthDosier
+            var healthParameters = await this.db.HealthParameters
+                .Where(a => a.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
 
             var healthParametersOutput = new HealthParametersViewModel
             {
@@ -72,6 +85,7 @@ namespace HealthAssistApp.Web.Controllers
                 WaterPerDay = healthDosier.HealthParameters.WaterPerDay,
             };
 
+            // Health Dosier View
             var healthDosierView = new HealthDosierOverview
             {
                 Allergies = allergiesOutput,

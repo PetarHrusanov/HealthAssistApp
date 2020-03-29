@@ -21,9 +21,10 @@
         public HealthParameters HealthParameters { get; set; }
 
         // FoodRegimen
+        [ForeignKey("FoodRegimen")]
         public int FoodRegimenId { get; set; }
 
-        public virtual FoodRegimen FoodRegimen { get; set; }
+        public FoodRegimen FoodRegimen { get; set; }
 
         // Working Out
         [ForeignKey("WorkoutProgram")]
@@ -32,9 +33,10 @@
         public virtual WorkoutProgram WorkoutProgram { get; set; }
 
         // da go pomislq
+        [ForeignKey("Allergies")]
         public int AllergiesId { get; set; }
 
-        public virtual Allergies Allergies { get; set; }
+        public Allergies Allergies { get; set; }
 
         // Health Dosier Specific
         public bool Smoker { get; set; }
