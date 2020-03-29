@@ -10,38 +10,78 @@
 <div class="text-left ">
     <p>Please check if you have any of following allergies (if none, leave blank):</p>
 </div>
-<form asp-action="AllergiesInput" method="post">
-    <div class="form-group">
-        <label asp-for="Milk"></label>
-        <input asp-for="Milk" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Eggs"></label>
-        <input asp-for="Eggs" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Fish"></label>
-        <input asp-for="Fish" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Crustacean"></label>
-        <input asp-for="Crustacean" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="TreeNuts"></label>
-        <input asp-for="TreeNuts" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Peanuts"></label>
-        <input asp-for="Peanuts" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Wheat"></label>
-        <input asp-for="Wheat" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Soybeans"></label>
-        <input asp-for="Soybeans" type="checkbox" />
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="card-header">
+    <form asp-action="AllergiesInput" method="post">
+        <table class="table">
+            <tr>
+                <th>Symptom Name</th>
+                <th>Present</th>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Milk"></label>
+                </td>
+                <td>
+                    <input asp-for="Milk" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Eggs"></label>
+                </td>
+                <td>
+                    <input asp-for="Eggs" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Fish"></label>
+                </td>
+                <td>
+                    <input asp-for="Fish" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Crustacean"></label>
+                </td>
+                <td>
+                    <input asp-for="Crustacean" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="TreeNuts"></label>
+                </td>
+                <td>
+                    <input asp-for="TreeNuts" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Peanuts"></label>
+                </td>
+                <td>
+                    <input asp-for="Peanuts" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Wheat"></label>
+                </td>
+                <td>
+                    <input asp-for="Wheat" type="checkbox" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Soybeans"></label>
+                </td>
+                <td>
+                    <input asp-for="Soybeans" type="checkbox" />
+                </td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
