@@ -51,18 +51,16 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("HealthParametersInput");
             }
 
-            var healthDosierAllergies = healthDosier.Allergies;
-
             var allergiesOutput = new AllergiesViewModel
             {
-                Milk = healthDosierAllergies.Milk,
-                Eggs = healthDosierAllergies.Eggs,
-                Fish = healthDosierAllergies.Fish,
-                Crustacean = healthDosierAllergies.Crustacean,
-                TreeNuts = healthDosierAllergies.TreeNuts,
-                Peanuts = healthDosierAllergies.Peanuts,
-                Wheat = healthDosierAllergies.Wheat,
-                Soybeans = healthDosierAllergies.Soybeans,
+                Milk = healthDosier.Allergies.Milk,
+                Eggs = healthDosier.Allergies.Eggs,
+                Fish = healthDosier.Allergies.Fish,
+                Crustacean = healthDosier.Allergies.Crustacean,
+                TreeNuts = healthDosier.Allergies.TreeNuts,
+                Peanuts = healthDosier.Allergies.Peanuts,
+                Wheat = healthDosier.Allergies.Wheat,
+                Soybeans = healthDosier.Allergies.Soybeans,
             };
 
             var healthParametersOutput = new HealthParametersViewModel

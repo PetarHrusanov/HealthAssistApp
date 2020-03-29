@@ -28,31 +28,44 @@
 
         public DbSet<Setting> Settings { get; set; }
 
-        //Disease
+        // Disease Related Objects
         public DbSet<Disease> Diseases { get; set; }
+
         public DbSet<BodySystem> BodySystems { get; set; }
+
         public DbSet<DiseaseSymptom> DiseaseSymptoms { get; set; }
+
         public DbSet<Symptom> Symptoms { get; set; }
+
         public DbSet<HealthDosierDisease> HealthDosierDiseases { get; set; }
+
         public DbSet<UserSymptoms> UserSymptoms { get; set; }
 
-        //Exercise
+        // Exercise Related Objects
         public DbSet<Exercise> Exercises { get; set;}
+
         public DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
+
         public DbSet<ExerciseWorkoutProgram> ExerciseWorkoutPrograms { get; set; }
 
-        public DbSet<HealthDosier> HealthDosiers { get; set;}
+        public DbSet<HealthDosier> HealthDosiers { get; set; }
+
         public DbSet<HealthParameters> HealthParameters { get; set; }
 
         public DbSet<Allergies> Allergies { get; set; }
 
-        //Food
+        // Food Related Objects
         public DbSet<FoodRegimen> FoodRegimens { get; set; }
+
         public DbSet<Ingredient> Ingredients { get; set; }
+
         public DbSet<Meal> Meals { get; set;}
+
         public DbSet<Recipe> Recipes { get; set; }
+
         public DbSet<RecipeIngredients> RecipeIngredients { get; set; }
 
+        // General Logic
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

@@ -10,7 +10,6 @@
 
     public class HealthDosier: BaseDeletableModel<string>
     {
-
         public HealthDosier()
         {
             this.Id = Guid.NewGuid().ToString();
@@ -18,30 +17,37 @@
         }
 
         public int HealthParametersId { get; set; }
+
         public HealthParameters HealthParameters { get; set; }
 
+        // FoodRegimen
         public int FoodRegimenId { get; set; }
+
         public virtual FoodRegimen FoodRegimen { get; set; }
 
+        // Working Out
         [ForeignKey("WorkoutProgram")]
         public int WorkoutProgramId { get; set; }
+
         public virtual WorkoutProgram WorkoutProgram { get; set; }
 
+        // da go pomislq
+        public int AllergiesId { get; set; }
+
+        public virtual Allergies Allergies { get; set; }
+
+        // Health Dosier Specific
         public bool Smoker { get; set; }
 
         public bool DrinkAlcohol { get; set; }
 
         public virtual ICollection<HealthDosierDisease> HealthDosierDiseases { get; set; }
 
-        //da go pomislq
-        public int AllergiesId { get; set; }
-        public Allergies Allergies { get; set; }
-
-        //da obmislq predimstwa i nedostataci na tazi vrazka
+        // da obmislq predimstwa i nedostataci na tazi vrazka
         public string ApplicationUserId { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        //To Do Risk From Diseases
-
+        // To Do Risk From Diseases
     }
 }
