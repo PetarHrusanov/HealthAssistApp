@@ -504,7 +504,7 @@ namespace HealthAssistApp.Data.Migrations
                     b.Property<int>("DinerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FoodRegimenId")
+                    b.Property<int>("FoodRegimenId")
                         .HasColumnType("int");
 
                     b.Property<int>("LunchId")
@@ -913,9 +913,11 @@ namespace HealthAssistApp.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", null)
+                    b.HasOne("HealthAssistApp.Data.Models.FoodRegimen", "FoodRegimen")
                         .WithMany("Meals")
-                        .HasForeignKey("FoodRegimenId");
+                        .HasForeignKey("FoodRegimenId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("HealthAssistApp.Data.Models.Recipe", "Lunch")
                         .WithMany("Lunches")

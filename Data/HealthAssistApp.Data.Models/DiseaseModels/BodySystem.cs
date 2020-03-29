@@ -5,7 +5,6 @@ namespace HealthAssistApp.Data.Models
 {
     public class BodySystem: BaseModel<int>
     {
-
         public BodySystem()
         {
             this.Symptoms = new HashSet<Symptom>();
@@ -14,6 +13,5 @@ namespace HealthAssistApp.Data.Models
         public string Name { get; set; }
 
         public virtual ICollection<Symptom> Symptoms { get; set; }
-
     }
 }

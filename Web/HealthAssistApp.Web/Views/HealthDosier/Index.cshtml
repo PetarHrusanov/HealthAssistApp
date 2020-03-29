@@ -1,10 +1,65 @@
 ﻿@using HealthAssistApp.Common
-@model HealthAssistApp.Web.ViewModels.Diseases.IndexDiseasesViewModel
+@model HealthAssistApp.Web.ViewModels.HealthDosier.HealthDosierOverview
 @{
-    this.ViewData["Title"] = "HealthDosier";
+    this.ViewData["Title"] = "Health Dosier";
 }
 
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
-
+<div class="text-left ">
+    <p>Your Health Parameters"</p>
+    <table class="table">
+        <tr>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Height</th>
+            <th>Body Mass Index</th>
+            <th>Water Per Day</th>
+        </tr>
+        <tr>
+            <th>@Model.HealthParameters.Age</th>
+            <th>@Model.HealthParameters.Weight</th>
+            <th>@Model.HealthParameters.Height</th>
+            <th>@Model.HealthParameters.BodyMassIndex</th>
+            <th>@Model.HealthParameters.WaterPerDay</th>
+        </tr>
+    </table>
+</div>
+<div class="text-left ">
+    <p>Your Allergies</p>
+    <table class="table">
+        <tr>
+            <th>@Model.Allergies.Milk.ToString()</th>
+            <th>@Model.Allergies.Milk</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Eggs.ToString()</th>
+            <th>@Model.Allergies.Eggs</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Fish.ToString()</th>
+            <th>@Model.Allergies.Fish</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Crustacean.ToString()</th>
+            <th>@Model.Allergies.Crustacean</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.TreeNuts.ToString()</th>
+            <th>@Model.Allergies.TreeNuts</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Peanuts.ToString()</th>
+            <th>@Model.Allergies.Peanuts</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Wheat.ToString()</th>
+            <th>@Model.Allergies.Wheat</th>
+        </tr>
+        <tr>
+            <th>@Model.Allergies.Soybeans.ToString()</th>
+            <th>@Model.Allergies.Soybeans</th>
+        </tr>
+    </table>
+</div>

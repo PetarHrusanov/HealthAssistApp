@@ -31,7 +31,6 @@ namespace HealthAssistApp.Web.Controllers
         // da pomislq dali da go ostavq
 
         // private readonly HealthDosier healthDosier;
-
         public HealthDosierController(ApplicationDbContext db)
         {
             this.db = db;
@@ -52,7 +51,40 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("HealthParametersInput");
             }
 
-            return this.View();
+            var healthDosierAllergies = healthDosier.Allergies;
+
+            var allergiesOutput = new AllergiesViewModel
+            {
+                Milk = healthDosierAllergies.Milk,
+                Eggs = healthDosierAllergies.Eggs,
+                Fish = healthDosierAllergies.Fish,
+                Crustacean = healthDosierAllergies.Crustacean,
+                TreeNuts = healthDosierAllergies.TreeNuts,
+                Peanuts = healthDosierAllergies.Peanuts,
+                Wheat = healthDosierAllergies.Wheat,
+                Soybeans = healthDosierAllergies.Soybeans,
+            };
+
+            var healthParametersOutput = new HealthParametersViewModel
+            {
+                Age = healthDosier.HealthParameters.Age,
+                Weight = healthDosier.HealthParameters.Weight,
+                Height = healthDosier.HealthParameters.Height,
+                BodyMassIndex = healthDosier.HealthParameters.BodyMassIndex,
+                WaterPerDay = healthDosier.HealthParameters.WaterPerDay,
+            };
+
+            var healthDosierView = new HealthDosierOverview
+            {
+                Allergies = allergiesOutput,
+                DrinkAlcohol = healthDosier.DrinkAlcohol,
+                Smoker = healthDosier.Smoker,
+                HealthParameters = healthParametersOutput,
+                WorkingOutProgramId = healthDosier.WorkoutProgramId,
+                FoodRegimenId = healthDosier.FoodRegimenId,
+            };
+
+            return this.View(healthDosierView);
         }
 
         [Authorize]
@@ -138,10 +170,10 @@ namespace HealthAssistApp.Web.Controllers
             this.db.Allergies.Add(allergiesInputForDb);
             await this.db.SaveChangesAsync();
 
-            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = SystemsForTests[0] });
+            return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
         }
 
-        private string GetNext(IList<string> items, string curr)
+        private async Task<string> GetNext(IList<string> items, string curr)
         {
             if (string.IsNullOrWhiteSpace(curr))
             {
@@ -162,6 +194,17 @@ namespace HealthAssistApp.Web.Controllers
             return items[(index + 1) % items.Count];
         }
 
+        // DA GO OPRAVQ
+        private async Task<Recipe> RecipeAsync(List<Recipe> selectedRecipes, string mealType)
+        {
+            var recipes = selectedRecipes.Where(r => r.PartOfMeal.ToString() == mealType.ToString()).ToList();
+            //Random rnd = new Random();
+            //int r = rnd.Next(recipes.Count);
+
+            // da go opravq
+            return recipes[0];
+        }
+
         [Authorize]
         public async Task<IActionResult> DiseaseTest(string system)
         {
@@ -175,7 +218,7 @@ namespace HealthAssistApp.Web.Controllers
             {
                 if (userSymptoms.Contains(system))
                 {
-                    string nextSystem = this.GetNext(this.SystemsForTests, system);
+                    string nextSystem = await this.GetNext(this.SystemsForTests, system);
                     if (nextSystem == "Empty")
                     {
                         return this.Redirect("HealthDosierFinalising");
@@ -237,7 +280,7 @@ namespace HealthAssistApp.Web.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            string nextSystem = this.GetNext(this.SystemsForTests, systems.Name);
+            string nextSystem = await this.GetNext(this.SystemsForTests, systems.Name);
             if (nextSystem == "Empty")
             {
                 return this.RedirectToAction("HealthDosierFinalising");
@@ -261,7 +304,7 @@ namespace HealthAssistApp.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> HealthDosierFinalising(HealthDosierInputModel parametersInputModel)
+        public async Task<IActionResult> HealthDosierFinalising(HealthDosierInputModel inputModel)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var healthDosierCheck = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
@@ -270,20 +313,20 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("Index");
             }
 
-            var healthParameters = this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthParameters = await this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             var allergies = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
             var workingOutProgram = new WorkoutProgram
             {
-                ExerciseComplexity = parametersInputModel.Complexity,
+                ExerciseComplexity = inputModel.Complexity,
                 ApplicationUserId = userId,
             };
 
             await this.db.WorkoutPrograms.AddAsync(workingOutProgram);
             await this.db.SaveChangesAsync();
 
-            var selectedExercises = this.db.Exercises
-                .Where(e => e.ExerciseComplexity == parametersInputModel.Complexity)
-                .ToList();
+            var selectedExercises = await this.db.Exercises
+                .Where(e => e.ExerciseComplexity == inputModel.Complexity)
+                .ToListAsync();
 
             foreach (var exercise in selectedExercises)
             {
@@ -297,40 +340,91 @@ namespace HealthAssistApp.Web.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            // da proverq dali raboti
-            var recipes = this.db.Recipes
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Milk.Equals(allergies.Milk)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Crustacean.Equals(allergies.Crustacean)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Eggs.Equals(allergies.Eggs)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Fish.Equals(allergies.Fish)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Peanuts.Equals(allergies.Peanuts)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Soybeans.Equals(allergies.Soybeans)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.TreeNuts.Equals(allergies.TreeNuts)))
-                .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Wheat.Equals(allergies.Wheat)))
-                .ToListAsync();
-
-            // var recipeс = this.db.Recipes.Where(i => i.Ingredients.Where(i => i.Crustacean == allergies.Crustacean
-            //    && i.Eggs == allergies.Eggs
-            //    && i.Fish == allergies.Fish
-            //    && i.Milk == allergies.Milk
-            //    && i.Peanuts == allergies.Peanuts
-            //    && i.Soybeans == allergies.Soybeans
-            //    && i.TreeNuts == allergies.TreeNuts
-            //    && i.Wheat == allergies.Wheat))
+            // ne raboti da go opravq
+            //var recipes = await this.db.Recipes
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Milk.Equals(allergies.Milk)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Crustacean.Equals(allergies.Crustacean)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Eggs.Equals(allergies.Eggs)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Fish.Equals(allergies.Fish)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Peanuts.Equals(allergies.Peanuts)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Soybeans.Equals(allergies.Soybeans)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.TreeNuts.Equals(allergies.TreeNuts)))
+            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Wheat.Equals(allergies.Wheat)))
             //    .ToListAsync();
 
+            var recipes = await this.db.Recipes.ToListAsync();
+
+            var foodRegimen = new FoodRegimen { };
+            await this.db.AddAsync(foodRegimen);
+            await this.db.SaveChangesAsync();
+
+            for (int i = 0; i < 31; i++)
+            {
+                var breakfast = await this.RecipeAsync(recipes, "Snack");
+                var lunch = await this.RecipeAsync(recipes, "MainMeal");
+                var diner = await this.RecipeAsync(recipes, "MainMeal");
+
+                var meal = new Meal
+                {
+                    BreakfastId = breakfast.Id,
+                    LunchId = lunch.Id,
+                    DinerId = diner.Id,
+                    FoodRegimenId = foodRegimen.Id,
+                };
+
+                await this.db.AddAsync(meal);
+                await this.db.SaveChangesAsync();
+            }
+
+            var userSymptoms = await this.db.UserSymptoms.Where(s => s.ApplicationUserId == userId).ToListAsync();
+            var diseases = await this.db.Diseases.ToListAsync();
 
             var healthDosier = new HealthDosier
             {
-                HealthParameters = await healthParameters,
-                Allergies = allergies,
-
-
+                HealthParametersId = healthParameters.Id,
+                FoodRegimenId = foodRegimen.Id,
+                WorkoutProgramId = workingOutProgram.Id,
+                Smoker = inputModel.Smoker,
+                DrinkAlcohol = inputModel.DrinkAlcohol,
+                AllergiesId = allergies.Id,
+                ApplicationUserId = userId,
             };
+
+            await this.db.HealthDosiers.AddAsync(healthDosier);
+            await this.db.SaveChangesAsync();
+
+            int symptomCount = default;
+
+            foreach (var disease in diseases)
+            {
+                foreach (var userSymptom in userSymptoms)
+                {
+                    var diseaseSymptoms = await this.db.DiseaseSymptoms.Where(d => d.DiseaseId == disease.Id).ToListAsync();
+                    foreach (var diseaseSymptom in diseaseSymptoms)
+                    {
+                        if (diseaseSymptom.Symptom.Description == userSymptom.Description)
+                        {
+                            symptomCount++;
+                        }
+                    }
+                }
+
+                if (symptomCount == 4)
+                {
+                    var healthDosierDisease = new HealthDosierDisease
+                    {
+                        DiseaseId = disease.Id,
+                        HealthDosierId = healthDosier.Id,
+                    };
+                    await this.db.HealthDosierDiseases.AddAsync(healthDosierDisease);
+                    await this.db.SaveChangesAsync();
+                    symptomCount = 0;
+                }
+            }
 
             //da opravq vzimaneto na User i tn da stava s metod 
 
-            return this.View();
+            return this.RedirectToAction("Index");
         }
     }
 }
