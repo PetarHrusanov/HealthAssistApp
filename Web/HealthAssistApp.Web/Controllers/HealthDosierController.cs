@@ -146,10 +146,12 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> AllergiesInput()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthParamCheckModel = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthParamCheckModel = await this.db.Allergies
+                .Where(x => x.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
             if (healthParamCheckModel != null)
             {
-                return RedirectToAction("DiseaseTest", "HealthDosier", new { system = SystemsForTests[0] });
+                return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
             }
 
             return this.View();
@@ -353,7 +355,7 @@ namespace HealthAssistApp.Web.Controllers
             }
 
             // ne raboti da go opravq
-            //var recipes = await this.db.Recipes
+            // var recipes = await this.db.Recipes
             //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Milk.Equals(allergies.Milk)))
             //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Crustacean.Equals(allergies.Crustacean)))
             //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Eggs.Equals(allergies.Eggs)))
@@ -388,9 +390,6 @@ namespace HealthAssistApp.Web.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            var userSymptoms = await this.db.UserSymptoms.Where(s => s.ApplicationUserId == userId).ToListAsync();
-            var diseases = await this.db.Diseases.ToListAsync();
-
             var healthDosier = new HealthDosier
             {
                 HealthParametersId = healthParameters.Id,
@@ -407,9 +406,12 @@ namespace HealthAssistApp.Web.Controllers
 
             int symptomCount = default;
 
-            foreach (var disease in diseases)
+            var diseases = this.db.Diseases.ToListAsync();
+            var userSymptoms = this.db.UserSymptoms.Where(s => s.ApplicationUserId == userId).ToListAsync();
+
+            foreach (var disease in await diseases)
             {
-                foreach (var userSymptom in userSymptoms)
+                foreach (var userSymptom in await userSymptoms)
                 {
                     var diseaseSymptoms = await this.db.DiseaseSymptoms.Where(d => d.DiseaseId == disease.Id).ToListAsync();
                     foreach (var diseaseSymptom in diseaseSymptoms)
