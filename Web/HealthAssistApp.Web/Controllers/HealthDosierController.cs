@@ -42,9 +42,9 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthDosier = await this.db.HealthDosiers
+            var healthDosier = this.db.HealthDosiers
                 .Where(x => x.ApplicationUserId == userId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             if (healthDosier == null)
             {
@@ -52,27 +52,29 @@ namespace HealthAssistApp.Web.Controllers
             }
 
             // trqbva da dobavq koncepciq za informaciq- ako body mass index-a e zle da se puska enum che e zle
+
             // da ima butoni za promqna
 
-            // Allergies Output- da vidq dali ne moje da se vzima direktno ot healthDosier
-            var allergies = await this.db.Allergies
+            // da opravq shemata s alergii da si e v otdelen controller
+            //var allergiesOutput = new AllergiesViewModel
+            //{
+            //    Milk = allergies.Milk,
+            //    Eggs = allergies.Eggs,
+            //    Fish = allergies.Fish,
+            //    Crustacean = allergies.Crustacean,
+            //    TreeNuts = allergies.TreeNuts,
+            //    Peanuts = allergies.Peanuts,
+            //    Wheat = allergies.Wheat,
+            //    Soybeans = allergies.Soybeans,
+            //};
+
+            var allergies = this.db.HealthDosiers
                 .Where(a => a.ApplicationUserId == userId)
-                .FirstOrDefaultAsync();
+                .Select(a => a.Allergies)
+                .FirstOrDefault();
 
-            var allergiesOutput = new AllergiesViewModel
-            {
-                Milk = allergies.Milk,
-                Eggs = allergies.Eggs,
-                Fish = allergies.Fish,
-                Crustacean = allergies.Crustacean,
-                TreeNuts = allergies.TreeNuts,
-                Peanuts = allergies.Peanuts,
-                Wheat = allergies.Wheat,
-                Soybeans = allergies.Soybeans,
-            };
-
-            // Health Parameters Logic- da vidq dali ne moje da se vzima direktno ot healthDosier
-            var healthParameters = await this.db.HealthParameters
+            // Health Parameters Logic
+            var healthParameters = this.db.HealthParameters
                 .Where(a => a.ApplicationUserId == userId)
                 .FirstOrDefaultAsync();
 
@@ -85,15 +87,22 @@ namespace HealthAssistApp.Web.Controllers
                 WaterPerDay = healthDosier.HealthParameters.WaterPerDay,
             };
 
+            // da dobavq ICollection s Diseases, koito da e null-able i to tam da orpavq neshtata 
+            var diseaseId = this.db.HealthDosiers
+                .Where(x => x.ApplicationUserId == userId)
+                .Select(s => s.HealthDosierDiseases.Select(i => i.DiseaseId).FirstOrDefault())
+                .FirstOrDefault();
+
             // Health Dosier View
             var healthDosierView = new HealthDosierOverview
             {
-                Allergies = allergiesOutput,
+                AllergiesId = allergies.Id,
                 DrinkAlcohol = healthDosier.DrinkAlcohol,
                 Smoker = healthDosier.Smoker,
                 HealthParameters = healthParametersOutput,
                 WorkingOutProgramId = healthDosier.WorkoutProgramId,
                 FoodRegimenId = healthDosier.FoodRegimenId,
+                DiseaseId = diseaseId,
             };
 
             return this.View(healthDosierView);
