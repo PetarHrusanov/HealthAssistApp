@@ -406,19 +406,22 @@ namespace HealthAssistApp.Web.Controllers
 
             int symptomCount = default;
 
-            var diseases = this.db.Diseases.ToListAsync();
-            var userSymptoms = this.db.UserSymptoms.Where(s => s.ApplicationUserId == userId).ToListAsync();
+            var diseases = this.db.Diseases.ToList();
+            var userSymptoms = this.db.UserSymptoms.Where(s => s.ApplicationUserId == userId).ToList();
 
-            foreach (var disease in await diseases)
+            foreach (var disease in diseases)
             {
-                foreach (var userSymptom in await userSymptoms)
+                foreach (var userSymptom in userSymptoms)
                 {
-                    var diseaseSymptoms = await this.db.DiseaseSymptoms.Where(d => d.DiseaseId == disease.Id).ToListAsync();
-                    foreach (var diseaseSymptom in diseaseSymptoms)
+                    var diseaseSymptoms = this.db.DiseaseSymptoms.Where(d => d.DiseaseId == disease.Id).Select(s => s.Symptom.Description).ToList();
+                    if (diseaseSymptoms.Count != 0)
                     {
-                        if (diseaseSymptom.Symptom.Description == userSymptom.Description)
+                        foreach (var diseaseSymptom in diseaseSymptoms)
                         {
-                            symptomCount++;
+                            if (diseaseSymptom == userSymptom.Description)
+                            {
+                                symptomCount++;
+                            }
                         }
                     }
                 }
@@ -430,8 +433,8 @@ namespace HealthAssistApp.Web.Controllers
                         DiseaseId = disease.Id,
                         HealthDosierId = healthDosier.Id,
                     };
-                    await this.db.HealthDosierDiseases.AddAsync(healthDosierDisease);
-                    await this.db.SaveChangesAsync();
+                    this.db.HealthDosierDiseases.Add(healthDosierDisease);
+                    this.db.SaveChanges();
                     symptomCount = 0;
                 }
             }
