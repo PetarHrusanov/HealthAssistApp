@@ -8,20 +8,26 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
+<hr />
 <div class="text-left ">
     <p>Please check the following details</p>
 </div>
 <form asp-action="HealthDosierFinalising" method="post">
-    <div class="form-group">
-        <label asp-for="Smoker"></label>
-        <input asp-for="Smoker" type="checkbox" />
-    </div>
-    <div class="form-group">
-        <label asp-for="DrinkAlcohol">Do you drink more than 100 ml of </label>
-        <input asp-for="DrinkAlcohol" type="checkbox" />
-    </div>
+    <table class="table">
+        <tr>
+            <td><label asp-for="Smoker">Please check if you are a smoker?</label></td>
+            <td><input asp-for="Smoker" type="checkbox" /></td>
+        </tr>
+        <tr>
+            <td><label asp-for="DrinkAlcohol">Do you drink more than 100 ml of Alcohol per day?</label></td>
+            <td><input asp-for="DrinkAlcohol" type="checkbox" /></td>
+        </tr>
+    </table>
+    <p></p>
+    <label asp-for="Complexity">Please check you physical capabilities   </label>
     <select asp-for="Complexity" asp-items="Html.GetEnumSelectList<ExerciseComplexity>()">
         <option selected="selected" value="">Please select</option>
     </select>
+    <hr />
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

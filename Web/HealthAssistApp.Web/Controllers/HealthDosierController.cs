@@ -15,7 +15,9 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Data.Models.WorkingOut;
+    using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Allergies;
+    using HealthAssistApp.Web.ViewModels.Diseases;
     using HealthAssistApp.Web.ViewModels.HealthDosier;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using HealthAssistApp.Web.ViewModels.Systems;
@@ -27,14 +29,16 @@ namespace HealthAssistApp.Web.Controllers
     {
         private readonly ApplicationDbContext db;
         public IList<string> SystemsForTests;
+        private readonly IDiseasesService diseasesService;
 
         // da pomislq dali da go ostavq
 
         // private readonly HealthDosier healthDosier;
-        public HealthDosierController(ApplicationDbContext db)
+        public HealthDosierController(ApplicationDbContext db, IDiseasesService diseasesService)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
+            this.diseasesService = diseasesService;
         }
 
         [Authorize]
@@ -76,22 +80,29 @@ namespace HealthAssistApp.Web.Controllers
             // Health Parameters Logic
             var healthParameters = this.db.HealthParameters
                 .Where(a => a.ApplicationUserId == userId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
             var healthParametersOutput = new HealthParametersViewModel
             {
-                Age = healthDosier.HealthParameters.Age,
-                Weight = healthDosier.HealthParameters.Weight,
+                Age = healthParameters.Age,
+                Weight = healthParameters.Weight,
                 Height = healthDosier.HealthParameters.Height,
                 BodyMassIndex = healthDosier.HealthParameters.BodyMassIndex,
                 WaterPerDay = healthDosier.HealthParameters.WaterPerDay,
             };
 
-            // da dobavq ICollection s Diseases, koito da e null-able i to tam da orpavq neshtata 
-            var diseaseId = this.db.HealthDosiers
-                .Where(x => x.ApplicationUserId == userId)
-                .Select(s => s.HealthDosierDiseases.Select(i => i.DiseaseId).FirstOrDefault())
-                .FirstOrDefault();
+            // da go izkaram v Service
+            var diseasesForIndex = this.db.HealthDosierDiseases
+                .Where(h => h.HealthDosierId == healthDosier.Id)
+                .Select(d => d.Disease).Select(dv => new DiseaseViewModel
+                {
+                    Id = dv.Id,
+                    Name = dv.Name,
+                    Description = dv.Description,
+                    Advice = dv.Advice,
+                    GlycemicIndex = dv.GlycemicIndex,
+                    DiseaseSymptoms = dv.DiseaseSymptoms,
+                }).ToList() as ICollection<DiseaseViewModel>;
 
             // Health Dosier View
             var healthDosierView = new HealthDosierOverview
@@ -102,7 +113,7 @@ namespace HealthAssistApp.Web.Controllers
                 HealthParameters = healthParametersOutput,
                 WorkingOutProgramId = healthDosier.WorkoutProgramId,
                 FoodRegimenId = healthDosier.FoodRegimenId,
-                DiseaseId = diseaseId,
+                Diseases = diseasesForIndex,
             };
 
             return this.View(healthDosierView);
@@ -140,8 +151,8 @@ namespace HealthAssistApp.Web.Controllers
                 Age = healthParameters.Age,
                 Height = healthParameters.Height,
                 Weight = healthParameters.Weight,
-                WaterPerDay = healthParameters.Weight * 0.33M,
-                BodyMassIndex = 703 * (healthParameters.Weight / healthParameters.Height),
+                WaterPerDay = healthParameters.Weight * 0.033m,
+                BodyMassIndex = healthParameters.Weight / (healthParameters.Height * healthParameters.Height),
                 ApplicationUserId = userId,
             };
 

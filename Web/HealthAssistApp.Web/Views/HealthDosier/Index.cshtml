@@ -8,6 +8,7 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
+<hr />
 <div class="card-header">
     <div class="text-left ">
         <h2 class="text-center">Your Health Parameters</h2>
@@ -29,44 +30,26 @@
         </table>
     </div>
 </div>
+<hr />
+@if (Model.Diseases.Count() > 0)
+{
+<div class="row">
+    <p>The HealthDosier Medical Analyser detected that there is a high chance that you have any of the following disease/s:</p>
+    @foreach (var disease in Model.Diseases)
+    {
+        <div class="col-md-4 media">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a href="/Diseases/@disease.Name">
+                        @disease.Name
+                    </a>
+                </h5>
+                @disease.Advice
+            </div>
+        </div>
+    }
+</div>
+}
 <p></p>
 <hr />
-<div class="card-header">
-    <div class="text-left ">
-        <h2 class="text-center">Your Allergies</h2>
-        <table class="table">
-            <tr>
-                <th>Milk</th>
-                <td>@Model.Allergies.Milk</td>
-            </tr>
-            <tr>
-                <th>Eggs</th>
-                <td>@Model.Allergies.Eggs</td>
-            </tr>
-            <tr>
-                <th>Fish</th>
-                <td>@Model.Allergies.Fish</td>
-            </tr>
-            <tr>
-                <th>Crustacean</th>
-                <td>@Model.Allergies.Crustacean</td>
-            </tr>
-            <tr>
-                <th>TreeNuts</th>
-                <td>@Model.Allergies.TreeNuts</td>
-            </tr>
-            <tr>
-                <th>Peanuts</th>
-                <td>@Model.Allergies.Peanuts</td>
-            </tr>
-            <tr>
-                <th>Wheat</th>
-                <td>@Model.Allergies.Wheat</td>
-            </tr>
-            <tr>
-                <th>Soybeans</th>
-                <td>@Model.Allergies.Soybeans</td>
-            </tr>
-        </table>
-    </div>
-</div>
+<div class="row"></div>

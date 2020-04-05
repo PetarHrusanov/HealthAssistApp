@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using HealthAssistApp.Data.Models;
-using HealthAssistApp.Data.Models.Enums;
-using HealthAssistApp.Services.Mapping;
+﻿// <copyright file="DiseaseViewModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
 
 namespace HealthAssistApp.Web.ViewModels.Diseases
 {
-    public class DiseaseViewModel :IMapFrom<Disease>
+    using System;
+    using System.Collections.Generic;
+
+    using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.Enums;
+    using HealthAssistApp.Services.Mapping;
+
+    public class DiseaseViewModel : IMapFrom<Disease>
     {
         public DiseaseViewModel()
         {
             this.DiseaseSymptoms = new HashSet<DiseaseSymptom>();
         }
+
+        public int Id { get; set; }
 
         public string Name { get; set; }
 
