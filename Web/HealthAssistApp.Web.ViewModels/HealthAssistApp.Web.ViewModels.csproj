@@ -33,5 +33,6 @@
     <Folder Include="Allergies\" />
     <Folder Include="Systems\" />
     <Folder Include="HealthDosier\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

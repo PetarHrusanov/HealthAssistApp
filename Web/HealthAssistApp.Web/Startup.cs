@@ -114,7 +114,7 @@ namespace HealthAssistApp.Web
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("recipesDetails", "Recipes/{name:minlength(3)}", new { controller = "Recipes", action = "ByName" });
                         endpoints.MapControllerRoute("diseasesDetails", "Diseases/{name:minlength(3)}", new { controller = "Diseases", action = "ByName" });
-                        //endpoints.MapControllerRoute("diseaseTest", "HealthDosier/DiseaseTest/{systemForTest}", new { controller = "HealthDosier", action = "DiseaseTest" });
+                        endpoints.MapControllerRoute("userAllergies", "Allergies/{userId:minlength(3)}", new { controller = "Allergies", action = "ByUserId" });
                         endpoints.MapRazorPages();
                     });
         }

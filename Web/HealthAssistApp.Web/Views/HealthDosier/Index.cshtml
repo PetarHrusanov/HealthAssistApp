@@ -1,5 +1,6 @@
 ﻿@using HealthAssistApp.Common
 @using System.Linq;
+@using HealthAssistApp.Web.ViewModels.Enums
 @model HealthAssistApp.Web.ViewModels.HealthDosier.HealthDosierOverview
 @{
     this.ViewData["Title"] = "Health Dosier";
@@ -31,9 +32,29 @@
     </div>
 </div>
 <hr />
+@switch (Model.NutritionalStatus)
+{
+    case NutritionalStatus.Normal:
+        <p>Your Body Mass Index indicates that your nutritional status is normal. Keep a good diet and regular exercises to keep it that way.</p>
+        break;
+    case NutritionalStatus.Underweight:
+        <p>Your Body Mass Index indicates that you are underwweight. It would be preferable if you increased your calories intake.</p>
+        break;
+    case NutritionalStatus.ObesityI:
+        <p>Your Body Mass Index indicates that you are slightly obese. It would be preferable if you reduced your calories intake and tried some exercises.</p>
+        break;
+    case NutritionalStatus.ObesityII:
+        <p>Your Body Mass Index indicates that you are obese. It would be preferable if you reduced your calories intake and tried some exercises.</p>
+        break;
+    case NutritionalStatus.ObesityIII:
+        <p>Your Body Mass Index indicates that you are severly obese. It would be preferable if you take serious measurements to reduce your calories and better your physical condition.</p>
+        break;
+    default:
+        break;
+}
+<hr />
 @if (Model.Diseases.Count() > 0)
 {
-<div class="row">
     <p>The HealthDosier Medical Analyser detected that there is a high chance that you have any of the following disease/s:</p>
     @foreach (var disease in Model.Diseases)
     {
@@ -48,8 +69,9 @@
             </div>
         </div>
     }
-</div>
 }
-<p></p>
+<hr />
+<p>You can check and modify your allergies here:</p>
+<a href="/Allergies/@Model.UserId" class="Button">Text</a>
 <hr />
 <div class="row"></div>

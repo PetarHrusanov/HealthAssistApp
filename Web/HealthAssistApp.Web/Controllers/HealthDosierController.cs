@@ -18,6 +18,7 @@ namespace HealthAssistApp.Web.Controllers
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.Diseases;
+    using HealthAssistApp.Web.ViewModels.Enums;
     using HealthAssistApp.Web.ViewModels.HealthDosier;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using HealthAssistApp.Web.ViewModels.Systems;
@@ -31,9 +32,6 @@ namespace HealthAssistApp.Web.Controllers
         public IList<string> SystemsForTests;
         private readonly IDiseasesService diseasesService;
 
-        // da pomislq dali da go ostavq
-
-        // private readonly HealthDosier healthDosier;
         public HealthDosierController(ApplicationDbContext db, IDiseasesService diseasesService)
         {
             this.db = db;
@@ -60,17 +58,6 @@ namespace HealthAssistApp.Web.Controllers
             // da ima butoni za promqna
 
             // da opravq shemata s alergii da si e v otdelen controller
-            //var allergiesOutput = new AllergiesViewModel
-            //{
-            //    Milk = allergies.Milk,
-            //    Eggs = allergies.Eggs,
-            //    Fish = allergies.Fish,
-            //    Crustacean = allergies.Crustacean,
-            //    TreeNuts = allergies.TreeNuts,
-            //    Peanuts = allergies.Peanuts,
-            //    Wheat = allergies.Wheat,
-            //    Soybeans = allergies.Soybeans,
-            //};
 
             var allergies = this.db.HealthDosiers
                 .Where(a => a.ApplicationUserId == userId)
@@ -105,6 +92,35 @@ namespace HealthAssistApp.Web.Controllers
                 }).ToList() as ICollection<DiseaseViewModel>;
 
             // Health Dosier View
+            var bodyMassIndex = healthParametersOutput.BodyMassIndex;
+
+            NutritionalStatus nutritionalStatus = NutritionalStatus.Normal;
+
+            if (bodyMassIndex < 18.5m)
+            {
+                nutritionalStatus = NutritionalStatus.Underweight;
+            }
+            else if (bodyMassIndex <= 24.9m)
+            {
+                nutritionalStatus = NutritionalStatus.Normal;
+            }
+            else if (bodyMassIndex <= 29.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityI;
+            }
+            else if (bodyMassIndex <= 34.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityI;
+            }
+            else if (bodyMassIndex <= 39.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityII;
+            }
+            else
+            {
+                nutritionalStatus = NutritionalStatus.ObesityIII;
+            }
+
             var healthDosierView = new HealthDosierOverview
             {
                 AllergiesId = allergies.Id,
@@ -114,6 +130,8 @@ namespace HealthAssistApp.Web.Controllers
                 WorkingOutProgramId = healthDosier.WorkoutProgramId,
                 FoodRegimenId = healthDosier.FoodRegimenId,
                 Diseases = diseasesForIndex,
+                NutritionalStatus = nutritionalStatus,
+                UserId = userId,
             };
 
             return this.View(healthDosierView);

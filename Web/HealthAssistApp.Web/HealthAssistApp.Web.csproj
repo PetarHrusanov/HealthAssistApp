@@ -44,6 +44,7 @@
     <Folder Include="Views\Diseases\" />
     <Folder Include="Views\HealthDosier\" />
     <Folder Include="Views\HealthParameters\" />
+    <Folder Include="Views\Allergies\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />
