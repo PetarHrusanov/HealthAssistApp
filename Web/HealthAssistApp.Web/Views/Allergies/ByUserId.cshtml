@@ -4,41 +4,43 @@
     this.ViewData["Title"] = "Your Allergies";
 }
 <div class="card-header">
-    <div class="text-left ">
-        <h2 class="text-center">Your Allergies</h2>
-        <table class="table">
-            <tr>
-                <th>Milk</th>
-                <td>@Model.Milk</td>
-            </tr>
-            <tr>
-                <th>Eggs</th>
-                <td>@Model.Eggs</td>
-            </tr>
-            <tr>
-                <th>Fish</th>
-                <td>@Model.Fish</td>
-            </tr>
-            <tr>
-                <th>Crustacean</th>
-                <td>@Model.Crustacean</td>
-            </tr>
-            <tr>
-                <th>TreeNuts</th>
-                <td>@Model.TreeNuts</td>
-            </tr>
-            <tr>
-                <th>Peanuts</th>
-                <td>@Model.Peanuts</td>
-            </tr>
-            <tr>
-                <th>Wheat</th>
-                <td>@Model.Wheat</td>
-            </tr>
-            <tr>
-                <th>Soybeans</th>
-                <td>@Model.Soybeans</td>
-            </tr>
-        </table>
-    </div>
+        <div class="text-left ">
+            <h2 class="text-center">Your Allergies</h2>
+            <table class="table">
+                <tr>
+                    <th>Milk</th>
+                    <td>@Model.Milk</td>
+                </tr>
+                <tr>
+                    <th>Eggs</th>
+                    <td>@Model.Eggs</td>
+                </tr>
+                <tr>
+                    <th>Fish</th>
+                    <td>@Model.Fish</td>
+                </tr>
+                <tr>
+                    <th>Crustacean</th>
+                    <td>@Model.Crustacean</td>
+                </tr>
+                <tr>
+                    <th>TreeNuts</th>
+                    <td>@Model.TreeNuts</td>
+                </tr>
+                <tr>
+                    <th>Peanuts</th>
+                    <td>@Model.Peanuts</td>
+                </tr>
+                <tr>
+                    <th>Wheat</th>
+                    <td>@Model.Wheat</td>
+                </tr>
+                <tr>
+                    <th>Soybeans</th>
+                    <td>@Model.Soybeans</td>
+                </tr>
+            </table>
+        </div>
+        <p>You can check and modify your allergies here:</p>
+        <a href="/Allergies/Modify/@Model.UserId" class="btn btn-primary">Modify</a>
 </div>
