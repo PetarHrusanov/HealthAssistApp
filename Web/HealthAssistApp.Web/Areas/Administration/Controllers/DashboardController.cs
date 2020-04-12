@@ -5,7 +5,9 @@
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data;
+    using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration.Dashboard;
 
@@ -30,12 +32,30 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         public async Task<IActionResult> Diseases()
         {
-            return View(await db.Diseases.ToListAsync());
+            return View(await this.db.Diseases.ToListAsync());
+        }
+
+        public async Task<IActionResult> CreateDisease()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDisease(Disease disease)
+        {
+            await this.db.AddAsync(disease);
+            await this.db.SaveChangesAsync();
+            return this.RedirectToAction("Diseases");
         }
 
         public async Task<IActionResult> Recipes()
         {
-            return View(await db.Recipes.ToListAsync());
+            return View(await this.db.Recipes.ToListAsync());
+        }
+
+        public async Task<IActionResult> Exercises()
+        {
+            return View(await this.db.Exercises.ToListAsync());
         }
     }
 }
