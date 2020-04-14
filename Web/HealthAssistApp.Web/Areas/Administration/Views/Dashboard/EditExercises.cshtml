@@ -1,0 +1,50 @@
+﻿@using HealthAssistApp.Data.Models.Enums
+@model HealthAssistApp.Data.Models.WorkingOut.Exercise
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Edit</h1>
+<h4>Exercise</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditExercises">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructions" class="control-label"></label>
+                <input asp-for="Instructions" class="form-control" />
+                <span asp-validation-for="Instructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseComplexity" class="control-label"></label>
+                <select asp-for="ExerciseComplexity" asp-items="Html.GetEnumSelectList<ExerciseComplexity>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="ExerciseComplexity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedOn" class="control-label"></label>
+                <input asp-for="CreatedOn" class="form-control" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModifiedOn" class="control-label"></label>
+                <input asp-for="ModifiedOn" class="form-control" />
+                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Confirm" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Exercises">Back to List</a>
+</div>
