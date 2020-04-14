@@ -8,6 +8,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.WorkingOut;
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration.Dashboard;
 
@@ -229,5 +231,97 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             return View(await this.db.Exercises.ToListAsync());
         }
+
+        public async Task<IActionResult> CreateExercises()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateExercises(Exercise exercise)
+        {
+            await this.db.AddAsync(exercise);
+            await this.db.SaveChangesAsync();
+            return this.RedirectToAction("Exercises");
+        }
+
+        public async Task<IActionResult> EditExercises(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var exercise = await this.db.Exercises.FindAsync(id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            return View(exercise);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditExercises(int id, Exercise exercise)
+        {
+            if (id != exercise.Id)
+            {
+                return NotFound();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                this.db.Update(exercise);
+                await this.db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Exercises");
+        }
+
+        public async Task<IActionResult> DetailsExercises(int? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var exercise = await this.db.Exercises
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            return View(exercise);
+        }
+
+        public async Task<IActionResult> DeleteExercises(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var exercise = await this.db.Exercises.FindAsync(id);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            return View(exercise);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteExercises(int id)
+        {
+            var exercise = await this.db.Exercises.FindAsync(id);
+            this.db.Exercises.Remove(exercise);
+            await this.db.SaveChangesAsync();
+            return this.RedirectToAction("Exercises");
+        }
+
     }
 }
