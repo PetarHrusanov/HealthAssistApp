@@ -154,27 +154,27 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return NotFound();
             }
 
-            var disease = await this.db.Diseases.FindAsync(id);
-            if (disease == null)
+            var recipe = await this.db.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(disease);
+            return View(recipe);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRecipes(int id, Disease disease)
+        public async Task<IActionResult> EditRecipes(int id, Recipe recipe)
         {
-            if (id != disease.Id)
+            if (id != recipe.Id)
             {
                 return NotFound();
             }
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(disease);
+                this.db.Update(recipe);
                 await this.db.SaveChangesAsync();
             }
 
@@ -205,23 +205,23 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return NotFound();
             }
 
-            var disease = await this.db.Diseases.FindAsync(id);
-            if (disease == null)
+            var recipe = await this.db.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(disease);
+            return View(recipe);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteRecipes(int id)
         {
-            var disease = await this.db.Diseases.FindAsync(id);
-            this.db.Diseases.Remove(disease);
+            var recipe = await this.db.Recipes.FindAsync(id);
+            this.db.Recipes.Remove(recipe);
             await this.db.SaveChangesAsync();
-            return RedirectToAction("Recipes");
+            return this.RedirectToAction("Recipes");
         }
 
         // Exercises Logic
