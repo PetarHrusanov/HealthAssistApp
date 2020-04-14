@@ -9,7 +9,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.WorkingOut;
-    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration.Dashboard;
 
@@ -18,8 +17,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService settingsService;
-
         private readonly ApplicationDbContext db;
 
         public DashboardController(ApplicationDbContext db)
@@ -36,108 +33,18 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         // da obmislq dali vav view da ima pipane na datite
         public async Task<IActionResult> Diseases()
         {
-            return View(await this.db.Diseases.ToListAsync());
-        }
-
-        public async Task<IActionResult> CreateDisease()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateDisease(Disease disease)
-        {
-            await this.db.AddAsync(disease);
-            await this.db.SaveChangesAsync();
-            return this.RedirectToAction("Diseases");
-        }
-
-        public async Task<IActionResult> EditDisease(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var disease = await this.db.Diseases.FindAsync(id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
-
-            return View(disease);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDisease(int id, Disease disease)
-        {
-            if (id != disease.Id)
-            {
-                return NotFound();
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                this.db.Update(disease);
-                await this.db.SaveChangesAsync();
-            }
-
-            return RedirectToAction("Diseases");
-        }
-
-        public async Task<IActionResult> DeleteDisease(int? id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var category = await this.db.Diseases
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
-        }
-
-        public async Task<IActionResult> DetailsDisease(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var disease = await this.db.Diseases.FindAsync(id);
-            if (disease == null)
-            {
-                return NotFound();
-            }
-
-            return View(disease);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteDisease(int id)
-        {
-            var disease = await this.db.Diseases.FindAsync(id);
-            this.db.Diseases.Remove(disease);
-            await this.db.SaveChangesAsync();
-            return RedirectToAction("Diseases");
+            return this.RedirectToAction("Index", "Diseases");
         }
 
         // Recipes Logic
         public async Task<IActionResult> Recipes()
         {
-            return View(await this.db.Recipes.ToListAsync());
+            return this.View(await this.db.Recipes.ToListAsync());
         }
 
         public async Task<IActionResult> CreateRecipes()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -153,16 +60,16 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var recipe = await this.db.Recipes.FindAsync(id);
             if (recipe == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(recipe);
+            return this.View(recipe);
         }
 
         [HttpPost]
@@ -171,7 +78,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             if (id != recipe.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             if (this.ModelState.IsValid)
@@ -180,7 +87,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            return RedirectToAction("Recipes");
+            return this.RedirectToAction("Recipes");
         }
 
         public async Task<IActionResult> DetailsRecipes(int? id)
@@ -194,26 +101,26 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (recipe == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(recipe);
+            return this.View(recipe);
         }
 
         public async Task<IActionResult> DeleteRecipes(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var recipe = await this.db.Recipes.FindAsync(id);
             if (recipe == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(recipe);
+            return this.View(recipe);
         }
 
         [HttpPost]
@@ -229,12 +136,12 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         // Exercises Logic
         public async Task<IActionResult> Exercises()
         {
-            return View(await this.db.Exercises.ToListAsync());
+            return this.View(await this.db.Exercises.ToListAsync());
         }
 
         public async Task<IActionResult> CreateExercises()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
@@ -250,16 +157,16 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var exercise = await this.db.Exercises.FindAsync(id);
             if (exercise == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(exercise);
+            return this.View(exercise);
         }
 
         [HttpPost]
@@ -268,7 +175,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             if (id != exercise.Id)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             if (this.ModelState.IsValid)
@@ -277,7 +184,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            return RedirectToAction("Exercises");
+            return this.RedirectToAction("Exercises");
         }
 
         public async Task<IActionResult> DetailsExercises(int? id)
@@ -291,26 +198,26 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (exercise == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(exercise);
+            return this.View(exercise);
         }
 
         public async Task<IActionResult> DeleteExercises(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var exercise = await this.db.Exercises.FindAsync(id);
             if (exercise == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
-            return View(exercise);
+            return this.View(exercise);
         }
 
         [HttpPost]
@@ -322,6 +229,5 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             await this.db.SaveChangesAsync();
             return this.RedirectToAction("Exercises");
         }
-
     }
 }
