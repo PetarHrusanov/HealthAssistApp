@@ -30,6 +30,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View();
         }
 
+        // Diseases Logic
+        // da obmislq dali vav view da ima pipane na datite
         public async Task<IActionResult> Diseases()
         {
             return View(await this.db.Diseases.ToListAsync());
@@ -48,11 +50,181 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Diseases");
         }
 
+        public async Task<IActionResult> EditDisease(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var disease = await this.db.Diseases.FindAsync(id);
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            return View(disease);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditDisease(int id, Disease disease)
+        {
+            if (id != disease.Id)
+            {
+                return NotFound();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                this.db.Update(disease);
+                await this.db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Diseases");
+        }
+
+        public async Task<IActionResult> DeleteDisease(int? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var category = await this.db.Diseases
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        public async Task<IActionResult> DetailsDisease(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var disease = await this.db.Diseases.FindAsync(id);
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            return View(disease);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteDisease(int id)
+        {
+            var disease = await this.db.Diseases.FindAsync(id);
+            this.db.Diseases.Remove(disease);
+            await this.db.SaveChangesAsync();
+            return RedirectToAction("Diseases");
+        }
+
+        // Recipes Logic
         public async Task<IActionResult> Recipes()
         {
             return View(await this.db.Recipes.ToListAsync());
         }
 
+        public async Task<IActionResult> CreateRecipes()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateRecipes(Recipe recipes)
+        {
+            await this.db.AddAsync(recipes);
+            await this.db.SaveChangesAsync();
+            return this.RedirectToAction("Recipes");
+        }
+
+        public async Task<IActionResult> EditRecipes(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var disease = await this.db.Diseases.FindAsync(id);
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            return View(disease);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRecipes(int id, Disease disease)
+        {
+            if (id != disease.Id)
+            {
+                return NotFound();
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                this.db.Update(disease);
+                await this.db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Recipes");
+        }
+
+        public async Task<IActionResult> DetailsRecipes(int? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var recipe = await this.db.Recipes
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (recipe == null)
+            {
+                return NotFound();
+            }
+
+            return View(recipe);
+        }
+
+        public async Task<IActionResult> DeleteRecipes(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var disease = await this.db.Diseases.FindAsync(id);
+            if (disease == null)
+            {
+                return NotFound();
+            }
+
+            return View(disease);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRecipes(int id)
+        {
+            var disease = await this.db.Diseases.FindAsync(id);
+            this.db.Diseases.Remove(disease);
+            await this.db.SaveChangesAsync();
+            return RedirectToAction("Recipes");
+        }
+
+        // Exercises Logic
         public async Task<IActionResult> Exercises()
         {
             return View(await this.db.Exercises.ToListAsync());

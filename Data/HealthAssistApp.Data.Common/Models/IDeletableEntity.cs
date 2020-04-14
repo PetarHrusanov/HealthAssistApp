@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Data.Common.Models
+﻿// <copyright file="IDeletableEntity.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Data.Common.Models
 {
     using System;
 
