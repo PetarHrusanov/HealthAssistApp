@@ -1,4 +1,4 @@
-﻿// <copyright file="ExercisesController.cs" company="HealthAssistApp">
+﻿// <copyright file="RecipesController.cs" company="HealthAssistApp">
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
@@ -7,22 +7,24 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
+    using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.WorkingOut;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
-    public class ExercisesController : AdministrationController
+    public class RecipesController : AdministrationController
     {
         private readonly ApplicationDbContext db;
 
-        public ExercisesController(ApplicationDbContext db)
+        public RecipesController(ApplicationDbContext db)
         {
             this.db = db;
         }
 
+        // Recipes Logic
         public async Task<IActionResult> Index()
         {
-            return this.View(await this.db.Exercises.ToListAsync());
+            return this.View(await this.db.Recipes.ToListAsync());
         }
 
         public async Task<IActionResult> Create()
@@ -32,9 +34,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Exercise exercise)
+        public async Task<IActionResult> Create(Recipe recipes)
         {
-            await this.db.AddAsync(exercise);
+            await this.db.AddAsync(recipes);
             await this.db.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }
@@ -46,27 +48,27 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises.FindAsync(id);
-            if (exercise == null)
+            var recipe = await this.db.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(exercise);
+            return this.View(recipe);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Exercise exercise)
+        public async Task<IActionResult> Edit(int id, Recipe recipe)
         {
-            if (id != exercise.Id)
+            if (id != recipe.Id)
             {
                 return this.NotFound();
             }
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(exercise);
+                this.db.Update(recipe);
                 await this.db.SaveChangesAsync();
             }
 
@@ -80,14 +82,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises
+            var recipe = await this.db.Recipes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (exercise == null)
+            if (recipe == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(exercise);
+            return this.View(recipe);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -97,21 +99,21 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises.FindAsync(id);
-            if (exercise == null)
+            var recipe = await this.db.Recipes.FindAsync(id);
+            if (recipe == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(exercise);
+            return this.View(recipe);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var exercise = await this.db.Exercises.FindAsync(id);
-            this.db.Exercises.Remove(exercise);
+            var recipe = await this.db.Recipes.FindAsync(id);
+            this.db.Recipes.Remove(recipe);
             await this.db.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }

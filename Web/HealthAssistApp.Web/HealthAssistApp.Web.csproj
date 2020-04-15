@@ -46,7 +46,8 @@
     <Folder Include="Views\HealthParameters\" />
     <Folder Include="Views\Allergies\" />
     <Folder Include="Areas\Administration\Views\Diseases\" />
-    <Folder Include="Areas\Administration\Views\Dashboard\Exercises\" />
+    <Folder Include="Areas\Administration\Views\Exercises\" />
+    <Folder Include="Areas\Administration\Views\Recipes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />
