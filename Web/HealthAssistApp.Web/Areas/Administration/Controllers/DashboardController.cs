@@ -36,6 +36,11 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index", "Diseases");
         }
 
+        public async Task<IActionResult> Exercises()
+        {
+            return this.RedirectToAction("Index", "Exercises");
+        }
+
         // Recipes Logic
         public async Task<IActionResult> Recipes()
         {
@@ -131,103 +136,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             this.db.Recipes.Remove(recipe);
             await this.db.SaveChangesAsync();
             return this.RedirectToAction("Recipes");
-        }
-
-        // Exercises Logic
-        public async Task<IActionResult> Exercises()
-        {
-            return this.View(await this.db.Exercises.ToListAsync());
-        }
-
-        public async Task<IActionResult> CreateExercises()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateExercises(Exercise exercise)
-        {
-            await this.db.AddAsync(exercise);
-            await this.db.SaveChangesAsync();
-            return this.RedirectToAction("Exercises");
-        }
-
-        public async Task<IActionResult> EditExercises(int? id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var exercise = await this.db.Exercises.FindAsync(id);
-            if (exercise == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(exercise);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditExercises(int id, Exercise exercise)
-        {
-            if (id != exercise.Id)
-            {
-                return this.NotFound();
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                this.db.Update(exercise);
-                await this.db.SaveChangesAsync();
-            }
-
-            return this.RedirectToAction("Exercises");
-        }
-
-        public async Task<IActionResult> DetailsExercises(int? id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var exercise = await this.db.Exercises
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (exercise == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(exercise);
-        }
-
-        public async Task<IActionResult> DeleteExercises(int? id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var exercise = await this.db.Exercises.FindAsync(id);
-            if (exercise == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(exercise);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteExercises(int id)
-        {
-            var exercise = await this.db.Exercises.FindAsync(id);
-            this.db.Exercises.Remove(exercise);
-            await this.db.SaveChangesAsync();
-            return this.RedirectToAction("Exercises");
         }
     }
 }
