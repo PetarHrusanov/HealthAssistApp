@@ -48,6 +48,7 @@
     <Folder Include="Areas\Administration\Views\Diseases\" />
     <Folder Include="Areas\Administration\Views\Exercises\" />
     <Folder Include="Areas\Administration\Views\Recipes\" />
+    <Folder Include="Areas\Administration\Views\DiseasesSymptoms\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />
