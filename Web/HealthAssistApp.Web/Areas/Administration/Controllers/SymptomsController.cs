@@ -67,6 +67,23 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var symptom = await this.db.Symptoms
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (symptom == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(symptom);
+        }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

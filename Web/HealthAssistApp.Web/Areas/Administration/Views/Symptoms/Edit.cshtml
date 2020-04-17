@@ -4,9 +4,8 @@
     ViewData["Title"] = "Symptoms";
     var bodySystems = Model.bodySystems.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
-
 <h1>Edit</h1>
-<h4>Exercise</h4>
+<h4>Symptom</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -22,6 +21,7 @@
                 <select asp-for="BodySystemId" asp-items="bodySystems" class="form-control"></select>
                 <span asp-validation-for="BodySystemId" class="text-danger"></span>
             </div>
+            <hr />
             <div class="form-group">
                 <input type="submit" value="Confirm" class="btn btn-primary" />
             </div>
