@@ -65,8 +65,12 @@ namespace HealthAssistApp.Web
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
 
+            // Food-related Services
             services.AddTransient<IRecipesService, RecipesService>();
+            services.AddTransient<IAllergiesService, AllergiesService>();
+
             services.AddTransient<IDiseasesService, DiseasesService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

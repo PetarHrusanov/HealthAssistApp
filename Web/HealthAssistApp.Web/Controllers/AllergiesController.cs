@@ -11,6 +11,7 @@ namespace HealthAssistApp.Web.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models.FoodModels;
+    using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -18,29 +19,19 @@ namespace HealthAssistApp.Web.Controllers
     public class AllergiesController: BaseController
     {
         private readonly ApplicationDbContext db;
+        private readonly IAllergiesService allergiesService;
 
-        public AllergiesController(ApplicationDbContext db)
+        public AllergiesController(ApplicationDbContext db, IAllergiesService allergiesService)
         {
             this.db = db;
+            this.allergiesService = allergiesService;
         }
 
         [Authorize]
         public IActionResult ByUserId(string userId)
         {
             var userAllergies = this.db.Allergies.Where(a => a.ApplicationUserId == userId).FirstOrDefault();
-            var allergiesOutput = new AllergiesViewModel
-            {
-                UserId = userId,
-                Milk = userAllergies.Milk,
-                Crustacean = userAllergies.Crustacean,
-                Eggs = userAllergies.Eggs,
-                Fish = userAllergies.Fish,
-                Wheat = userAllergies.Wheat,
-                Peanuts = userAllergies.Peanuts,
-                Soybeans = userAllergies.Soybeans,
-                TreeNuts = userAllergies.TreeNuts,
-            };
-
+            var allergiesOutput = this.allergiesService.ViewByUserId<AllergiesViewModel>(userId);
             return this.View(allergiesOutput);
         }
 
@@ -62,10 +53,7 @@ namespace HealthAssistApp.Web.Controllers
 
             var user = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var allergies = this.db.HealthDosiers
-                .Where(a => a.ApplicationUserId == user)
-                .Select(a => a.Allergies)
-                .FirstOrDefault();
+            var allergies = this.allergiesService.GetByUserId(user);
 
             allergies.Milk = allergiesInput.Milk;
             allergies.Eggs = allergiesInput.Eggs;

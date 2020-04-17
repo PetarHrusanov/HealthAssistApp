@@ -1,8 +1,9 @@
 ﻿using System;
+using HealthAssistApp.Services.Mapping;
 
 namespace HealthAssistApp.Web.ViewModels.Allergies
 {
-    public class AllergiesViewModel
+    public class AllergiesViewModel : IMapFrom<HealthAssistApp.Data.Models.FoodModels.Allergies>
     {
         public string UserId { get; set; }
 

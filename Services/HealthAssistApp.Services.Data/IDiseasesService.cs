@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Services.Data
+﻿// <copyright file="IDiseasesService.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Services.Data
 {
     using System;
     using System.Collections.Generic;
