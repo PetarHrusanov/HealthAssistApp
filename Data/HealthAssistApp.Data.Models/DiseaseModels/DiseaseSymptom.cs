@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Data.Models
+﻿// <copyright file="DiseaseSymptom.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 
