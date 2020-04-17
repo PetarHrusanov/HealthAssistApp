@@ -1,0 +1,52 @@
+﻿@model IEnumerable<HealthAssistApp.Web.ViewModels.Administration.SymptomsViewModels.SymptomsIndexViewModel>
+
+@{
+    ViewData["Title"] = "Symptoms";
+}
+
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SymptomId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BodySystemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BodySystemName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SymptomId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodySystemId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodySystemName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SymptomId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.SymptomId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create Symptom</a>
+</p>

@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// <copyright file="DiseaseSymptomInputViewModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
 
 namespace HealthAssistApp.Web.ViewModels.Administration
 {
+    using System;
+    using System.Collections.Generic;
+
     public class DiseaseSymptomInputViewModel
     {
         // Disease

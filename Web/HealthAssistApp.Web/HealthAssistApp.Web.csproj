@@ -50,6 +50,7 @@
     <Folder Include="Areas\Administration\Views\Recipes\" />
     <Folder Include="Areas\Administration\Views\DiseasesSymptoms\" />
     <Folder Include="Areas\Administration\Views\BodySystems\" />
+    <Folder Include="Areas\Administration\Views\Symptoms\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />
