@@ -34,5 +34,6 @@
     <Folder Include="Systems\" />
     <Folder Include="HealthDosier\" />
     <Folder Include="Enums\" />
+    <Folder Include="Administration\DiseasesSymptomsViewModels\" />
   </ItemGroup>
 </Project>

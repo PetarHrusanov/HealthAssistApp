@@ -15,5 +15,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration
         public int SymptomId { get; set; }
 
         public string SymptomName { get; set; }
+
+        public string IdS { get; set; }
     }
 }

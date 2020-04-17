@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<HealthAssistApp.Web.ViewModels.Administration.DiseaseSymptomViewModel>
 
 @{
-    ViewData["Title"] = "Exercises";
+    ViewData["Title"] = "Diseases To Symptoms";
 }
 
 <h1>Index</h1>
@@ -28,7 +28,7 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DiseaseId)
+                @Html.DisplayFor(modelItem => item.DiseaseName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DiseaseId)
@@ -40,14 +40,12 @@
                 @Html.DisplayFor(modelItem => item.SymptomName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="">Edit</a> |
-                <a asp-action="Details" asp-route-id="">Details</a> |
-                <a asp-action="Delete" asp-route-id="">Delete</a>
+                <a asp-action="Delete" asp-route-idS="@item.IdS">Delete</a>
             </td>
         </tr>
         }
     </tbody>
 </table>
 <p>
-    <a class="btn btn-primary" asp-action="Create">Create Exercise</a>
+    <a class="btn btn-primary" asp-action="Create">Create Disease Symptom</a>
 </p>
