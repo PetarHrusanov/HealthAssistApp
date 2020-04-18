@@ -282,31 +282,13 @@ namespace HealthAssistApp.Web.Controllers
                     if (item.Selected == true)
                     {
                         await this.symptomsServices.CreateUserSymptomAsync(item.Description, systems.Name, userId);
-
-                        //var userSymptom = new UserSymptoms
-                        //{
-                        //    Description = item.Description,
-                        //    SystemName = systems.Name,
-                        //    ApplicationUserId = userId,
-                        //};
-
-                        //await this.db.UserSymptoms.AddAsync(userSymptom);
-                        //await this.db.SaveChangesAsync();
                     }
                 }
             }
 
             if (systems.Symptoms.Count == 0)
             {
-                var userSymptom = new UserSymptoms
-                {
-                    Description = "Nothing",
-                    SystemName = systems.Name,
-                    ApplicationUserId = userId,
-                };
-
-                await this.db.UserSymptoms.AddAsync(userSymptom);
-                await this.db.SaveChangesAsync();
+                await this.symptomsServices.CreateUserSymptomAsync("Nothing", systems.Name, userId);
             }
 
             string nextSystem = await this.GetNext(this.SystemsForTests, systems.Name);
@@ -344,6 +326,7 @@ namespace HealthAssistApp.Web.Controllers
 
             var healthParameters = this.healthParametersService.GetByUserId(userId);
             var allergies = this.allergiesService.GetByUserId(userId);
+
             var workingOutProgram = new WorkoutProgram
             {
                 ExerciseComplexity = inputModel.Complexity,
@@ -428,7 +411,10 @@ namespace HealthAssistApp.Web.Controllers
             {
                 foreach (var userSymptom in userSymptoms)
                 {
-                    var diseaseSymptoms = this.db.DiseaseSymptoms.Where(d => d.DiseaseId == disease.Id).Select(s => s.Symptom.Description).ToList();
+                    var diseaseSymptoms = this.db.DiseaseSymptoms
+                        .Where(d => d.DiseaseId == disease.Id)
+                        .Select(s => s.Symptom.Description)
+                        .ToList();
                     if (diseaseSymptoms.Count != 0)
                     {
                         foreach (var diseaseSymptom in diseaseSymptoms)
