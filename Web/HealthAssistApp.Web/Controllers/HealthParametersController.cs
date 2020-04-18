@@ -7,6 +7,7 @@ namespace HealthAssistApp.Web.Controllers
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using Microsoft.AspNetCore.Authorization;

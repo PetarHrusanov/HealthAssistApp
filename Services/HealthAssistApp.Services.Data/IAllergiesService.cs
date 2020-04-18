@@ -2,14 +2,37 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
-using HealthAssistApp.Data.Models.FoodModels;
-
 namespace HealthAssistApp.Services.Data
 {
+    using System.Threading.Tasks;
+    using HealthAssistApp.Data.Models.FoodModels;
+
     public interface IAllergiesService
     {
         T ViewByUserId<T>(string userId);
 
-        Allergies GetByUserId (string userId);
+        Allergies GetByUserId(string userId);
+
+        Task<int> ModifyAsync(
+            bool milk,
+            bool eggs,
+            bool fish,
+            bool crustacean,
+            bool treenuts,
+            bool peanuts,
+            bool wheat,
+            bool soybeans,
+            string userId);
+
+        Task<int> CreateAsync(
+            bool milk,
+            bool eggs,
+            bool fish,
+            bool crustacean,
+            bool treenuts,
+            bool peanuts,
+            bool wheat,
+            bool soybeans,
+            string userId);
     }
 }

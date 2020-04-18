@@ -31,12 +31,14 @@ namespace HealthAssistApp.Web.Controllers
         private readonly ApplicationDbContext db;
         public IList<string> SystemsForTests;
         private readonly IDiseasesService diseasesService;
+        private readonly IAllergiesService allergiesService;
 
-        public HealthDosierController(ApplicationDbContext db, IDiseasesService diseasesService)
+        public HealthDosierController(ApplicationDbContext db, IDiseasesService diseasesService, IAllergiesService allergiesService)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
             this.diseasesService = diseasesService;
+            this.allergiesService = allergiesService;
         }
 
         [Authorize]
@@ -184,10 +186,8 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> AllergiesInput()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthParamCheckModel = await this.db.Allergies
-                .Where(x => x.ApplicationUserId == userId)
-                .FirstOrDefaultAsync();
-            if (healthParamCheckModel != null)
+            var allergiesCheck = this.allergiesService.GetByUserId(userId);
+            if (allergiesCheck != null)
             {
                 return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
             }
@@ -206,21 +206,16 @@ namespace HealthAssistApp.Web.Controllers
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var allergiesInputForDb = new Allergies
-            {
-                Milk = allergiesInput.Milk,
-                Eggs = allergiesInput.Eggs,
-                Fish = allergiesInput.Fish,
-                Crustacean = allergiesInput.Crustacean,
-                TreeNuts = allergiesInput.TreeNuts,
-                Peanuts = allergiesInput.Peanuts,
-                Wheat = allergiesInput.Wheat,
-                Soybeans = allergiesInput.Soybeans,
-                ApplicationUserId = userId,
-            };
-
-            this.db.Allergies.Add(allergiesInputForDb);
-            await this.db.SaveChangesAsync();
+            await this.allergiesService.CreateAsync(
+                allergiesInput.Milk,
+                allergiesInput.Eggs,
+                allergiesInput.Fish,
+                allergiesInput.Crustacean,
+                allergiesInput.TreeNuts,
+                allergiesInput.Peanuts,
+                allergiesInput.Wheat,
+                allergiesInput.Soybeans,
+                userId);
 
             return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
         }

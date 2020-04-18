@@ -6,11 +6,13 @@ namespace HealthAssistApp.Services.Data
 {
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
 
     public class AllergiesService : IAllergiesService
     {
@@ -23,15 +25,73 @@ namespace HealthAssistApp.Services.Data
             this.healthDosierRepository = healthDosierRepository;
         }
 
-        public Allergies GetByUserId (string userId)
+        /// <inheritdoc/>
+        public async Task<int> CreateAsync(
+            bool milk,
+            bool eggs,
+            bool fish,
+            bool crustacean,
+            bool treenuts,
+            bool peanuts,
+            bool wheat,
+            bool soybeans,
+            string userId)
         {
-            var allergies = this.healthDosierRepository
+            var allergies = new Allergies
+            {
+                Milk = milk,
+                Eggs = eggs,
+                Fish = fish,
+                Crustacean = crustacean,
+                TreeNuts = treenuts,
+                Peanuts = peanuts,
+                Wheat = wheat,
+                Soybeans = soybeans,
+                ApplicationUserId = userId,
+            };
+
+            await this.allergiesRepository.AddAsync(allergies);
+            await this.allergiesRepository.SaveChangesAsync();
+            return allergies.Id;
+        }
+
+        public Allergies GetByUserId(string userId)
+        {
+            var allergies = this.allergiesRepository
                 .All()
                 .Where(a => a.ApplicationUserId == userId)
-                .Select(a => a.Allergies)
                 .FirstOrDefault();
 
             return allergies;
+        }
+
+        public async Task<int> ModifyAsync(
+            bool milk,
+            bool eggs,
+            bool fish,
+            bool crustacean,
+            bool treenuts,
+            bool peanuts,
+            bool wheat,
+            bool soybeans,
+            string userId)
+        {
+            var allergy = await this.allergiesRepository.All()
+                .Where(x => x.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
+            allergy.Milk = milk;
+            allergy.Eggs = eggs;
+            allergy.Fish = fish;
+            allergy.Crustacean = crustacean;
+            allergy.TreeNuts = treenuts;
+            allergy.Peanuts = peanuts;
+            allergy.Wheat = wheat;
+            allergy.Soybeans = soybeans;
+
+            this.allergiesRepository.Update(allergy);
+            await this.allergiesRepository.SaveChangesAsync();
+
+            return allergy.Id;
         }
 
         public T ViewByUserId<T>(string userId)
