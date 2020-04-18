@@ -32,13 +32,19 @@ namespace HealthAssistApp.Web.Controllers
         public IList<string> SystemsForTests;
         private readonly IDiseasesService diseasesService;
         private readonly IAllergiesService allergiesService;
+        private readonly IHealthParametersService healthParametersService;
 
-        public HealthDosierController(ApplicationDbContext db, IDiseasesService diseasesService, IAllergiesService allergiesService)
+        public HealthDosierController(
+            ApplicationDbContext db,
+            IDiseasesService diseasesService,
+            IAllergiesService allergiesService,
+            IHealthParametersService healthParametersService)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
             this.diseasesService = diseasesService;
             this.allergiesService = allergiesService;
+            this.healthParametersService = healthParametersService;
         }
 
         [Authorize]
@@ -55,30 +61,12 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("HealthParametersInput");
             }
 
-            // trqbva da dobavq koncepciq za informaciq- ako body mass index-a e zle da se puska enum che e zle
-
             // da ima butoni za promqna
 
-            // da opravq shemata s alergii da si e v otdelen controller
-
-            var allergies = this.db.HealthDosiers
-                .Where(a => a.ApplicationUserId == userId)
-                .Select(a => a.Allergies)
-                .FirstOrDefault();
+            var allergies = this.allergiesService.GetByUserId(userId);
 
             // Health Parameters Logic
-            var healthParameters = this.db.HealthParameters
-                .Where(a => a.ApplicationUserId == userId)
-                .FirstOrDefault();
-
-            var healthParametersOutput = new HealthParametersViewModel
-            {
-                Age = healthParameters.Age,
-                Weight = healthParameters.Weight,
-                Height = healthDosier.HealthParameters.Height,
-                BodyMassIndex = healthDosier.HealthParameters.BodyMassIndex,
-                WaterPerDay = healthDosier.HealthParameters.WaterPerDay,
-            };
+            var healthParameters = this.healthParametersService.ViewByUserId<HealthParametersViewModel>(userId);
 
             // da go izkaram v Service
             var diseasesForIndex = this.db.HealthDosierDiseases
@@ -94,7 +82,7 @@ namespace HealthAssistApp.Web.Controllers
                 }).ToList() as ICollection<DiseaseViewModel>;
 
             // Health Dosier View
-            var bodyMassIndex = healthParametersOutput.BodyMassIndex;
+            var bodyMassIndex = healthParameters.BodyMassIndex;
 
             NutritionalStatus nutritionalStatus = NutritionalStatus.Normal;
 
@@ -128,7 +116,7 @@ namespace HealthAssistApp.Web.Controllers
                 AllergiesId = allergies.Id,
                 DrinkAlcohol = healthDosier.DrinkAlcohol,
                 Smoker = healthDosier.Smoker,
-                HealthParameters = healthParametersOutput,
+                HealthParameters = healthParameters,
                 WorkingOutProgramId = healthDosier.WorkoutProgramId,
                 FoodRegimenId = healthDosier.FoodRegimenId,
                 Diseases = diseasesForIndex,
@@ -144,9 +132,7 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthParamCheckModel = await this.db.HealthParameters
-                .Where(x => x.ApplicationUserId == userId)
-                .FirstOrDefaultAsync();
+            var healthParamCheckModel = this.healthParametersService.GetByUserId(userId);
             if (healthParamCheckModel != null)
             {
                 return this.RedirectToAction("AllergiesInput");
@@ -166,18 +152,11 @@ namespace HealthAssistApp.Web.Controllers
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthParametersForDb = new HealthParameters
-            {
-                Age = healthParameters.Age,
-                Height = healthParameters.Height,
-                Weight = healthParameters.Weight,
-                WaterPerDay = healthParameters.Weight * 0.033m,
-                BodyMassIndex = healthParameters.Weight / (healthParameters.Height * healthParameters.Height),
-                ApplicationUserId = userId,
-            };
-
-            this.db.HealthParameters.Add(healthParametersForDb);
-            await this.db.SaveChangesAsync();
+            await this.healthParametersService.CreateAsync(
+                healthParameters.Age,
+                healthParameters.Weight,
+                healthParameters.Height,
+                userId);
 
             return this.RedirectToAction("AllergiesInput");
         }
@@ -360,8 +339,8 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("Index");
             }
 
-            var healthParameters = await this.db.HealthParameters.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
-            var allergies = await this.db.Allergies.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthParameters = this.healthParametersService.GetByUserId(userId);
+            var allergies = this.allergiesService.GetByUserId(userId);
             var workingOutProgram = new WorkoutProgram
             {
                 ExerciseComplexity = inputModel.Complexity,

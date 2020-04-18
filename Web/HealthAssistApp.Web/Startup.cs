@@ -69,6 +69,9 @@ namespace HealthAssistApp.Web
             services.AddTransient<IRecipesService, RecipesService>();
             services.AddTransient<IAllergiesService, AllergiesService>();
 
+            // Health Parameters Service
+            services.AddTransient<IHealthParametersService, HealthParametersService>();
+
             services.AddTransient<IDiseasesService, DiseasesService>();
 
         }

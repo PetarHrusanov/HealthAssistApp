@@ -2,9 +2,11 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
+using HealthAssistApp.Services.Mapping;
+
 namespace HealthAssistApp.Web.ViewModels.HealthParameters
 {
-    public class HealthParametersViewModel
+    public class HealthParametersViewModel : IMapFrom<HealthAssistApp.Data.Models.HealthParameters>
     {
         public int Age { get; set; }
 

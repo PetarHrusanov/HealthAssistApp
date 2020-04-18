@@ -18,16 +18,12 @@ namespace HealthAssistApp.Services.Data
             int age,
             int weight,
             decimal height,
-            decimal bodyMassIndex,
-            decimal waterPerDay,
             string userId);
 
         Task<int> CreateAsync(
             int age,
             int weight,
             decimal height,
-            decimal bodyMassIndex,
-            decimal waterPerDay,
             string userId);
     }
 }

@@ -9,6 +9,8 @@ namespace HealthAssistApp.Web.Controllers
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
+    using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -16,10 +18,12 @@ namespace HealthAssistApp.Web.Controllers
     public class HealthParametersController : BaseController
     {
         private readonly ApplicationDbContext db;
+        private readonly IHealthParametersService healthParametersService;
 
-        public HealthParametersController(ApplicationDbContext db)
+        public HealthParametersController(ApplicationDbContext db, IHealthParametersService healthParametersService)
         {
             this.db = db;
+            this.healthParametersService = healthParametersService;
         }
 
         [Authorize]
@@ -40,18 +44,11 @@ namespace HealthAssistApp.Web.Controllers
 
             var user = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthParameters = this.db.HealthDosiers
-                .Where(a => a.ApplicationUserId == user)
-                .Select(a => a.HealthParameters)
-                .FirstOrDefault();
-
-            healthParameters.Age = healthParametersModify.Age;
-            healthParameters.Height = healthParametersModify.Height;
-            healthParameters.Weight = healthParametersModify.Weight;
-            healthParameters.WaterPerDay = healthParametersModify.Weight * 0.033m;
-            healthParameters.BodyMassIndex = healthParametersModify.Weight / (healthParameters.Height * healthParameters.Height);
-
-            await this.db.SaveChangesAsync();
+            await this.healthParametersService.ModifyAsync(
+                healthParametersModify.Age,
+                healthParametersModify.Weight,
+                healthParametersModify.Height,
+                user);
 
             return this.RedirectToAction("Index", "HealthDosier");
         }
