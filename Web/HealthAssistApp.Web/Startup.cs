@@ -72,8 +72,9 @@ namespace HealthAssistApp.Web
             // Health Parameters Service
             services.AddTransient<IHealthParametersService, HealthParametersService>();
 
+            // Disease-related Services
             services.AddTransient<IDiseasesService, DiseasesService>();
-
+            services.AddTransient<ISymptomsServices, SymptomsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

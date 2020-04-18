@@ -33,18 +33,21 @@ namespace HealthAssistApp.Web.Controllers
         private readonly IDiseasesService diseasesService;
         private readonly IAllergiesService allergiesService;
         private readonly IHealthParametersService healthParametersService;
+        private readonly ISymptomsServices symptomsServices;
 
         public HealthDosierController(
             ApplicationDbContext db,
             IDiseasesService diseasesService,
             IAllergiesService allergiesService,
-            IHealthParametersService healthParametersService)
+            IHealthParametersService healthParametersService,
+            ISymptomsServices symptomsServices)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
             this.diseasesService = diseasesService;
             this.allergiesService = allergiesService;
             this.healthParametersService = healthParametersService;
+            this.symptomsServices = symptomsServices;
         }
 
         [Authorize]
@@ -60,8 +63,6 @@ namespace HealthAssistApp.Web.Controllers
             {
                 return this.RedirectToAction("HealthParametersInput");
             }
-
-            // da ima butoni za promqna
 
             var allergies = this.allergiesService.GetByUserId(userId);
 
@@ -280,15 +281,17 @@ namespace HealthAssistApp.Web.Controllers
                 {
                     if (item.Selected == true)
                     {
-                        var userSymptom = new UserSymptoms
-                        {
-                            Description = item.Description,
-                            SystemName = systems.Name,
-                            ApplicationUserId = userId,
-                        };
+                        await this.symptomsServices.CreateUserSymptomAsync(item.Description, systems.Name, userId);
 
-                        await this.db.UserSymptoms.AddAsync(userSymptom);
-                        await this.db.SaveChangesAsync();
+                        //var userSymptom = new UserSymptoms
+                        //{
+                        //    Description = item.Description,
+                        //    SystemName = systems.Name,
+                        //    ApplicationUserId = userId,
+                        //};
+
+                        //await this.db.UserSymptoms.AddAsync(userSymptom);
+                        //await this.db.SaveChangesAsync();
                     }
                 }
             }
