@@ -75,6 +75,9 @@ namespace HealthAssistApp.Web
             // Disease-related Services
             services.AddTransient<IDiseasesService, DiseasesService>();
             services.AddTransient<ISymptomsServices, SymptomsService>();
+
+            // HealthDosier-related Services
+            services.AddTransient<IHealthDosiersService, HealthDosiersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -34,13 +34,15 @@ namespace HealthAssistApp.Web.Controllers
         private readonly IAllergiesService allergiesService;
         private readonly IHealthParametersService healthParametersService;
         private readonly ISymptomsServices symptomsServices;
+        private readonly IHealthDosiersService healthDosiersService;
 
         public HealthDosierController(
             ApplicationDbContext db,
             IDiseasesService diseasesService,
             IAllergiesService allergiesService,
             IHealthParametersService healthParametersService,
-            ISymptomsServices symptomsServices)
+            ISymptomsServices symptomsServices,
+            IHealthDosiersService healthDosiersService)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
@@ -48,6 +50,7 @@ namespace HealthAssistApp.Web.Controllers
             this.allergiesService = allergiesService;
             this.healthParametersService = healthParametersService;
             this.symptomsServices = symptomsServices;
+            this.healthDosiersService = healthDosiersService;
         }
 
         [Authorize]
@@ -55,9 +58,7 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthDosier = this.db.HealthDosiers
-                .Where(x => x.ApplicationUserId == userId)
-                .FirstOrDefault();
+            var healthDosier = this.healthDosiersService.GetById(userId);
 
             if (healthDosier == null)
             {
@@ -304,8 +305,8 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> HealthDosierFinalising()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthDosierCheck = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
-            if (healthDosierCheck != null)
+            var healthDosier = this.healthDosiersService.GetById(userId);
+            if (healthDosier != null)
             {
                 return this.RedirectToAction("Index");
             }
@@ -318,7 +319,7 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> HealthDosierFinalising(HealthDosierInputModel inputModel)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthDosierCheck = await this.db.HealthDosiers.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            var healthDosierCheck = this.healthDosiersService.GetById(userId);
             if (healthDosierCheck != null)
             {
                 return this.RedirectToAction("Index");
@@ -388,19 +389,28 @@ namespace HealthAssistApp.Web.Controllers
                 await this.db.SaveChangesAsync();
             }
 
-            var healthDosier = new HealthDosier
-            {
-                HealthParametersId = healthParameters.Id,
-                FoodRegimenId = foodRegimen.Id,
-                WorkoutProgramId = workingOutProgram.Id,
-                Smoker = inputModel.Smoker,
-                DrinkAlcohol = inputModel.DrinkAlcohol,
-                AllergiesId = allergies.Id,
-                ApplicationUserId = userId,
-            };
+            string healthDosierId = await this.healthDosiersService.CreateHealthDosierAsync(
+                healthParameters.Id,
+                foodRegimen.Id,
+                workingOutProgram.Id,
+                inputModel.Smoker,
+                inputModel.DrinkAlcohol,
+                allergies.Id,
+                userId);
 
-            await this.db.HealthDosiers.AddAsync(healthDosier);
-            await this.db.SaveChangesAsync();
+            //var healthDosier = new HealthDosier
+            //{
+            //    HealthParametersId = healthParameters.Id,
+            //    FoodRegimenId = foodRegimen.Id,
+            //    WorkoutProgramId = workingOutProgram.Id,
+            //    Smoker = inputModel.Smoker,
+            //    DrinkAlcohol = inputModel.DrinkAlcohol,
+            //    AllergiesId = allergies.Id,
+            //    ApplicationUserId = userId,
+            //};
+
+            //await this.db.HealthDosiers.AddAsync(healthDosier);
+            //await this.db.SaveChangesAsync();
 
             int symptomCount = default;
 
@@ -429,13 +439,7 @@ namespace HealthAssistApp.Web.Controllers
 
                 if (symptomCount == 4)
                 {
-                    var healthDosierDisease = new HealthDosierDisease
-                    {
-                        DiseaseId = disease.Id,
-                        HealthDosierId = healthDosier.Id,
-                    };
-                    this.db.HealthDosierDiseases.Add(healthDosierDisease);
-                    this.db.SaveChanges();
+                    await this.diseasesService.CreateHealthDosierDiseaseAsync(disease.Id, healthDosierId);
                     symptomCount = 0;
                 }
             }

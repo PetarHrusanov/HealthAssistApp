@@ -7,7 +7,7 @@ namespace HealthAssistApp.Services.Data
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
@@ -22,6 +22,19 @@ namespace HealthAssistApp.Services.Data
         {
             this.diseaseRepository = diseaseRepository;
             this.healthDosierDiseaseRepository = healthDosierDiseaseRepository;
+        }
+
+        public async Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId)
+        {
+            var healthDosierDisease = new HealthDosierDisease
+            {
+                DiseaseId = diseaseId,
+                HealthDosierId = healthDosierId,
+            };
+
+            await this.healthDosierDiseaseRepository.AddAsync(healthDosierDisease);
+            await this.healthDosierDiseaseRepository.SaveChangesAsync();
+            return healthDosierId;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)

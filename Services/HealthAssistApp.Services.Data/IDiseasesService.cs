@@ -6,6 +6,7 @@ namespace HealthAssistApp.Services.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IDiseasesService
     {
@@ -14,5 +15,7 @@ namespace HealthAssistApp.Services.Data
         T GetByName<T>(string name);
 
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
+
+        public Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
     }
 }
