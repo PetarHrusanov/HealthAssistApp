@@ -4,21 +4,15 @@
 
 namespace HealthAssistApp.Web.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
-    using HealthAssistApp.Data.Models;
-    using HealthAssistApp.Data.Models.DiseaseModels;
-    using HealthAssistApp.Data.Models.FoodModels;
-    using HealthAssistApp.Data.Models.WorkingOut;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.Diseases;
-    using HealthAssistApp.Web.ViewModels.Enums;
     using HealthAssistApp.Web.ViewModels.HealthDosier;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
     using HealthAssistApp.Web.ViewModels.Systems;
@@ -92,32 +86,7 @@ namespace HealthAssistApp.Web.Controllers
             // Health Dosier View
             var bodyMassIndex = healthParameters.BodyMassIndex;
 
-            NutritionalStatus nutritionalStatus = NutritionalStatus.Normal;
-
-            if (bodyMassIndex < 18.5m)
-            {
-                nutritionalStatus = NutritionalStatus.Underweight;
-            }
-            else if (bodyMassIndex <= 24.9m)
-            {
-                nutritionalStatus = NutritionalStatus.Normal;
-            }
-            else if (bodyMassIndex <= 29.9m)
-            {
-                nutritionalStatus = NutritionalStatus.ObesityI;
-            }
-            else if (bodyMassIndex <= 34.9m)
-            {
-                nutritionalStatus = NutritionalStatus.ObesityI;
-            }
-            else if (bodyMassIndex <= 39.9m)
-            {
-                nutritionalStatus = NutritionalStatus.ObesityII;
-            }
-            else
-            {
-                nutritionalStatus = NutritionalStatus.ObesityIII;
-            }
+            var nutritionalStatus = this.healthParametersService.NutritionalStatusByBodyMassIndex(bodyMassIndex);
 
             var healthDosierView = new HealthDosierOverview
             {
@@ -229,17 +198,6 @@ namespace HealthAssistApp.Web.Controllers
 
             return items[(index + 1) % items.Count];
         }
-
-        // DA GO OPRAVQ
-        //private async Task<Recipe> RecipeAsync(List<Recipe> selectedRecipes, string mealType)
-        //{
-        //    var recipes = selectedRecipes.Where(r => r.PartOfMeal.ToString() == mealType.ToString()).ToList();
-        //    //Random rnd = new Random();
-        //    //int r = rnd.Next(recipes.Count);
-
-        //    // da go opravq
-        //    return recipes[0];
-        //}
 
         [Authorize]
         public async Task<IActionResult> DiseaseTest(string system)

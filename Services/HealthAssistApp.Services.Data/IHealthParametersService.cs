@@ -7,6 +7,7 @@ namespace HealthAssistApp.Services.Data
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.Enums;
 
     public interface IHealthParametersService
     {
@@ -25,5 +26,7 @@ namespace HealthAssistApp.Services.Data
             int weight,
             decimal height,
             string userId);
+
+        NutritionalStatus NutritionalStatusByBodyMassIndex(decimal bodyMassIndex);
     }
 }

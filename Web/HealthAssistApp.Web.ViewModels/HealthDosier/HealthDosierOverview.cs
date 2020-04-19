@@ -6,11 +6,9 @@ namespace HealthAssistApp.Web.ViewModels.HealthDosier
 {
     using System.Collections.Generic;
 
-    using HealthAssistApp.Web.ViewModels.Allergies;
+    using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Web.ViewModels.Diseases;
-    using HealthAssistApp.Web.ViewModels.Enums;
     using HealthAssistApp.Web.ViewModels.HealthParameters;
-    using HealthAssistApp.Data.Models;
 
     public class HealthDosierOverview
     {

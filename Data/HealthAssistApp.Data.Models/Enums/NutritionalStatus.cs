@@ -2,7 +2,7 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
-namespace HealthAssistApp.Web.ViewModels.Enums
+namespace HealthAssistApp.Data.Models.Enums
 {
     public enum NutritionalStatus
     {

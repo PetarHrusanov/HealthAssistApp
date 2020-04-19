@@ -10,6 +10,7 @@ namespace HealthAssistApp.Services.Data
 
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +74,38 @@ namespace HealthAssistApp.Services.Data
             await this.healthParametersRepository.SaveChangesAsync();
 
             return healthParameters.Id;
+        }
+
+        public NutritionalStatus NutritionalStatusByBodyMassIndex(decimal bodyMassIndex)
+        {
+            NutritionalStatus nutritionalStatus = NutritionalStatus.Normal;
+
+            if (bodyMassIndex < 18.5m)
+            {
+                nutritionalStatus = NutritionalStatus.Underweight;
+            }
+            else if (bodyMassIndex <= 24.9m)
+            {
+                nutritionalStatus = NutritionalStatus.Normal;
+            }
+            else if (bodyMassIndex <= 29.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityI;
+            }
+            else if (bodyMassIndex <= 34.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityI;
+            }
+            else if (bodyMassIndex <= 39.9m)
+            {
+                nutritionalStatus = NutritionalStatus.ObesityII;
+            }
+            else
+            {
+                nutritionalStatus = NutritionalStatus.ObesityIII;
+            }
+
+            return nutritionalStatus;
         }
 
         public T ViewByUserId<T>(string userId)
