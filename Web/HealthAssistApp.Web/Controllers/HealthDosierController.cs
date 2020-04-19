@@ -35,6 +35,8 @@ namespace HealthAssistApp.Web.Controllers
         private readonly IHealthParametersService healthParametersService;
         private readonly ISymptomsServices symptomsServices;
         private readonly IHealthDosiersService healthDosiersService;
+        private readonly IWorkOutsService workOutsService;
+        private readonly IFoodRegimensService foodRegimensService;
 
         public HealthDosierController(
             ApplicationDbContext db,
@@ -42,7 +44,9 @@ namespace HealthAssistApp.Web.Controllers
             IAllergiesService allergiesService,
             IHealthParametersService healthParametersService,
             ISymptomsServices symptomsServices,
-            IHealthDosiersService healthDosiersService)
+            IHealthDosiersService healthDosiersService,
+            IWorkOutsService workOutsService,
+            IFoodRegimensService foodRegimensService)
         {
             this.db = db;
             this.SystemsForTests = this.db.BodySystems.Select(b => b.Name).ToList();
@@ -51,6 +55,8 @@ namespace HealthAssistApp.Web.Controllers
             this.healthParametersService = healthParametersService;
             this.symptomsServices = symptomsServices;
             this.healthDosiersService = healthDosiersService;
+            this.workOutsService = workOutsService;
+            this.foodRegimensService = foodRegimensService;
         }
 
         [Authorize]
@@ -125,6 +131,8 @@ namespace HealthAssistApp.Web.Controllers
                 NutritionalStatus = nutritionalStatus,
                 UserId = userId,
             };
+
+            // da dobavq gledaneto na food Regimen i Workout Program 
 
             return this.View(healthDosierView);
         }
@@ -223,15 +231,15 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         // DA GO OPRAVQ
-        private async Task<Recipe> RecipeAsync(List<Recipe> selectedRecipes, string mealType)
-        {
-            var recipes = selectedRecipes.Where(r => r.PartOfMeal.ToString() == mealType.ToString()).ToList();
-            //Random rnd = new Random();
-            //int r = rnd.Next(recipes.Count);
+        //private async Task<Recipe> RecipeAsync(List<Recipe> selectedRecipes, string mealType)
+        //{
+        //    var recipes = selectedRecipes.Where(r => r.PartOfMeal.ToString() == mealType.ToString()).ToList();
+        //    //Random rnd = new Random();
+        //    //int r = rnd.Next(recipes.Count);
 
-            // da go opravq
-            return recipes[0];
-        }
+        //    // da go opravq
+        //    return recipes[0];
+        //}
 
         [Authorize]
         public async Task<IActionResult> DiseaseTest(string system)
@@ -328,89 +336,28 @@ namespace HealthAssistApp.Web.Controllers
             var healthParameters = this.healthParametersService.GetByUserId(userId);
             var allergies = this.allergiesService.GetByUserId(userId);
 
-            var workingOutProgram = new WorkoutProgram
-            {
-                ExerciseComplexity = inputModel.Complexity,
-                ApplicationUserId = userId,
-            };
-
-            await this.db.WorkoutPrograms.AddAsync(workingOutProgram);
-            await this.db.SaveChangesAsync();
-
-            var selectedExercises = await this.db.Exercises
-                .Where(e => e.ExerciseComplexity == inputModel.Complexity)
-                .ToListAsync();
-
-            foreach (var exercise in selectedExercises)
-            {
-                var exerciseWorkoutProgram = new ExerciseWorkoutProgram
-                {
-                    ExerciseId = exercise.Id,
-                    WorkoutProgramId = workingOutProgram.Id,
-                };
-
-                await this.db.ExerciseWorkoutPrograms.AddAsync(exerciseWorkoutProgram);
-                await this.db.SaveChangesAsync();
-            }
-
-            // ne raboti da go opravq
-            // var recipes = await this.db.Recipes
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Milk.Equals(allergies.Milk)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Crustacean.Equals(allergies.Crustacean)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Eggs.Equals(allergies.Eggs)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Fish.Equals(allergies.Fish)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Peanuts.Equals(allergies.Peanuts)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Soybeans.Equals(allergies.Soybeans)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.TreeNuts.Equals(allergies.TreeNuts)))
-            //    .Where(r => r.RecipeIngredients.Any(r => r.Ingredient.Wheat.Equals(allergies.Wheat)))
-            //    .ToListAsync();
+            int workoutProgramId = await this.workOutsService.CreateWorkoutProgramAsync(inputModel.Complexity, userId);
 
             var recipes = await this.db.Recipes.ToListAsync();
 
-            var foodRegimen = new FoodRegimen { };
-            await this.db.AddAsync(foodRegimen);
-            await this.db.SaveChangesAsync();
-
-            for (int i = 0; i < 31; i++)
-            {
-                var breakfast = await this.RecipeAsync(recipes, "Snack");
-                var lunch = await this.RecipeAsync(recipes, "MainMeal");
-                var diner = await this.RecipeAsync(recipes, "MainMeal");
-
-                var meal = new Meal
-                {
-                    BreakfastId = breakfast.Id,
-                    LunchId = lunch.Id,
-                    DinerId = diner.Id,
-                    FoodRegimenId = foodRegimen.Id,
-                };
-
-                await this.db.AddAsync(meal);
-                await this.db.SaveChangesAsync();
-            }
+            int foodRegimenId = await this.foodRegimensService.CreateFoodRegimenAsync(
+                allergies.Milk,
+                allergies.Eggs,
+                allergies.Fish,
+                allergies.Crustacean,
+                allergies.TreeNuts,
+                allergies.Peanuts,
+                allergies.Wheat,
+                allergies.Soybeans);
 
             string healthDosierId = await this.healthDosiersService.CreateHealthDosierAsync(
                 healthParameters.Id,
-                foodRegimen.Id,
-                workingOutProgram.Id,
+                foodRegimenId,
+                workoutProgramId,
                 inputModel.Smoker,
                 inputModel.DrinkAlcohol,
                 allergies.Id,
                 userId);
-
-            //var healthDosier = new HealthDosier
-            //{
-            //    HealthParametersId = healthParameters.Id,
-            //    FoodRegimenId = foodRegimen.Id,
-            //    WorkoutProgramId = workingOutProgram.Id,
-            //    Smoker = inputModel.Smoker,
-            //    DrinkAlcohol = inputModel.DrinkAlcohol,
-            //    AllergiesId = allergies.Id,
-            //    ApplicationUserId = userId,
-            //};
-
-            //await this.db.HealthDosiers.AddAsync(healthDosier);
-            //await this.db.SaveChangesAsync();
 
             int symptomCount = default;
 

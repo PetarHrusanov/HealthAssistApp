@@ -1,8 +1,9 @@
-﻿using System;
-using HealthAssistApp.Data.Models.Enums;
-
-namespace HealthAssistApp.Web.ViewModels.HealthDosier
+﻿namespace HealthAssistApp.Web.ViewModels.HealthDosier
 {
+    using System;
+
+    using HealthAssistApp.Data.Models.Enums;
+
     public class HealthDosierInputModel
     {
         public bool Smoker { get; set; }

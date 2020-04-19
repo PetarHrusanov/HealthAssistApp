@@ -68,6 +68,7 @@ namespace HealthAssistApp.Web
             // Food-related Services
             services.AddTransient<IRecipesService, RecipesService>();
             services.AddTransient<IAllergiesService, AllergiesService>();
+            services.AddTransient<IFoodRegimensService, FoodRegimensService>();
 
             // Health Parameters Service
             services.AddTransient<IHealthParametersService, HealthParametersService>();
@@ -78,6 +79,9 @@ namespace HealthAssistApp.Web
 
             // HealthDosier-related Services
             services.AddTransient<IHealthDosiersService, HealthDosiersService>();
+
+            // Working Out Service
+            services.AddTransient<IWorkOutsService, WorkOutsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

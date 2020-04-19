@@ -1,4 +1,7 @@
-﻿using System;
+﻿// <copyright file="NutritionalStatus.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
 namespace HealthAssistApp.Web.ViewModels.Enums
 {
     public enum NutritionalStatus
