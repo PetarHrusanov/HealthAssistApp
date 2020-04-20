@@ -33,8 +33,7 @@
         public GlycemicIndex GlycemicIndex { get; set; }
 
         public ICollection<RecipeIngredients> RecipeIngredients { get; set; }
-        public ICollection<Ingredient> Ingredients { get; set; }
-        //public List<Ingredient> Ingredients { get; set; }
 
+        public ICollection<Ingredient> Ingredients { get; set; }
     }
 }

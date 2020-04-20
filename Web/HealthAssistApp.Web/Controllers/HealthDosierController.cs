@@ -72,16 +72,19 @@ namespace HealthAssistApp.Web.Controllers
 
             // da go izkaram v Service
             var diseasesForIndex = this.db.HealthDosierDiseases
-                .Where(h => h.HealthDosierId == healthDosier.Id)
-                .Select(d => d.Disease).Select(dv => new DiseaseViewModel
-                {
-                    Id = dv.Id,
-                    Name = dv.Name,
-                    Description = dv.Description,
-                    Advice = dv.Advice,
-                    GlycemicIndex = dv.GlycemicIndex,
-                    DiseaseSymptoms = dv.DiseaseSymptoms,
-                }).ToList() as ICollection<DiseaseViewModel>;
+               .Where(h => h.HealthDosierId == healthDosier.Id)
+               .Select(d => d.Disease).Select(dv => new DiseaseViewModel
+               {
+                   Id = dv.Id,
+                   Name = dv.Name,
+                   Description = dv.Description,
+                   Advice = dv.Advice,
+                   GlycemicIndex = dv.GlycemicIndex,
+                   DiseaseSymptoms = dv.DiseaseSymptoms,
+               }).ToList() as ICollection<DiseaseViewModel>;
+
+            // da pomislq dali moje da sraboti
+            // var diseasesForIndex = this.diseasesService.GetByHealthDosier<DiseaseViewModel>(userId) as ICollection<DiseaseViewModel>;
 
             // Health Dosier View
             var bodyMassIndex = healthParameters.BodyMassIndex;
@@ -99,6 +102,7 @@ namespace HealthAssistApp.Web.Controllers
                 Diseases = diseasesForIndex,
                 NutritionalStatus = nutritionalStatus,
                 UserId = userId,
+                Id = healthDosier.Id,
             };
 
             // da dobavq gledaneto na food Regimen i Workout Program 
@@ -203,10 +207,8 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> DiseaseTest(string system)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var userSymptoms = await this.db.UserSymptoms
-                .Where(x => x.ApplicationUserId == userId)
-                .Select(u => u.SystemName)
-                .ToListAsync();
+
+            var userSymptoms = await this.symptomsServices.GetSystemNameFromUserId(userId);
 
             if (userSymptoms != null)
             {

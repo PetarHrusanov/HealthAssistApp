@@ -51,6 +51,8 @@
     <Folder Include="Areas\Administration\Views\DiseasesSymptoms\" />
     <Folder Include="Areas\Administration\Views\BodySystems\" />
     <Folder Include="Areas\Administration\Views\Symptoms\" />
+    <Folder Include="Views\FoodRegimens\" />
+    <Folder Include="Methods\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />

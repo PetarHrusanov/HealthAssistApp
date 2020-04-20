@@ -27,7 +27,7 @@ namespace HealthAssistApp.Web.Controllers
         [Authorize]
         public IActionResult ByUserId(string userId)
         {
-            var userAllergies = this.allergiesService.GetByUserId(userId);
+            //var userAllergies = this.allergiesService.GetByUserId(userId);
             var allergiesOutput = this.allergiesService.ViewByUserId<AllergiesViewModel>(userId);
             return this.View(allergiesOutput);
         }

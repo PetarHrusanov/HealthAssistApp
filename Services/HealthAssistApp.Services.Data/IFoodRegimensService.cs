@@ -4,7 +4,9 @@
 
 namespace HealthAssistApp.Services.Data
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using HealthAssistApp.Data.Models;
 
     public interface IFoodRegimensService
     {
@@ -17,5 +19,9 @@ namespace HealthAssistApp.Services.Data
             bool peanuts,
             bool wheat,
             bool soybeans);
+
+        public Task<int> GetRegimenByHealthDosierId(string healthDosierId);
+
+        IEnumerable<T> GetMealsByFoodRegimenId<T>(int foodRegimenId, int? take = null, int skip = 0);
     }
 }

@@ -53,7 +53,23 @@ namespace HealthAssistApp.Services.Data
         {
             var diseases =
                 this.healthDosierDiseaseRepository.All()
-                .Where(d => d.HealthDosierId == healthDosierId);
+                .Where(d => d.HealthDosierId == healthDosierId)
+                .Select(d => new
+                {
+                    d.Disease.Id,
+                    d.Disease.Name,
+                    d.Disease.Description,
+                    d.Disease.Advice,
+                    d.Disease.GlycemicIndex,
+                    d.Disease.DiseaseSymptoms,
+                });
+
+            //Id = dv.Id,
+            //        Name = dv.Name,
+            //        Description = dv.Description,
+            //        Advice = dv.Advice,
+            //        GlycemicIndex = dv.GlycemicIndex,
+            //        DiseaseSymptoms = dv.DiseaseSymptoms,
 
             return diseases.To<T>().ToList();
         }

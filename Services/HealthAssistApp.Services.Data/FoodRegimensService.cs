@@ -11,6 +11,7 @@ namespace HealthAssistApp.Services.Data
 
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
 
     public class FoodRegimensService : IFoodRegimensService
@@ -18,15 +19,18 @@ namespace HealthAssistApp.Services.Data
         private readonly IRepository<FoodRegimen> foodRegimensRepository;
         private readonly IRepository<Recipe> recipeRepository;
         private readonly IRepository<Meal> mealsRepository;
+        private readonly IRepository<HealthDosier> healthDosierRepository;
 
         public FoodRegimensService(
             IRepository<FoodRegimen> foodRegimensRepository,
             IRepository<Recipe> recipeRepository,
-            IRepository<Meal> mealsRepository)
+            IRepository<Meal> mealsRepository,
+            IRepository<HealthDosier> healthDosierRepository)
         {
             this.foodRegimensRepository = foodRegimensRepository;
             this.recipeRepository = recipeRepository;
             this.mealsRepository = mealsRepository;
+            this.healthDosierRepository = healthDosierRepository;
         }
 
         public async Task<int> CreateFoodRegimenAsync(
@@ -62,6 +66,31 @@ namespace HealthAssistApp.Services.Data
                 await this.mealsRepository.AddAsync(meal);
                 await this.mealsRepository.SaveChangesAsync();
             }
+
+            return foodRegimen.Id;
+        }
+
+        public IEnumerable<T>GetMealsByFoodRegimenId<T>(int foodRegimenId, int? take = null, int skip = 0)
+        {
+            var query = this.mealsRepository.All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Where(x => x.FoodRegimenId == foodRegimenId)
+                .Skip(skip);
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<int> GetRegimenByHealthDosierId(string healthDosierId)
+        {
+            var foodRegimen = await this.healthDosierRepository
+                .All()
+                .Where(h => h.Id == healthDosierId)
+                .Select(f => f.FoodRegimen)
+                .FirstOrDefaultAsync();
 
             return foodRegimen.Id;
         }

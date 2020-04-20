@@ -19,6 +19,8 @@ namespace HealthAssistApp.Web.ViewModels.HealthDosier
 
         public HealthParametersViewModel HealthParameters { get; set; }
 
+        public string Id { get; set; }
+
         public string UserId { get; set; }
 
         public int FoodRegimenId { get; set; }

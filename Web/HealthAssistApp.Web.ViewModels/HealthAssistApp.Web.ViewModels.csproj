@@ -36,5 +36,6 @@
     <Folder Include="Enums\" />
     <Folder Include="Administration\DiseasesSymptomsViewModels\" />
     <Folder Include="Administration\SymptomsViewModels\" />
+    <Folder Include="FoodRegimens\" />
   </ItemGroup>
 </Project>

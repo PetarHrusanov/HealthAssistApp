@@ -8,6 +8,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
     using System.Collections.Generic;
 
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
 
