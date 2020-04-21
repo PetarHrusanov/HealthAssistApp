@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Web.Tests
+﻿// <copyright file="WebTests.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Web.Tests
 {
     using System.Net;
     using System.Threading.Tasks;
