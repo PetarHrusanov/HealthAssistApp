@@ -105,7 +105,7 @@ namespace HealthAssistApp.Web.Controllers
                 Id = healthDosier.Id,
             };
 
-            // da dobavq gledaneto na food Regimen i Workout Program 
+            // da dobavq gledaneto na Workout Program 
 
             return this.View(healthDosierView);
         }

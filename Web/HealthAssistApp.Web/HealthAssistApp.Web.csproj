@@ -53,6 +53,7 @@
     <Folder Include="Areas\Administration\Views\Symptoms\" />
     <Folder Include="Views\FoodRegimens\" />
     <Folder Include="Methods\" />
+    <Folder Include="Views\Workouts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />
