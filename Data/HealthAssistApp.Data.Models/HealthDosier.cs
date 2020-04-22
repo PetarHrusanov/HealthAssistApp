@@ -1,8 +1,13 @@
-﻿namespace HealthAssistApp.Data.Models
+﻿// <copyright file="HealthDosier.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Data.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+
     using HealthAssistApp.Data.Common.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.FoodModels;

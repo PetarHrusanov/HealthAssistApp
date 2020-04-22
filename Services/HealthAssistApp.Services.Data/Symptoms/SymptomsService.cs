@@ -10,16 +10,19 @@ namespace HealthAssistApp.Services.Data
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Common.Repositories;
+    using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
+    using HealthAssistApp.Services.Mapping;
 
     public class SymptomsService : ISymptomsServices
     {
         private readonly IRepository<UserSymptoms> userSymptomsRepository;
-        //private readonly IRepository<> userSymptomsRepository;
+        private readonly IRepository<Symptom> symptomsRepository;
 
-        public SymptomsService(IRepository<UserSymptoms> userSymptomsRepository)
+        public SymptomsService(IRepository<UserSymptoms> userSymptomsRepository, IRepository<Symptom> symptomsRepository)
         {
             this.userSymptomsRepository = userSymptomsRepository;
+            this.symptomsRepository = symptomsRepository;
         }
 
         public async Task<int> CreateUserSymptomAsync(string description, string systemName, string userId)
@@ -43,6 +46,14 @@ namespace HealthAssistApp.Services.Data
                 .Select(d => d.SystemName);
 
             return systemNames;
+        }
+
+        public IEnumerable<T> SymptomsDropDownMenu<T>()
+        {
+            IQueryable<Symptom> query =
+                this.symptomsRepository.All();
+
+            return query.To<T>().ToList();
         }
     }
 }

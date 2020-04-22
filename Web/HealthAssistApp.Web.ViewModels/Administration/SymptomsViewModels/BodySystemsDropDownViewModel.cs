@@ -4,6 +4,9 @@
 
 namespace HealthAssistApp.Web.ViewModels.Administration.SymptomsViewModels
 {
+    using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Mapping;
+
     public class BodySystemsDropDownViewModel
     {
         public int Id { get; set; }

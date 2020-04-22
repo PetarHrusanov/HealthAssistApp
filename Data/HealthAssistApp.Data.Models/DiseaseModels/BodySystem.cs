@@ -6,6 +6,7 @@ namespace HealthAssistApp.Data.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using HealthAssistApp.Data.Common.Models;
 
     public class BodySystem: BaseModel<int>

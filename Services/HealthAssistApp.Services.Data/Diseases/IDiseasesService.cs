@@ -17,5 +17,7 @@ namespace HealthAssistApp.Services.Data
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 
         public Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
+
+        IEnumerable<T> DiseasesDropDownMenu<T>();
     }
 }

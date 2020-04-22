@@ -8,16 +8,20 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Services.Data.BodySystems;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class BodySystemsController : AdministrationController
     {
         private readonly ApplicationDbContext db;
+        private readonly IBodySystemsService bodySystemsService;
 
-        public BodySystemsController(ApplicationDbContext db)
+        public BodySystemsController(ApplicationDbContext db, IBodySystemsService bodySystemsService)
         {
             this.db = db;
+            this.bodySystemsService = bodySystemsService;
         }
 
         public async Task<IActionResult> Index()
@@ -93,9 +97,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var bodySystem = await this.db.BodySystems.FindAsync(id);
-            this.db.BodySystems.Remove(bodySystem);
-            await this.db.SaveChangesAsync();
+            await this.bodySystemsService.DeleteByIdAsync(id);
             return this.RedirectToAction("Index");
         }
 

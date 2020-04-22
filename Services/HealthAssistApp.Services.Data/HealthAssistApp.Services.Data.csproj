@@ -24,4 +24,16 @@
     <ProjectReference Include="..\HealthAssistApp.Services.Mapping\HealthAssistApp.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Diseases\" />
+    <Folder Include="HealthDosiers\" />
+    <Folder Include="HealthParameters\" />
+    <Folder Include="Allergies\" />
+    <Folder Include="FoodRegimens\" />
+    <Folder Include="Symptoms\" />
+    <Folder Include="Recipes\" />
+    <Folder Include="Workouts\" />
+    <Folder Include="Settings\" />
+    <Folder Include="BodySystems\" />
+  </ItemGroup>
 </Project>

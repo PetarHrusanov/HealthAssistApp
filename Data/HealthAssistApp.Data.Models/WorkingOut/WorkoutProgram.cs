@@ -15,6 +15,7 @@
 
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get;set;}
 
         public ExerciseComplexity ExerciseComplexity { get; set; }

@@ -8,6 +8,7 @@ namespace HealthAssistApp.Services.Data
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
@@ -37,6 +38,14 @@ namespace HealthAssistApp.Services.Data
             return healthDosierId;
         }
 
+        public IEnumerable<T> DiseasesDropDownMenu<T>()
+        {
+            IQueryable<Disease> query =
+                this.diseaseRepository.All();
+
+            return query.To<T>().ToList();
+        }
+
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
             IQueryable<Disease> query =
@@ -63,13 +72,6 @@ namespace HealthAssistApp.Services.Data
                     d.Disease.GlycemicIndex,
                     d.Disease.DiseaseSymptoms,
                 });
-
-            //Id = dv.Id,
-            //        Name = dv.Name,
-            //        Description = dv.Description,
-            //        Advice = dv.Advice,
-            //        GlycemicIndex = dv.GlycemicIndex,
-            //        DiseaseSymptoms = dv.DiseaseSymptoms,
 
             return diseases.To<T>().ToList();
         }

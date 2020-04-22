@@ -12,5 +12,7 @@ namespace HealthAssistApp.Services.Data
         Task<int> CreateUserSymptomAsync(string description, string systemName, string userId);
 
         Task<IEnumerable<string>> GetSystemNameFromUserId(string userId);
+
+        IEnumerable<T> SymptomsDropDownMenu<T>();
     }
 }

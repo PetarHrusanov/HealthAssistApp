@@ -81,6 +81,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             var category = await this.db.Diseases
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return this.NotFound();
@@ -107,6 +108,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             }
 
             var disease = await this.db.Diseases.FindAsync(id);
+
             if (disease == null)
             {
                 return this.NotFound();

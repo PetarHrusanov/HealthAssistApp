@@ -11,6 +11,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.WorkingOut;
+    using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,17 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     public class DiseasesSymptomsController : AdministrationController
     {
         private readonly ApplicationDbContext db;
+        private readonly IDiseasesService diseasesService;
+        private readonly ISymptomsServices symptomsServices;
 
-        public DiseasesSymptomsController(ApplicationDbContext db)
+        public DiseasesSymptomsController(
+            ApplicationDbContext db,
+            IDiseasesService diseasesService,
+            ISymptomsServices symptomsServices)
         {
             this.db = db;
+            this.diseasesService = diseasesService;
+            this.symptomsServices = symptomsServices;
         }
 
         // Recipes Logic
@@ -41,17 +49,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var diseasesInput = await this.db.Diseases.Select(d => new DiseasesDropDownViewModel
-            {
-                Id = d.Id,
-                Name = d.Name,
-            }).ToListAsync() as IEnumerable<DiseasesDropDownViewModel>;
-
-            var symptomsInput = await this.db.Diseases.Select(d => new SymptomsDropDownViewModel
-            {
-                Id = d.Id,
-                Description = d.Description,
-            }).ToListAsync() as IEnumerable<SymptomsDropDownViewModel>;
+            var diseasesInput = this.diseasesService.DiseasesDropDownMenu<DiseasesDropDownViewModel>();
+            var symptomsInput = this.symptomsServices.SymptomsDropDownMenu<SymptomsDropDownViewModel>();
 
             var inputDiseaseSymptom = new DiseaseSymptomInputViewModel
             {

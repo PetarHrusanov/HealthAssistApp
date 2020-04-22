@@ -13,6 +13,7 @@ namespace HealthAssistApp.Web
     using HealthAssistApp.Data.Repositories;
     using HealthAssistApp.Data.Seeding;
     using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Services.Data.BodySystems;
     using HealthAssistApp.Services.Mapping;
     using HealthAssistApp.Services.Messaging;
     using HealthAssistApp.Web.ViewModels;
@@ -76,6 +77,7 @@ namespace HealthAssistApp.Web
             // Disease-related Services
             services.AddTransient<IDiseasesService, DiseasesService>();
             services.AddTransient<ISymptomsServices, SymptomsService>();
+            services.AddTransient<IBodySystemsService, BodySystemsService>();
 
             // HealthDosier-related Services
             services.AddTransient<IHealthDosiersService, HealthDosiersService>();
