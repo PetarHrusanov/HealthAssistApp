@@ -2,10 +2,10 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
-using System.ComponentModel.DataAnnotations;
-
 namespace HealthAssistApp.Web.ViewModels.BodySystems
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class BodySystemsInputViewModel
     {
         [Required]

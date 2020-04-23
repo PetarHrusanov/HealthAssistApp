@@ -60,14 +60,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(bodySystem);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var bodySystem = await this.db.BodySystems.FindAsync(id);
+            var bodySystem = this.bodySystemsService.GetById<BodySystemOverviewViewModel>(id);
             if (bodySystem == null)
             {
                 return this.NotFound();
@@ -87,8 +87,19 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(bodySystem);
-                await this.db.SaveChangesAsync();
+                await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
+
+                //if (bodySystem.ModifiedOn!=null)
+                //{
+                //    var modify = bodySystem.ModifiedOn;
+                //}
+
+                //await this.bodySystemsService.ModifyAsync(
+                //    bodySystem.Id,
+                //    bodySystem.Name,);
+
+                //this.db.Update(bodySystem);
+                //await this.db.SaveChangesAsync();
             }
 
             return this.RedirectToAction("Index");
@@ -102,8 +113,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             }
 
             var bodySystem = this.bodySystemsService.GetById<BodySystemOverviewViewModel>(id);
-            //var bodySystem = await this.db.BodySystems
-            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (bodySystem == null)
             {
                 return this.NotFound();
@@ -112,7 +121,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(bodySystem);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

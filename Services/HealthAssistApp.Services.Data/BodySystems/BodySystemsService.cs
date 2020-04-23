@@ -40,6 +40,17 @@ namespace HealthAssistApp.Services.Data.BodySystems
             return bodySystem;
         }
 
+        public async Task<int> ModifyAsync(int id, string name)
+        {
+            var bodySystem = await this.bodySystemsRepository
+                .All()
+                .FirstOrDefaultAsync(b => b.Id == id);
+            bodySystem.Name = name;
+            this.bodySystemsRepository.Update(bodySystem);
+            await this.bodySystemsRepository.SaveChangesAsync();
+            return bodySystem.Id;
+        }
+
         public async Task DeleteByIdAsync(int bodySystemId)
         {
             var bodySystem = await this.bodySystemsRepository
