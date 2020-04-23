@@ -8,16 +8,20 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Web.ViewModels.Diseases;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class DiseasesController : AdministrationController
     {
         private readonly ApplicationDbContext db;
+        private readonly IDiseasesService diseaseasesService;
 
-        public DiseasesController(ApplicationDbContext db)
+        public DiseasesController(ApplicationDbContext db, IDiseasesService diseaseasesService)
         {
             this.db = db;
+            this.diseaseasesService = diseaseasesService;
         }
 
         public async Task<IActionResult> Index()
@@ -31,10 +35,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Disease disease)
+        public async Task<IActionResult> Create(DiseaseInputViewModel disease)
         {
-            await this.db.AddAsync(disease);
-            await this.db.SaveChangesAsync();
+            await this.diseaseasesService.CreateAsync(
+                disease.Name,
+                disease.Description,
+                disease.Advice,
+                disease.GlycemicIndex);
+
             return this.RedirectToAction("Index");
         }
 

@@ -94,13 +94,13 @@ namespace HealthAssistApp.Services.Data
             return allergy.Id;
         }
 
-        public T ViewByUserId<T>(string userId)
+        public async Task<T> ViewByUserIdAsync<T>(string userId)
         {
-            var allergy = this.allergiesRepository
-                .All()
+            var allergy = await this.allergiesRepository
+                .AllAsNoTracking()
                 .Where(x => x.ApplicationUserId == userId)
                 .To<T>()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             return allergy;
         }
     }

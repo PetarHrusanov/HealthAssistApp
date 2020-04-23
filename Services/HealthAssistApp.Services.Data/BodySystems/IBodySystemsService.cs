@@ -12,11 +12,10 @@ namespace HealthAssistApp.Services.Data.BodySystems
     {
         public Task<int> CreateAsync(string name);
 
-        public T GetById<T>(int bodySystemId);
+        public Task<T> GetById<T>(int bodySystemId);
 
         public Task<int> ModifyAsync(int id, string name);
 
         public Task DeleteByIdAsync(int bodySystemId);
-
     }
 }

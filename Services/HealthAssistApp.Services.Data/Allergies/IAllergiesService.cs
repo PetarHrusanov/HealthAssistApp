@@ -33,6 +33,6 @@ namespace HealthAssistApp.Services.Data
             bool soybeans,
             string userId);
 
-        T ViewByUserId<T>(string userId);
+        Task<T> ViewByUserIdAsync<T>(string userId);
     }
 }

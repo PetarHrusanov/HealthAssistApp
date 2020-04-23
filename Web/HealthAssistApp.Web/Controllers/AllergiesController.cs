@@ -25,9 +25,9 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult ByUserId(string userId)
+        public async Task<IActionResult> ByUserIdAsync(string userId)
         {
-            var allergiesOutput = this.allergiesService.ViewByUserId<AllergiesViewModel>(userId);
+            var allergiesOutput = await this.allergiesService.ViewByUserIdAsync<AllergiesViewModel>(userId);
             return this.View(allergiesOutput);
         }
 

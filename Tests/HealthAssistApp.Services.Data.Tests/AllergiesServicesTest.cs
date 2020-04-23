@@ -12,13 +12,15 @@ namespace HealthAssistApp.Services.Data.Tests
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Xunit;
+    using HealthAssistApp.Web.ViewModels;
+    using HealthAssistApp.Web.ViewModels.Allergies;
 
     public class AllergiesServicesTest : BaseServicesTests
     {
         private IAllergiesService Service => this.ServiceProvider.GetRequiredService<IAllergiesService>();
 
         [Fact]
-        public async Task CreateAsync()
+        public async Task CreateAsyncTest()
         {
             var newAllergy = await Service.CreateAsync(
                 true,
@@ -36,7 +38,7 @@ namespace HealthAssistApp.Services.Data.Tests
         }
 
         [Fact]
-        public async Task GetByUserIdAsync()
+        public async Task GetByUserIdAsyncTest()
         {
             var newAllergy = await Service.CreateAsync(
                 true,
@@ -56,7 +58,7 @@ namespace HealthAssistApp.Services.Data.Tests
         }
 
         [Fact]
-        public async Task ModifyAsync()
+        public async Task ModifyAsyncTest()
         {
             var newAllergy = await Service.CreateAsync(
                 true,
@@ -94,7 +96,7 @@ namespace HealthAssistApp.Services.Data.Tests
         }
 
         [Fact]
-        public async Task ViewByIdAsync()
+        public async Task ViewByIdAsyncTest()
         {
             var newAllergy = await this.Service.CreateAsync(
                 true,
@@ -117,34 +119,12 @@ namespace HealthAssistApp.Services.Data.Tests
                 Peanuts = false,
                 Wheat = false,
                 Soybeans = false,
-                ApplicationUserId = "asd",
+                UserId = "asd",
             };
 
-            //var checkModel = this.Service.GetByUserId("ads");
-
-            AllergiesViewModel viewByUserIdModel = this.Service.ViewByUserId<AllergiesViewModel>("asd");
+            var getByUserId = this.Service.GetByUserId("asd");
+            var viewByUserIdModel = await this.Service.ViewByUserIdAsync<AllergiesViewModel>(getByUserId.ApplicationUserId);
             Assert.Same(checkModel, viewByUserIdModel);
         }
-    }
-
-    public class AllergiesViewModel : IMapFrom<Allergies>
-    {
-        public bool Milk { get; set; }
-
-        public bool Eggs { get; set; }
-
-        public bool Fish { get; set; }
-
-        public bool Crustacean { get; set; }
-
-        public bool TreeNuts { get; set; }
-
-        public bool Peanuts { get; set; }
-
-        public bool Wheat { get; set; }
-
-        public bool Soybeans { get; set; }
-
-        public string ApplicationUserId { get; set; }
     }
 }

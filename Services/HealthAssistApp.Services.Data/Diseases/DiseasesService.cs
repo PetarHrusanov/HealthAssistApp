@@ -12,7 +12,9 @@ namespace HealthAssistApp.Services.Data
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
+    using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
 
     public class DiseasesService: IDiseasesService
     {
@@ -23,6 +25,24 @@ namespace HealthAssistApp.Services.Data
         {
             this.diseaseRepository = diseaseRepository;
             this.healthDosierDiseaseRepository = healthDosierDiseaseRepository;
+        }
+
+        public async Task<int> CreateAsync(
+            string name,
+            string description,
+            string advice,
+            GlycemicIndex? index)
+        {
+            var newDisease = new Disease
+            {
+                Name = name,
+                Description = description,
+                Advice = advice,
+                GlycemicIndex = index,
+            };
+            await this.diseaseRepository.AddAsync(newDisease);
+            await this.diseaseRepository.SaveChangesAsync();
+            return newDisease.Id;
         }
 
         public async Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId)

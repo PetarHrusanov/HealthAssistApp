@@ -30,13 +30,13 @@ namespace HealthAssistApp.Services.Data.BodySystems
             return bodySystem.Id;
         }
 
-        public T GetById<T>(int bodySystemId)
+        public async Task<T> GetById<T>(int bodySystemId)
         {
-            var bodySystem = this.bodySystemsRepository
+            var bodySystem = await this.bodySystemsRepository
                 .All()
                 .Where(b => b.Id == bodySystemId)
                 .To<T>()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             return bodySystem;
         }
 

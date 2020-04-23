@@ -29,6 +29,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\HealthAssistApp.Data\HealthAssistApp.Data.csproj" />
     <ProjectReference Include="..\..\Services\HealthAssistApp.Services.Data\HealthAssistApp.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Web\HealthAssistApp.Web.ViewModels\HealthAssistApp.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Web\HealthAssistApp.Web\HealthAssistApp.Web.csproj" />
   </ItemGroup>
 
 </Project>
