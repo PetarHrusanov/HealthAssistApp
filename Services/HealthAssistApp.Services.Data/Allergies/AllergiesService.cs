@@ -96,8 +96,11 @@ namespace HealthAssistApp.Services.Data
 
         public T ViewByUserId<T>(string userId)
         {
-            var allergy = this.allergiesRepository.All().Where(x => x.ApplicationUserId == userId)
-                .To<T>().FirstOrDefault();
+            var allergy = this.allergiesRepository
+                .All()
+                .Where(x => x.ApplicationUserId == userId)
+                .To<T>()
+                .FirstOrDefault();
             return allergy;
         }
     }

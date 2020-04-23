@@ -9,7 +9,16 @@ namespace HealthAssistApp.Services.Data
 
     public interface IAllergiesService
     {
-        T ViewByUserId<T>(string userId);
+        Task<int> CreateAsync(
+            bool milk,
+            bool eggs,
+            bool fish,
+            bool crustacean,
+            bool treenuts,
+            bool peanuts,
+            bool wheat,
+            bool soybeans,
+            string userId);
 
         Allergies GetByUserId(string userId);
 
@@ -24,15 +33,6 @@ namespace HealthAssistApp.Services.Data
             bool soybeans,
             string userId);
 
-        Task<int> CreateAsync(
-            bool milk,
-            bool eggs,
-            bool fish,
-            bool crustacean,
-            bool treenuts,
-            bool peanuts,
-            bool wheat,
-            bool soybeans,
-            string userId);
+        T ViewByUserId<T>(string userId);
     }
 }

@@ -29,8 +29,8 @@ namespace HealthAssistApp.Services.Data
         {
             var healthDosierDisease = new HealthDosierDisease
             {
-                DiseaseId = diseaseId,
                 HealthDosierId = healthDosierId,
+                DiseaseId = diseaseId,
             };
 
             await this.healthDosierDiseaseRepository.AddAsync(healthDosierDisease);

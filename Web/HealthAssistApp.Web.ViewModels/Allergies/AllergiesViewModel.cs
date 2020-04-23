@@ -1,8 +1,9 @@
-﻿using System;
-using HealthAssistApp.Services.Mapping;
-
-namespace HealthAssistApp.Web.ViewModels.Allergies
+﻿namespace HealthAssistApp.Web.ViewModels.Allergies
 {
+    using System;
+
+    using HealthAssistApp.Services.Mapping;
+
     public class AllergiesViewModel : IMapFrom<HealthAssistApp.Data.Models.FoodModels.Allergies>
     {
         public string UserId { get; set; }

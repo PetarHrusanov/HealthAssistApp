@@ -10,6 +10,7 @@ namespace HealthAssistApp.Services.Data.BodySystems
 
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
 
     public class BodySystemsService : IBodySystemsService
@@ -19,6 +20,24 @@ namespace HealthAssistApp.Services.Data.BodySystems
         public BodySystemsService(IRepository<BodySystem> bodySystemsRepository)
         {
             this.bodySystemsRepository = bodySystemsRepository;
+        }
+
+        public async Task<int> CreateAsync(string name)
+        {
+            var bodySystem = new BodySystem { Name = name };
+            await this.bodySystemsRepository.AddAsync(bodySystem);
+            await this.bodySystemsRepository.SaveChangesAsync();
+            return bodySystem.Id;
+        }
+
+        public T GetById<T>(int bodySystemId)
+        {
+            var bodySystem = this.bodySystemsRepository
+                .All()
+                .Where(b => b.Id == bodySystemId)
+                .To<T>()
+                .FirstOrDefault();
+            return bodySystem;
         }
 
         public async Task DeleteByIdAsync(int bodySystemId)
@@ -31,14 +50,6 @@ namespace HealthAssistApp.Services.Data.BodySystems
                 bodySystemsRepository.Delete(bodySystem);
                 await this.bodySystemsRepository.SaveChangesAsync();
             }
-        }
-
-        public async Task<BodySystem> GetByIdAsync(int bodySystemId)
-        {
-            var bodySystem = await this.bodySystemsRepository
-                .All()
-                .FirstOrDefaultAsync(b => b.Id == bodySystemId);
-            return bodySystem;
         }
     }
 }

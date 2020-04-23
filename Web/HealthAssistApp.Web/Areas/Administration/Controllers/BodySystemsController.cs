@@ -10,6 +10,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Services.Data.BodySystems;
+    using HealthAssistApp.Web.ViewModels.BodySystems;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
@@ -35,11 +36,28 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BodySystem bodySystem)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(BodySystemsInputViewModel bodySystem)
         {
-            await this.db.AddAsync(bodySystem);
-            await this.db.SaveChangesAsync();
+            await this.bodySystemsService.CreateAsync(bodySystem.Name);
+
             return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return this.NotFound();
+            }
+
+            var bodySystem = await this.db.BodySystems.FindAsync(id);
+            if (bodySystem == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(bodySystem);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -76,15 +94,16 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var bodySystem = await this.db.BodySystems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var bodySystem = this.bodySystemsService.GetById<BodySystemOverviewViewModel>(id);
+            //var bodySystem = await this.db.BodySystems
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (bodySystem == null)
             {
                 return this.NotFound();
@@ -93,28 +112,13 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(bodySystem);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.bodySystemsService.DeleteByIdAsync(id);
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return this.NotFound();
-            }
-
-            var bodySystem = await this.db.BodySystems.FindAsync(id);
-            if (bodySystem == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.View(bodySystem);
-        }
     }
 }

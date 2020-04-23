@@ -11,13 +11,16 @@ namespace HealthAssistApp.Services.Data.Tests
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Repositories;
+    using HealthAssistApp.Services.Data.BodySystems;
     using HealthAssistApp.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Moq;
     using Recipes.Services.Data;
+    using Xunit;
 
-    public abstract class BaseServicesTests : IDisposable
+    public abstract class BaseServicesTests
     {
         protected BaseServicesTests()
         {
@@ -31,11 +34,11 @@ namespace HealthAssistApp.Services.Data.Tests
 
         protected ApplicationDbContext DbContext { get; set; }
 
-        public void Dispose()
-        {
-            this.DbContext.Database.EnsureDeleted();
-            this.SetServices();
-        }
+        //public void Dispose()
+        //{
+        //    this.DbContext.Database.EnsureDeleted();
+        //    this.SetServices();
+        //}
 
         private ServiceCollection SetServices()
         {
@@ -44,6 +47,7 @@ namespace HealthAssistApp.Services.Data.Tests
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
+            // da si mock-na User-a vmesto da puskam tova
             //services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
             //    .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -72,6 +76,7 @@ namespace HealthAssistApp.Services.Data.Tests
             // Disease-related Services
             services.AddTransient<IDiseasesService, DiseasesService>();
             services.AddTransient<ISymptomsServices, SymptomsService>();
+            services.AddTransient<IBodySystemsService, BodySystemsService>();
 
             // HealthDosier-related Services
             services.AddTransient<IHealthDosiersService, HealthDosiersService>();
