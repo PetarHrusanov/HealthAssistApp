@@ -26,7 +26,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return this.View(await this.db.Exercises.ToListAsync());
+            var exercises = await this.workOutsService.GetAll<ExerciseAdminDetailsViewModel>();
+            return this.View(exercises);
         }
 
         public async Task<IActionResult> Create()
@@ -80,15 +81,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var exercise = await this.workOutsService.GetByIdAsync<ExerciseAdminDetailsViewModel>(id);
             if (exercise == null)
             {
                 return this.NotFound();
@@ -97,14 +97,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(exercise);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises.FindAsync(id);
+            var exercise = await this.workOutsService.GetByIdAsync<ExerciseAdminDetailsViewModel>(id);
             if (exercise == null)
             {
                 return this.NotFound();
@@ -114,12 +114,12 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var exercise = await this.db.Exercises.FindAsync(id);
-            this.db.Exercises.Remove(exercise);
-            await this.db.SaveChangesAsync();
+            await this.workOutsService.DeleteByIdAsync(id);
+
             return this.RedirectToAction("Index");
         }
     }

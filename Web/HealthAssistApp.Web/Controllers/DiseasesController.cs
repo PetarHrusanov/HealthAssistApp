@@ -5,7 +5,7 @@
 namespace HealthAssistApp.Web.Controllers
 {
     using System;
-
+    using System.Threading.Tasks;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Diseases;
     using Microsoft.AspNetCore.Mvc;
@@ -19,11 +19,11 @@ namespace HealthAssistApp.Web.Controllers
             this.diseasesService = diseasesService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             var viewModel = new IndexDiseasesViewModel
             {
-                Diseases = this.diseasesService.GetAll<DiseaseViewModel>(),
+                Diseases = await this.diseasesService.GetAllAsync<DiseaseViewModel>(),
             };
             return this.View(viewModel);
         }

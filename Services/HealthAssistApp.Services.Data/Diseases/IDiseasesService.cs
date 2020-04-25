@@ -17,7 +17,7 @@ namespace HealthAssistApp.Services.Data
             string advice,
             GlycemicIndex? index);
 
-        IEnumerable<T> GetAll<T>(int? count = null);
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<T> GetByIdAsync<T>(int id);
 

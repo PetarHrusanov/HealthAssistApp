@@ -52,16 +52,14 @@ namespace HealthAssistApp.Services.Data
             return exercise.Id;
         }
 
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAll<T>()
         {
-            IQueryable<Exercise> query =
-                this.exercisesRepository.All();
-            if (count.HasValue)
-            {
-                query = query.Take(count.Value);
-            }
+            var query = await this.exercisesRepository
+                .All()
+                .To<T>()
+                .ToListAsync();
 
-            return query.To<T>().ToList();
+            return query;
         }
 
         public async Task<T> GetByIdAsync<T>(int id)

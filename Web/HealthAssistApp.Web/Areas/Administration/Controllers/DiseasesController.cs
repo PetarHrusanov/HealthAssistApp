@@ -27,7 +27,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return this.View(await this.db.Diseases.ToListAsync());
+            return this.View(await this.diseaseasesService.GetAllAsync<DiseaseAdminDetailsViewModel>());
         }
 
         public async Task<IActionResult> Create()

@@ -50,16 +50,15 @@ namespace HealthAssistApp.Services.Data
             return newDisease.Id;
         }
 
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            IQueryable<Disease> query =
-                this.diseaseRepository.All();
-            if (count.HasValue)
-            {
-                query = query.Take(count.Value);
-            }
+            var query = await
+                this.diseaseRepository
+                .All()
+                .To<T>()
+                .ToListAsync();
 
-            return query.To<T>().ToList();
+            return query;
         }
 
         public async Task<T> GetByIdAsync<T>(int id)

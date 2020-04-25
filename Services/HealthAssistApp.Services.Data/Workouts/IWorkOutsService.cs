@@ -14,7 +14,7 @@ namespace HealthAssistApp.Services.Data
     {
         Task<int> CreateExerciseAsync(string name, string instructions, ExerciseComplexity complexity);
 
-        IEnumerable<T> GetAll<T>(int? count = null);
+        Task<IEnumerable<T>> GetAll<T>();
 
         Task<T> GetByIdAsync<T>(int id);
 
