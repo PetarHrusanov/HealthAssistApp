@@ -12,6 +12,20 @@ namespace HealthAssistApp.Services.Data
 
     public interface IWorkOutsService
     {
+        Task<int> CreateExerciseAsync(string name, string instructions, ExerciseComplexity complexity);
+
+        IEnumerable<T> GetAll<T>(int? count = null);
+
+        Task<T> GetByIdAsync<T>(int id);
+
+        Task<int> ModifyAsync(
+            int id,
+            string name,
+            string instructions,
+            ExerciseComplexity complexity);
+
+        Task DeleteByIdAsync(int id);
+
         Task<int> CreateWorkoutProgramAsync(ExerciseComplexity complexity, string userId);
 
         public Task<int> GetWorkoutProgramsByHealthDosierId(string healthDosierId);

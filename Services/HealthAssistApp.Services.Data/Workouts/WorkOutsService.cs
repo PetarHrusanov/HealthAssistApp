@@ -35,6 +35,77 @@ namespace HealthAssistApp.Services.Data
             this.healthDosierRepository = healthDosierRepository;
         }
 
+        public async Task<int> CreateExerciseAsync(
+            string name,
+            string instructions,
+            ExerciseComplexity complexity)
+        {
+            var exercise = new Exercise
+            {
+                Name = name,
+                Instructions = instructions,
+                ExerciseComplexity = complexity,
+            };
+
+            await this.exercisesRepository.AddAsync(exercise);
+            await this.exercisesRepository.SaveChangesAsync();
+            return exercise.Id;
+        }
+
+        public IEnumerable<T> GetAll<T>(int? count = null)
+        {
+            IQueryable<Exercise> query =
+                this.exercisesRepository.All();
+            if (count.HasValue)
+            {
+                query = query.Take(count.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            var exercise = await this.exercisesRepository
+                .All()
+                .Where(d => d.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return exercise;
+        }
+
+        public async Task<int> ModifyAsync(
+            int id,
+            string name,
+            string instructions,
+            ExerciseComplexity complexity)
+        {
+            var exercise = await this.exercisesRepository
+                .All()
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
+            exercise.Name = name;
+            exercise.Instructions = instructions;
+            exercise.ExerciseComplexity = complexity;
+
+            this.exercisesRepository.Update(exercise);
+            await this.exercisesRepository.SaveChangesAsync();
+            return exercise.Id;
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var exercise = await this.exercisesRepository
+                .All()
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
+            this.exercisesRepository.Delete(exercise);
+            await this.exercisesRepository.SaveChangesAsync();
+        }
+
         public async Task<int> CreateWorkoutProgramAsync(ExerciseComplexity complexity, string userId)
         {
             var workoutProgram = new WorkoutProgram

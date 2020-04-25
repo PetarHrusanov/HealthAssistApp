@@ -40,5 +40,6 @@
     <Folder Include="Workouts\" />
     <Folder Include="BodySystems\" />
     <Folder Include="Administration\DiseasesViewModels\" />
+    <Folder Include="Administration\ExercisesViewModels\" />
   </ItemGroup>
 </Project>

@@ -8,16 +8,20 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models.WorkingOut;
+    using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class ExercisesController : AdministrationController
     {
         private readonly ApplicationDbContext db;
+        private readonly IWorkOutsService workOutsService;
 
-        public ExercisesController(ApplicationDbContext db)
+        public ExercisesController(ApplicationDbContext db, IWorkOutsService workOutsService)
         {
             this.db = db;
+            this.workOutsService = workOutsService;
         }
 
         public async Task<IActionResult> Index()
@@ -39,14 +43,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var exercise = await this.db.Exercises.FindAsync(id);
+            var exercise = await this.workOutsService.GetByIdAsync<ExerciseAdminMofidyViewModel>(id);
             if (exercise == null)
             {
                 return this.NotFound();
@@ -57,7 +61,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Exercise exercise)
+        public async Task<IActionResult> Edit(int id, ExerciseAdminMofidyViewModel exercise)
         {
             if (id != exercise.Id)
             {
@@ -66,8 +70,11 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(exercise);
-                await this.db.SaveChangesAsync();
+                await this.workOutsService.ModifyAsync(
+                    exercise.Id,
+                    exercise.Name,
+                    exercise.Instructions,
+                    exercise.ExerciseComplexity);
             }
 
             return this.RedirectToAction("Index");
