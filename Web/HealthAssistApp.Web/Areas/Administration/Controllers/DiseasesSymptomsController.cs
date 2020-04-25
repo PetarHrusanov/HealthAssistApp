@@ -13,6 +13,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data.Models.WorkingOut;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration;
+    using HealthAssistApp.Web.ViewModels.Administration.DiseasesSymptomsViewModels;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
