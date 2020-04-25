@@ -23,8 +23,12 @@ namespace HealthAssistApp.Services.Data
 
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 
+        IEnumerable<T> DiseasesDropDownMenu<T>();
+
         public Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
 
-        IEnumerable<T> DiseasesDropDownMenu<T>();
+        Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId);
+
+        Task DeleteDiseaseSymptomAsync(int diseaseId, int symptomId);
     }
 }

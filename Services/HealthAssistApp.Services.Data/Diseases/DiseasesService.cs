@@ -20,11 +20,16 @@ namespace HealthAssistApp.Services.Data
     {
         private readonly IRepository<Disease> diseaseRepository;
         private readonly IRepository<HealthDosierDisease> healthDosierDiseaseRepository;
+        private readonly IRepository<DiseaseSymptom> diseaseSymptomRepository;
 
-        public DiseasesService(IRepository<Disease> diseaseRepository, IRepository<HealthDosierDisease> healthDosierDiseaseRepository)
+        public DiseasesService(
+            IRepository<Disease> diseaseRepository,
+            IRepository<HealthDosierDisease> healthDosierDiseaseRepository,
+            IRepository<DiseaseSymptom> diseaseSymptomRepository)
         {
             this.diseaseRepository = diseaseRepository;
             this.healthDosierDiseaseRepository = healthDosierDiseaseRepository;
+            this.diseaseRepository = diseaseRepository;
         }
 
         public async Task<int> CreateAsync(
@@ -43,27 +48,6 @@ namespace HealthAssistApp.Services.Data
             await this.diseaseRepository.AddAsync(newDisease);
             await this.diseaseRepository.SaveChangesAsync();
             return newDisease.Id;
-        }
-
-        public async Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId)
-        {
-            var healthDosierDisease = new HealthDosierDisease
-            {
-                HealthDosierId = healthDosierId,
-                DiseaseId = diseaseId,
-            };
-
-            await this.healthDosierDiseaseRepository.AddAsync(healthDosierDisease);
-            await this.healthDosierDiseaseRepository.SaveChangesAsync();
-            return healthDosierId;
-        }
-
-        public IEnumerable<T> DiseasesDropDownMenu<T>()
-        {
-            IQueryable<Disease> query =
-                this.diseaseRepository.All();
-
-            return query.To<T>().ToList();
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -102,5 +86,49 @@ namespace HealthAssistApp.Services.Data
                 .To<T>().FirstOrDefault();
             return disease;
         }
+
+        public IEnumerable<T> DiseasesDropDownMenu<T>()
+        {
+            IQueryable<Disease> query =
+                this.diseaseRepository.All();
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId)
+        {
+            var healthDosierDisease = new HealthDosierDisease
+            {
+                HealthDosierId = healthDosierId,
+                DiseaseId = diseaseId,
+            };
+
+            await this.healthDosierDiseaseRepository.AddAsync(healthDosierDisease);
+            await this.healthDosierDiseaseRepository.SaveChangesAsync();
+            return healthDosierId;
+        }
+
+        public async Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId)
+        {
+            var diseaseSymptom = new DiseaseSymptom
+            {
+                DiseaseId = diseaseId,
+                SymptomId = symptomId,
+            };
+
+            await this.diseaseSymptomRepository.AddAsync(diseaseSymptom);
+            await this.diseaseSymptomRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteDiseaseSymptomAsync(int diseaseId, int symptomId)
+        {
+            var diseaseSymptom = await this.diseaseSymptomRepository
+                .All()
+                .Where(d => d.DiseaseId == diseaseId && d.SymptomId == symptomId)
+                .FirstOrDefaultAsync();
+            this.diseaseSymptomRepository.Delete(diseaseSymptom);
+            await this.diseaseSymptomRepository.SaveChangesAsync();
+        }
+
     }
 }
