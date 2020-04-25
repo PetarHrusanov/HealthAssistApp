@@ -39,5 +39,6 @@
     <Folder Include="FoodRegimens\" />
     <Folder Include="Workouts\" />
     <Folder Include="BodySystems\" />
+    <Folder Include="Administration\DiseasesViewModels\" />
   </ItemGroup>
 </Project>

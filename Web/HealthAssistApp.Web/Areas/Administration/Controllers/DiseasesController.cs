@@ -9,6 +9,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Web.ViewModels.Administration.DiseasesViewModel;
     using HealthAssistApp.Web.ViewModels.Diseases;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -46,14 +47,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var disease = await this.db.Diseases.FindAsync(id);
+            var disease = await this.diseaseasesService.GetByIdAsync<DiseaseAdminModifyViewModel>(id);
             if (disease == null)
             {
                 return this.NotFound();
@@ -64,7 +65,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Disease disease)
+        public async Task<IActionResult> Edit(int id, DiseaseAdminModifyViewModel disease)
         {
             if (id != disease.Id)
             {
@@ -73,49 +74,52 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(disease);
-                await this.db.SaveChangesAsync();
+                await this.diseaseasesService.ModifyDiseaseAsync(
+                    disease.Id,
+                    disease.Name,
+                    disease.Description,
+                    disease.Advice,
+                    disease.IsDeleted);
             }
 
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var category = await this.db.Diseases
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var disease = await this.diseaseasesService.GetByIdAsync<DiseaseAdminDetailsViewModel>(id);
 
-            if (category == null)
+            if (disease == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(category);
+            return this.View(disease);
         }
 
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var disease = await this.db.Diseases.FindAsync(id);
-            this.db.Diseases.Remove(disease);
-            await this.db.SaveChangesAsync();
+            await this.diseaseasesService.DeleteByIdAsync(id);
+
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var disease = await this.db.Diseases.FindAsync(id);
+            var disease = await this.diseaseasesService.GetByIdAsync<DiseaseAdminDetailsViewModel>(id);
 
             if (disease == null)
             {

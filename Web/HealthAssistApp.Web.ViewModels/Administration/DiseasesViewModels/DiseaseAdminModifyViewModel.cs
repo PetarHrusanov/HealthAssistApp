@@ -1,33 +1,33 @@
-﻿// <copyright file="DiseaseAdminDetailsViewModel.cs" company="HealthAssistApp">
+﻿// <copyright file="DiseaseAdminModifyViewModel.cs" company="HealthAssistApp">
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
-namespace HealthAssistApp.Web.ViewModels.Diseases
+namespace HealthAssistApp.Web.ViewModels.Administration.DiseasesViewModel
 {
-    using System;
+    using System.ComponentModel.DataAnnotations;
 
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
 
-    public class DiseaseAdminDetailsViewModel : IMapFrom<Disease>
+    public class DiseaseAdminModifyViewModel : IMapFrom<Disease>, IMapTo<Disease>
     {
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string Name { get; set; }
 
+        [Required]
+        [MaxLength(4000)]
         public string Description { get; set; }
 
+        [Required]
+        [MaxLength(4000)]
         public string Advice { get; set; }
 
         public GlycemicIndex? GlycemicIndex { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
-
         public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
     }
 }

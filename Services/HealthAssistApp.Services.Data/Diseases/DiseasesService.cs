@@ -62,6 +62,17 @@ namespace HealthAssistApp.Services.Data
             return query.To<T>().ToList();
         }
 
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            var disease = await this.diseaseRepository
+                .All()
+                .Where(d => d.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return disease;
+        }
+
         public IEnumerable<T> GetByHealthDosier<T>(string healthDosierId)
         {
             var diseases =
@@ -85,6 +96,39 @@ namespace HealthAssistApp.Services.Data
             var disease = this.diseaseRepository.All().Where(x => x.Name == name)
                 .To<T>().FirstOrDefault();
             return disease;
+        }
+
+        public async Task<int> ModifyDiseaseAsync(
+       int id,
+       string name,
+       string description,
+       string advice,
+       bool isDeleted)
+        {
+            var disease = await this.diseaseRepository
+                .All()
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
+            disease.Name = name;
+            disease.Description = description;
+            disease.Advice = advice;
+            disease.IsDeleted = isDeleted;
+
+            this.diseaseRepository.Update(disease);
+            await this.diseaseRepository.SaveChangesAsync();
+            return disease.Id;
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var disease = await this.diseaseRepository
+                .All()
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+
+            this.diseaseRepository.Delete(disease);
+            await this.diseaseRepository.SaveChangesAsync();
         }
 
         public IEnumerable<T> DiseasesDropDownMenu<T>()
@@ -129,6 +173,5 @@ namespace HealthAssistApp.Services.Data
             this.diseaseSymptomRepository.Delete(diseaseSymptom);
             await this.diseaseSymptomRepository.SaveChangesAsync();
         }
-
     }
 }

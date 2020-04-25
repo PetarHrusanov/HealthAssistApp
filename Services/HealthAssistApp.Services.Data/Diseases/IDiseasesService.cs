@@ -19,13 +19,24 @@ namespace HealthAssistApp.Services.Data
 
         IEnumerable<T> GetAll<T>(int? count = null);
 
+        Task<T> GetByIdAsync<T>(int id);
+
         T GetByName<T>(string name);
 
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 
+        Task<int> ModifyDiseaseAsync(
+            int id,
+            string name,
+            string description,
+            string advice,
+            bool isDeleted);
+
+        Task DeleteByIdAsync(int id);
+
         IEnumerable<T> DiseasesDropDownMenu<T>();
 
-        public Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
+        Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
 
         Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId);
 
