@@ -7,6 +7,7 @@ namespace HealthAssistApp.Services.Data
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data.Models.Enums;
 
     public interface IDiseasesService

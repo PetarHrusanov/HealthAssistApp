@@ -9,22 +9,27 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.WorkingOut;
+    using HealthAssistApp.Services.Data;
+    using HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class RecipesController : AdministrationController
     {
         private readonly ApplicationDbContext db;
+        private readonly IRecipesService recipesService;
 
-        public RecipesController(ApplicationDbContext db)
+        public RecipesController(ApplicationDbContext db, IRecipesService recipesService)
         {
             this.db = db;
+            this.recipesService = recipesService;
         }
 
         // Recipes Logic
         public async Task<IActionResult> Index()
         {
-            return this.View(await this.db.Recipes.ToListAsync());
+            var recipes = await this.recipesService.GetAllAsync<RecipeAdminDetailsViewModel>();
+            return this.View(recipes);
         }
 
         public async Task<IActionResult> Create()
@@ -34,21 +39,28 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Recipe recipes)
+        public async Task<IActionResult> Create(RecipesAdminInputViewModel recipe)
         {
-            await this.db.AddAsync(recipes);
-            await this.db.SaveChangesAsync();
+            await this.recipesService.CreateAsync(
+                recipe.Name,
+                recipe.InstructionForPreparation,
+                recipe.ImageUrl,
+                recipe.Vegan,
+                recipe.Vegetarian,
+                recipe.PartOfMeal,
+                recipe.GlycemicIndex,
+                recipe.Calories);
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var recipe = await this.db.Recipes.FindAsync(id);
+            var recipe = await this.recipesService.GetByIdAsyn<RecipesAdminModifyViewModel>(id);
             if (recipe == null)
             {
                 return this.NotFound();
@@ -75,15 +87,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var recipe = await this.db.Recipes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var recipe = await this.recipesService.GetByIdAsyn<RecipeAdminDetailsViewModel>(id);
             if (recipe == null)
             {
                 return this.NotFound();
@@ -92,14 +103,14 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(recipe);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return this.NotFound();
             }
 
-            var recipe = await this.db.Recipes.FindAsync(id);
+            var recipe = await this.recipesService.GetByIdAsyn<RecipeAdminDetailsViewModel>(id);
             if (recipe == null)
             {
                 return this.NotFound();
@@ -109,12 +120,11 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var recipe = await this.db.Recipes.FindAsync(id);
-            this.db.Recipes.Remove(recipe);
-            await this.db.SaveChangesAsync();
+            await this.recipesService.DeleteByIdAsync(id);
             return this.RedirectToAction("Index");
         }
     }

@@ -24,11 +24,11 @@ namespace HealthAssistApp.Web.Controllers
             this.dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async System.Threading.Tasks.Task<IActionResult> IndexAsync()
         {
             var viewModel = new IndexRecipesViewModel
             {
-                Recipes = this.recipesService.GetAll<RecipeViewModel>(),
+                Recipes = await this.recipesService.GetAllAsync<RecipeViewModel>(),
             };
             return this.View(viewModel);
         }
