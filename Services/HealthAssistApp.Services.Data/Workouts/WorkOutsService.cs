@@ -115,10 +115,10 @@ namespace HealthAssistApp.Services.Data
             await this.workoutRepository.AddAsync(workoutProgram);
             await this.workoutRepository.SaveChangesAsync();
 
-            List<Exercise> exercises = this.exercisesRepository
+            var exercises = await this.exercisesRepository
                 .All()
                 .Where(e => e.ExerciseComplexity == complexity)
-                .ToList();
+                .ToListAsync();
 
             foreach (var exercise in exercises)
             {

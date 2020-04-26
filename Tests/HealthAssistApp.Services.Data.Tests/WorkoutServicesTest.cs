@@ -57,15 +57,15 @@
             Assert.Null(secondCheck);
         }
 
-        //[Fact]
-        //public async Task CreateDiseaseSymptomAsync()
-        //{
-        //    await this.Service.CreateDiseaseSymptomAsync(1, 2);
+        [Fact]
+        public async Task CreateWorkoutProgramAsync()
+        {
+            await this.Service.CreateDiseaseSymptomAsync(1, 2);
 
-        //    var checkModel = await this.DbContext.DiseaseSymptoms
-        //        .FirstOrDefaultAsync(a => a.DiseaseId == 1 && a.SymptomId == 2);
-        //    Assert.NotNull(checkModel);
-        //}
+            var checkModel = await this.DbContext.DiseaseSymptoms
+                .FirstOrDefaultAsync(a => a.DiseaseId == 1 && a.SymptomId == 2);
+            Assert.NotNull(checkModel);
+        }
 
         //[Fact]
         //public async Task DeleteDiseaseSymptomAsync()
