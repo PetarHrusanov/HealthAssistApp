@@ -10,6 +10,7 @@ namespace HealthAssistApp.Web.Controllers
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
+    using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using HealthAssistApp.Web.ViewModels.Diseases;
@@ -58,7 +59,7 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthDosier = this.healthDosiersService.GetById(userId);
+            var healthDosier = await this.healthDosiersService.GetByUserIdAsync(userId);
 
             if (healthDosier == null)
             {
@@ -273,7 +274,7 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> HealthDosierFinalising()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthDosier = this.healthDosiersService.GetById(userId);
+            var healthDosier = await this.healthDosiersService.GetByUserIdAsync(userId);
             if (healthDosier != null)
             {
                 return this.RedirectToAction("Index");
@@ -287,7 +288,7 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> HealthDosierFinalising(HealthDosierInputModel inputModel)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var healthDosierCheck = this.healthDosiersService.GetById(userId);
+            var healthDosierCheck = await this.healthDosiersService.GetByUserIdAsync(userId);
             if (healthDosierCheck != null)
             {
                 return this.RedirectToAction("Index");

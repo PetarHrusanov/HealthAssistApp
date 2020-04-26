@@ -2,11 +2,12 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
-using System.Threading.Tasks;
-using HealthAssistApp.Data.Models;
-
 namespace HealthAssistApp.Services.Data
 {
+    using System.Threading.Tasks;
+
+    using HealthAssistApp.Data.Models;
+
     public interface IHealthDosiersService
     {
         //IEnumerable<T> GetAll<T>(int? count = null);
@@ -20,7 +21,11 @@ namespace HealthAssistApp.Services.Data
             int allergiesId,
             string userId);
 
-        HealthDosier GetById(string userId);
+        Task<T> GetByIdAsync<T>(string userId);
+
+        Task<string> GetIdByUserId(string userId);
+
+        Task<HealthDosier> GetByUserIdAsync(string userId);
 
         //IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 

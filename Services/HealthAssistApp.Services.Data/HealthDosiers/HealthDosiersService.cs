@@ -7,8 +7,11 @@ namespace HealthAssistApp.Services.Data
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
 
     public class HealthDosiersService : IHealthDosiersService
     {
@@ -48,9 +51,34 @@ namespace HealthAssistApp.Services.Data
             return healthDosier.Id;
         }
 
-        public HealthDosier GetById(string userId)
+        public Task<T> GetByIdAsync<T>(string userId)
         {
-            var healthDosier = this.healthDosierRepository.All().Where(x => x.ApplicationUserId == userId).FirstOrDefault();
+            var healthDosier = this.healthDosierRepository
+                .All()
+                .Where(h => h.ApplicationUserId == userId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return healthDosier;
+        }
+
+        public async Task<string> GetIdByUserId(string userId)
+        {
+            var healthDosierId = await this.healthDosierRepository
+                .All()
+                .Where(u => u.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
+
+            return healthDosierId.Id;
+        }
+
+        public async Task<HealthDosier> GetByUserIdAsync(string userId)
+        {
+            var healthDosier = await this.healthDosierRepository
+                .All()
+                .Where(h => h.ApplicationUserId == userId)
+                .FirstOrDefaultAsync();
+
             return healthDosier;
         }
     }
