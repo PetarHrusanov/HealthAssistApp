@@ -79,6 +79,35 @@ namespace Recipes.Services.Data
             return recipe;
         }
 
+        public async Task<int> ModifyAsync(
+            int id,
+            string name,
+            string instructionForPreparation,
+            string imageUrl,
+            bool vegan,
+            bool vegetarian,
+            PartOfMeal partOfMeal,
+            GlycemicIndex glycemicIndex,
+            int calories)
+        {
+            var recipe = await this.recipesRepository
+                .All()
+                .Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
+            recipe.Name = name;
+            recipe.InstructionForPreparation = instructionForPreparation;
+            recipe.ImageUrl = imageUrl;
+            recipe.Vegan = vegan;
+            recipe.Vegetarian = vegetarian;
+            recipe.PartOfMeal = partOfMeal;
+            recipe.GlycemicIndex = glycemicIndex;
+            recipe.Calories = calories;
+
+            this.recipesRepository.Update(recipe);
+            await this.recipesRepository.SaveChangesAsync();
+            return recipe.Id;
+        }
+
         public async Task DeleteByIdAsync(int id)
         {
             var recipe = await this.recipesRepository

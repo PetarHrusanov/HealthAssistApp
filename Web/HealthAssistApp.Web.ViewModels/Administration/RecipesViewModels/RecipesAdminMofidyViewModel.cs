@@ -6,10 +6,11 @@ namespace HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
+    using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.Enums;
+    using HealthAssistApp.Services.Mapping;
 
-    public class RecipesAdminModifyViewModel
+    public class RecipesAdminModifyViewModel : IMapFrom<Recipe>
     {
         public int Id { get; set; }
 

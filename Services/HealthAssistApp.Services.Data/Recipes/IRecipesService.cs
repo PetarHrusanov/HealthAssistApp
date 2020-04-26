@@ -28,6 +28,17 @@ namespace HealthAssistApp.Services.Data
 
         T GetByName<T>(string name);
 
+        Task<int> ModifyAsync(
+            int id,
+            string name,
+            string instructionForPreparation,
+            string imageUrl,
+            bool vegan,
+            bool vegetarian,
+            PartOfMeal partOfMeal,
+            GlycemicIndex glycemicIndex,
+            int calories);
+
         Task DeleteByIdAsync(int id);
     }
 }

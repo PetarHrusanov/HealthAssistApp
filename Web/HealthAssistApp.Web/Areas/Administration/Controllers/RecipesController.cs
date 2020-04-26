@@ -71,7 +71,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Recipe recipe)
+        public async Task<IActionResult> Edit(int id, RecipesAdminModifyViewModel recipe)
         {
             if (id != recipe.Id)
             {
@@ -80,8 +80,16 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             if (this.ModelState.IsValid)
             {
-                this.db.Update(recipe);
-                await this.db.SaveChangesAsync();
+                await this.recipesService.ModifyAsync(
+                    recipe.Id,
+                    recipe.Name,
+                    recipe.InstructionForPreparation,
+                    recipe.ImageUrl,
+                    recipe.Vegan,
+                    recipe.Vegetarian,
+                    recipe.PartOfMeal,
+                    recipe.GlycemicIndex,
+                    recipe.Calories);
             }
 
             return this.RedirectToAction("Index");
