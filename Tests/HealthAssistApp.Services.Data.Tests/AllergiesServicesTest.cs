@@ -14,6 +14,7 @@ namespace HealthAssistApp.Services.Data.Tests
     using Xunit;
     using HealthAssistApp.Web.ViewModels;
     using HealthAssistApp.Web.ViewModels.Allergies;
+    using AutoMapper;
 
     public class AllergiesServicesTest : BaseServicesTests
     {
@@ -98,6 +99,35 @@ namespace HealthAssistApp.Services.Data.Tests
         [Fact]
         public async Task ViewByIdAsyncTest()
         {
+            var mockMapper = new Mock<IMapper>();
+            mockMapper.Setup(x => x.Map<AllergiesViewModel>(It.IsAny<Allergies>()))
+                .Returns((Allergies source) => new AllergiesViewModel() {
+                    UserId = source.ApplicationUserId,
+                    Milk = source.Milk,
+                    Eggs = source.Eggs,
+                    Fish = source.Fish,
+                    Crustacean = source.Crustacean,
+                    TreeNuts = source.TreeNuts,
+                    Peanuts = source.Peanuts,
+                    Wheat = source.Wheat,
+                    Soybeans = source.Soybeans,
+                });
+
+            //var mockMapperTwo = new Mock<IMapper>();
+            //mockMapper.Setup(x => x.Map<Allergies>(It.IsAny<AllergiesViewModel>()))
+            //    .Returns((Allergies source) => new AllergiesViewModel()
+            //    {
+            //        UserId = source.ApplicationUserId,
+            //        Milk = source.Milk,
+            //        Eggs = source.Eggs,
+            //        Fish = source.Fish,
+            //        Crustacean = source.Crustacean,
+            //        TreeNuts = source.TreeNuts,
+            //        Peanuts = source.Peanuts,
+            //        Wheat = source.Wheat,
+            //        Soybeans = source.Soybeans,
+            //    });
+
             var newAllergy = await this.Service.CreateAsync(
                 true,
                 true,

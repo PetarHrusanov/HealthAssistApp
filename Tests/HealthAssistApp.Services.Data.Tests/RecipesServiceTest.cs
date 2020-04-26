@@ -27,7 +27,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 GlycemicIndex.Medium,
                 100);
 
-            var checkModel = this.DbContext.Recipes.FirstOrDefaultAsync(a => a.Id == recipesId);
+            var checkModel = await this.DbContext.Recipes.FirstOrDefaultAsync(a => a.Id == recipesId);
             Assert.NotNull(checkModel);
         }
 
@@ -66,14 +66,25 @@ namespace HealthAssistApp.Services.Data.Tests
             Assert.Equal(110, checkModel.Calories);
         }
 
-        //[Fact]
-        //public async Task DeleteByIdAsync()
-        //{
-        //    var diabetesId = await this.Service.CreateAsync(
-        //        "Diabetes",
-        //        "Malko insulin",
-        //        "Ne qjte sladko",
-        //        null);
+        [Fact]
+        public async Task DeleteAsyncTest()
+        {
+            var recipesId = await this.Service.CreateAsync(
+                "Chicken",
+                "Cut the chicken and boil it",
+                "randomUrl",
+                false,
+                false,
+                PartOfMeal.Snack,
+                GlycemicIndex.Medium,
+                100);
+
+            var checkModel = await this.DbContext.Recipes.FirstOrDefaultAsync(a => a.Id == recipesId);
+            Assert.NotNull(checkModel);
+            await this.Service.DeleteByIdAsync(recipesId);
+            var secondCheck = await this.DbContext.Recipes.FirstOrDefaultAsync(a => a.Id == recipesId);
+            Assert.Null(secondCheck);
+        }
 
         //    var checkModel = await this.DbContext.Diseases.FirstOrDefaultAsync(a => a.Id == diabetesId);
         //    Assert.NotNull(checkModel);
