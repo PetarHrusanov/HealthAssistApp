@@ -60,21 +60,46 @@
         [Fact]
         public async Task CreateWorkoutProgramAsync()
         {
-            await this.Service.CreateDiseaseSymptomAsync(1, 2);
+            var exerciseOne = await this.Service.CreateExerciseAsync(
+                "Push Up-s",
+                "Place your hands on the ground",
+                HealthAssistApp.Data.Models.Enums.ExerciseComplexity.Medium);
 
-            var checkModel = await this.DbContext.DiseaseSymptoms
-                .FirstOrDefaultAsync(a => a.DiseaseId == 1 && a.SymptomId == 2);
-            Assert.NotNull(checkModel);
+            var checkModelOne = await this.DbContext.Exercises.FirstOrDefaultAsync(a => a.Id == exerciseOne);
+            Assert.NotNull(checkModelOne);
+
+            var exerciseTw0 = await this.Service.CreateExerciseAsync(
+                "Jumps",
+                "Jump a few times",
+                HealthAssistApp.Data.Models.Enums.ExerciseComplexity.Medium);
+
+            var checkModelTwo = await this.DbContext.Exercises.FirstOrDefaultAsync(a => a.Id == exerciseTw0);
+            Assert.NotNull(checkModelTwo);
+
+            var exerciseThree = await this.Service.CreateExerciseAsync(
+                "Running",
+                "Run for 2 km",
+                HealthAssistApp.Data.Models.Enums.ExerciseComplexity.Medium);
+
+            var checkModelThree = await this.DbContext.Exercises.FirstOrDefaultAsync(a => a.Id == exerciseThree);
+            Assert.NotNull(checkModelThree);
+
+            var exerciseFour = await this.Service.CreateExerciseAsync(
+                "Sit-ups",
+                "Do three sit-ups",
+                HealthAssistApp.Data.Models.Enums.ExerciseComplexity.Low);
+
+            var checkModelFour = await this.DbContext.Exercises.FirstOrDefaultAsync(a => a.Id == exerciseFour);
+            Assert.NotNull(checkModelThree);
+
+            var workOutProgramId = await this.Service.CreateWorkoutProgramAsync(
+                HealthAssistApp.Data.Models.Enums.ExerciseComplexity.Medium,
+                "TestUserId");
+
+            var checkWorkoutsModel = this.DbContext.WorkoutPrograms.FirstOrDefaultAsync(a => a.Id == workOutProgramId);
+            Assert.NotNull(checkWorkoutsModel);
         }
 
-        //[Fact]
-        //public async Task DeleteDiseaseSymptomAsync()
-        //{
-        //    await this.Service.CreateDiseaseSymptomAsync(1, 2);
-        //    await this.Service.DeleteDiseaseSymptomAsync(1, 2);
-        //    var checkModel = await this.DbContext.DiseaseSymptoms
-        //        .FirstOrDefaultAsync(a => a.DiseaseId == 1 && a.SymptomId == 2);
-        //    Assert.Null(checkModel);
-        //}
+        // imam da napravq oshte mnogo services tuk 
     }
 }
