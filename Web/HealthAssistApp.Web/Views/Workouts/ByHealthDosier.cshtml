@@ -11,9 +11,20 @@
 </div>
 @foreach (var exercise in Model.Exercises)
 {
-    <div class="col-sm-4">@exercise.Name</div>
-    <div class="col-sm-4">@exercise.Instructions</div>
-    <div class="col-sm-4">@exercise.ExerciseComplexity</div>
+    <h2 class="col-sm-4">@exercise.Name</h2>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => exercise.Instructions)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => exercise.Instructions)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => exercise.ExerciseComplexity)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => exercise.ExerciseComplexity)
+    </dd>
+    <hr />
 }
 <nav>
     <ul class="pagination justify-content-center">
