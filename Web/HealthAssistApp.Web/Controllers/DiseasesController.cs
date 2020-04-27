@@ -6,6 +6,7 @@ namespace HealthAssistApp.Web.Controllers
 {
     using System;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Diseases;
     using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,9 @@ namespace HealthAssistApp.Web.Controllers
             return this.View(viewModel);
         }
 
-        public IActionResult ByName(string name)
+        public async Task<IActionResult> ByNameAsync(string name)
         {
-            var viewModel =
-                this.diseasesService.GetByName<DiseaseViewModel>(name);
+            var viewModel = await this.diseasesService.GetByNameAsync<DiseaseViewModel>(name);
             return this.View(viewModel);
         }
     }

@@ -15,6 +15,7 @@ namespace HealthAssistApp.Services.Data.Tests
     using HealthAssistApp.Web.ViewModels;
     using HealthAssistApp.Web.ViewModels.Allergies;
     using AutoMapper;
+    using Microsoft.EntityFrameworkCore;
 
     public class AllergiesServicesTest : BaseServicesTests
     {
@@ -52,8 +53,8 @@ namespace HealthAssistApp.Services.Data.Tests
                 false,
                 "asd");
 
-            var checkModel = this.DbContext.Allergies.FirstOrDefault(a => a.Id == newAllergy);
-            var getByUserId = this.Service.GetByUserId("asd");
+            var checkModel = await this.DbContext.Allergies.FirstOrDefaultAsync(a => a.Id == newAllergy);
+            var getByUserId = await this.Service.GetByUserIdAsync("asd");
 
             Assert.Same(checkModel, getByUserId);
         }
@@ -84,7 +85,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 false,
                 "asd");
 
-            var getByUserId = this.Service.GetByUserId("asd");
+            var getByUserId = await this.Service.GetByUserIdAsync("asd");
 
             Assert.False(getByUserId.Milk);
             Assert.False(getByUserId.Eggs);
@@ -152,7 +153,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 UserId = "asd",
             };
 
-            var getByUserId = this.Service.GetByUserId("asd");
+            var getByUserId = await this.Service.GetByUserIdAsync("asd");
             var viewByUserIdModel = await this.Service.ViewByUserIdAsync<AllergiesViewModel>(getByUserId.ApplicationUserId);
             Assert.Same(checkModel, viewByUserIdModel);
         }

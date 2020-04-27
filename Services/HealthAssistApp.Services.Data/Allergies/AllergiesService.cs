@@ -25,7 +25,6 @@ namespace HealthAssistApp.Services.Data
             this.healthDosierRepository = healthDosierRepository;
         }
 
-        /// <inheritdoc/>
         public async Task<int> CreateAsync(
             bool milk,
             bool eggs,
@@ -55,12 +54,12 @@ namespace HealthAssistApp.Services.Data
             return allergies.Id;
         }
 
-        public Allergies GetByUserId(string userId)
+        public async Task<Allergies> GetByUserIdAsync(string userId)
         {
-            var allergies = this.allergiesRepository
+            var allergies = await this.allergiesRepository
                 .All()
                 .Where(a => a.ApplicationUserId == userId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return allergies;
         }

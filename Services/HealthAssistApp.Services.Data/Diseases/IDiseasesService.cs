@@ -22,7 +22,7 @@ namespace HealthAssistApp.Services.Data
 
         Task<T> GetByIdAsync<T>(int id);
 
-        T GetByName<T>(string name);
+        Task<T> GetByNameAsync<T>(string name);
 
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 

@@ -32,9 +32,9 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Modify(string userId)
+        public async Task<IActionResult> ModifyAsync(string userId)
         {
-            var userAllergies = this.allergiesService.GetByUserId(userId);
+            var userAllergies = await this.allergiesService.GetByUserIdAsync(userId);
             return this.View(userId);
         }
 

@@ -20,7 +20,7 @@ namespace HealthAssistApp.Services.Data
             bool soybeans,
             string userId);
 
-        Allergies GetByUserId(string userId);
+        Task<Allergies> GetByUserIdAsync(string userId);
 
         Task<int> ModifyAsync(
             bool milk,

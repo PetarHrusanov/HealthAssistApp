@@ -66,7 +66,7 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("HealthParametersInput");
             }
 
-            var allergies = this.allergiesService.GetByUserId(userId);
+            var allergies = await this.allergiesService.GetByUserIdAsync(userId);
 
             // Health Parameters Logic
             var healthParameters = this.healthParametersService.ViewByUserId<HealthParametersViewModel>(userId);
@@ -149,7 +149,7 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> AllergiesInput()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var allergiesCheck = this.allergiesService.GetByUserId(userId);
+            var allergiesCheck = await this.allergiesService.GetByUserIdAsync(userId);
             if (allergiesCheck != null)
             {
                 return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
@@ -295,7 +295,7 @@ namespace HealthAssistApp.Web.Controllers
             }
 
             var healthParameters = this.healthParametersService.GetByUserId(userId);
-            var allergies = this.allergiesService.GetByUserId(userId);
+            var allergies = await this.allergiesService.GetByUserIdAsync(userId);
 
             int workoutProgramId = await this.workOutsService.CreateWorkoutProgramAsync(inputModel.Complexity, userId);
 

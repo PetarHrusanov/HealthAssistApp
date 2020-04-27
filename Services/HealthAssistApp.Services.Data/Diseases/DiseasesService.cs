@@ -90,10 +90,10 @@ namespace HealthAssistApp.Services.Data
             return diseases.To<T>().ToList();
         }
 
-        public T GetByName<T>(string name)
+        public async Task<T> GetByNameAsync<T>(string name)
         {
-            var disease = this.diseaseRepository.All().Where(x => x.Name == name)
-                .To<T>().FirstOrDefault();
+            var disease = await this.diseaseRepository.All().Where(x => x.Name == name)
+                .To<T>().FirstOrDefaultAsync();
             return disease;
         }
 
