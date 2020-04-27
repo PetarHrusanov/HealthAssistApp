@@ -76,6 +76,16 @@ namespace HealthAssistApp.Services.Data
             return healthParameters.Id;
         }
 
+        public T ViewByUserId<T>(string userId)
+        {
+            var healthParameters = this.healthParametersRepository
+                .All()
+                .Where(x => x.ApplicationUserId == userId)
+                .To<T>()
+                .FirstOrDefault();
+            return healthParameters;
+        }
+
         public NutritionalStatus NutritionalStatusByBodyMassIndex(decimal bodyMassIndex)
         {
             NutritionalStatus nutritionalStatus = NutritionalStatus.Normal;
@@ -90,7 +100,7 @@ namespace HealthAssistApp.Services.Data
             }
             else if (bodyMassIndex <= 29.9m)
             {
-                nutritionalStatus = NutritionalStatus.ObesityI;
+                nutritionalStatus = NutritionalStatus.Preobesity;
             }
             else if (bodyMassIndex <= 34.9m)
             {
@@ -106,13 +116,6 @@ namespace HealthAssistApp.Services.Data
             }
 
             return nutritionalStatus;
-        }
-
-        public T ViewByUserId<T>(string userId)
-        {
-            var healthParameters = this.healthParametersRepository.All().Where(x => x.ApplicationUserId == userId)
-                .To<T>().FirstOrDefault();
-            return healthParameters;
         }
     }
 }

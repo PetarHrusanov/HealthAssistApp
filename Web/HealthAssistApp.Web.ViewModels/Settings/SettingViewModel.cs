@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Web.ViewModels.Settings
+﻿// <copyright file="SettingViewModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Web.ViewModels.Settings
 {
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Mapping;

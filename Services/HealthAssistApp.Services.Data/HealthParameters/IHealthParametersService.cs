@@ -11,7 +11,11 @@ namespace HealthAssistApp.Services.Data
 
     public interface IHealthParametersService
     {
-        T ViewByUserId<T>(string userId);
+        Task<int> CreateAsync(
+            int age,
+            int weight,
+            decimal height,
+            string userId);
 
         Task<HealthParameters> GetByUserIdAsync(string userId);
 
@@ -21,11 +25,7 @@ namespace HealthAssistApp.Services.Data
             decimal height,
             string userId);
 
-        Task<int> CreateAsync(
-            int age,
-            int weight,
-            decimal height,
-            string userId);
+        T ViewByUserId<T>(string userId);
 
         NutritionalStatus NutritionalStatusByBodyMassIndex(decimal bodyMassIndex);
     }
