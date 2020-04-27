@@ -4,6 +4,7 @@
 namespace HealthAssistApp.Services.Data.BodySystems
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Models;
@@ -17,5 +18,7 @@ namespace HealthAssistApp.Services.Data.BodySystems
         Task<int> ModifyAsync(int id, string name);
 
         Task DeleteByIdAsync(int bodySystemId);
+
+        Task<IEnumerable<T>> BodySystemDropDownMenu<T>();
     }
 }

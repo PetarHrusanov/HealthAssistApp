@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Services.Data.Tests
 {
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data.Models.Enums;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;

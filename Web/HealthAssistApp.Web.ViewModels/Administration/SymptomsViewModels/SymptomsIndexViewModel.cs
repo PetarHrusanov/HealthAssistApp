@@ -2,11 +2,14 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
+using HealthAssistApp.Data.Models;
+using HealthAssistApp.Services.Mapping;
+
 namespace HealthAssistApp.Web.ViewModels.Administration.SymptomsViewModels
 {
-    public class SymptomsIndexViewModel
+    public class SymptomsIndexViewModel : IMapFrom<Symptom>
     {
-        public int SymptomId { get; set; }
+        public int Id { get; set; }
 
         public string Description { get; set; }
 

@@ -9,10 +9,20 @@ namespace HealthAssistApp.Services.Data
 
     public interface ISymptomsServices
     {
+        Task<int> CreateSymptomAsync(string description, int bodySystemId);
+
+        Task<T> GetModelByIdAsync<T>(int id);
+
+        Task<int> ModifySymptomAsync(int symptomId, string description, int diseaseId);
+
+        Task DeleteSymptomAsync(int id);
+
+        Task<IEnumerable<T>> GetAllinViewModelAsync<T>();
+
+        IEnumerable<T> SymptomsDropDownMenu<T>();
+
         Task<int> CreateUserSymptomAsync(string description, string systemName, string userId);
 
         Task<IEnumerable<string>> GetSystemNameFromUserId(string userId);
-
-        IEnumerable<T> SymptomsDropDownMenu<T>();
     }
 }

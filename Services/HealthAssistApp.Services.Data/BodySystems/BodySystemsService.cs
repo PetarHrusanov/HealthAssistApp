@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Services.Data.BodySystems
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -61,6 +62,16 @@ namespace HealthAssistApp.Services.Data.BodySystems
                 bodySystemsRepository.Delete(bodySystem);
                 await this.bodySystemsRepository.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<T>> BodySystemDropDownMenu<T>()
+        {
+            var disease = await this.bodySystemsRepository
+                .All()
+                .To<T>()
+                .ToListAsync();
+
+            return disease;
         }
     }
 }
