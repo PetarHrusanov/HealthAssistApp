@@ -70,7 +70,21 @@ namespace HealthAssistApp.Services.Data
             return foodRegimen.Id;
         }
 
-        public IEnumerable<T>GetMealsByFoodRegimenId<T>(int foodRegimenId, int? take = null, int skip = 0)
+        public async Task<int> GetRegimenByHealthDosierIdAsync(string healthDosierId)
+        {
+            var foodRegimen = await this.healthDosierRepository
+                .All()
+                .Where(h => h.Id == healthDosierId)
+                .Select(f => f.FoodRegimen)
+                .FirstOrDefaultAsync();
+
+            return foodRegimen.Id;
+        }
+
+        public IEnumerable<T> GetMealsByFoodRegimenId<T>(
+            int foodRegimenId,
+            int? take = null,
+            int skip = 0)
         {
             var query = this.mealsRepository.All()
                 .OrderByDescending(x => x.CreatedOn)
@@ -82,17 +96,6 @@ namespace HealthAssistApp.Services.Data
             }
 
             return query.To<T>().ToList();
-        }
-
-        public async Task<int> GetRegimenByHealthDosierId(string healthDosierId)
-        {
-            var foodRegimen = await this.healthDosierRepository
-                .All()
-                .Where(h => h.Id == healthDosierId)
-                .Select(f => f.FoodRegimen)
-                .FirstOrDefaultAsync();
-
-            return foodRegimen.Id;
         }
 
         public Recipe Recipe(List<Recipe> selectedRecipes, string mealType)

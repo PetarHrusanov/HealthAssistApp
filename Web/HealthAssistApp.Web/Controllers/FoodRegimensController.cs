@@ -8,7 +8,7 @@ namespace HealthAssistApp.Web.Controllers
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Services.Data;
@@ -85,9 +85,9 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public async System.Threading.Tasks.Task<IActionResult> ByHealthDosierAsync(string healthDosierId, int page = 1)
+        public async Task<IActionResult> ByHealthDosierAsync(string healthDosierId, int page = 1)
         {
-            var regimenId = await this.foodRegimenService.GetRegimenByHealthDosierId(healthDosierId);
+            var regimenId = await this.foodRegimenService.GetRegimenByHealthDosierIdAsync(healthDosierId);
 
             var foodRegimen = new FoodRegimenMealsIndex { };
 

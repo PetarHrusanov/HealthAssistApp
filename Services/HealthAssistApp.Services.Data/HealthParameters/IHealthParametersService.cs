@@ -13,7 +13,7 @@ namespace HealthAssistApp.Services.Data
     {
         T ViewByUserId<T>(string userId);
 
-        HealthParameters GetByUserId(string userId);
+        Task<HealthParameters> GetByUserIdAsync(string userId);
 
         Task<int> ModifyAsync(
             int age,

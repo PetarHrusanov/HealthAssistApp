@@ -98,11 +98,11 @@ namespace HealthAssistApp.Services.Data
         }
 
         public async Task<int> ModifyDiseaseAsync(
-       int id,
-       string name,
-       string description,
-       string advice,
-       bool isDeleted)
+            int id,
+            string name,
+            string description,
+            string advice,
+            bool isDeleted)
         {
             var disease = await this.diseaseRepository
                 .All()
@@ -130,12 +130,14 @@ namespace HealthAssistApp.Services.Data
             await this.diseaseRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<T> DiseasesDropDownMenu<T>()
+        public async Task<IEnumerable<T>> DiseasesDropDownMenuAsync<T>()
         {
-            IQueryable<Disease> query =
-                this.diseaseRepository.All();
+            var query = await
+                this.diseaseRepository.All()
+                .To<T>()
+                .ToListAsync();
 
-            return query.To<T>().ToList();
+            return query;
         }
 
         public async Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId)

@@ -35,7 +35,7 @@ namespace HealthAssistApp.Services.Data
 
         Task DeleteByIdAsync(int id);
 
-        IEnumerable<T> DiseasesDropDownMenu<T>();
+        Task<IEnumerable<T>> DiseasesDropDownMenuAsync<T>();
 
         Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
 

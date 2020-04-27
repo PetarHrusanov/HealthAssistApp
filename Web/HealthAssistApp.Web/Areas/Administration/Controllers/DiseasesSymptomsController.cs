@@ -50,7 +50,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var diseasesInput = this.diseasesService.DiseasesDropDownMenu<DiseasesDropDownViewModel>();
+            var diseasesInput = await this.diseasesService.DiseasesDropDownMenuAsync<DiseasesDropDownViewModel>();
             var symptomsInput = this.symptomsServices.SymptomsDropDownMenu<SymptomsDropDownViewModel>();
 
             var inputDiseaseSymptom = new DiseaseSymptomInputViewModel

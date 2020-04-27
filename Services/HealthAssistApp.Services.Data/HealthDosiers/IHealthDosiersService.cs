@@ -10,8 +10,6 @@ namespace HealthAssistApp.Services.Data
 
     public interface IHealthDosiersService
     {
-        //IEnumerable<T> GetAll<T>(int? count = null);
-
         public Task<string> CreateHealthDosierAsync(
             int healthParametersId,
             int foodRegimenId,
@@ -26,9 +24,5 @@ namespace HealthAssistApp.Services.Data
         Task<string> GetIdByUserId(string userId);
 
         Task<HealthDosier> GetByUserIdAsync(string userId);
-
-        //IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
-
-        //public Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
     }
 }

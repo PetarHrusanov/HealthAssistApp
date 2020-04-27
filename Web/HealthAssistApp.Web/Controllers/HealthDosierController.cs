@@ -116,7 +116,7 @@ namespace HealthAssistApp.Web.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var healthParamCheckModel = this.healthParametersService.GetByUserId(userId);
+            var healthParamCheckModel = await this.healthParametersService.GetByUserIdAsync(userId);
             if (healthParamCheckModel != null)
             {
                 return this.RedirectToAction("AllergiesInput");
@@ -294,7 +294,7 @@ namespace HealthAssistApp.Web.Controllers
                 return this.RedirectToAction("Index");
             }
 
-            var healthParameters = this.healthParametersService.GetByUserId(userId);
+            var healthParameters = await this.healthParametersService.GetByUserIdAsync(userId);
             var allergies = await this.allergiesService.GetByUserIdAsync(userId);
 
             int workoutProgramId = await this.workOutsService.CreateWorkoutProgramAsync(inputModel.Complexity, userId);

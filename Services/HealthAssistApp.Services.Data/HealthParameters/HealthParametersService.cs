@@ -44,12 +44,12 @@ namespace HealthAssistApp.Services.Data
             return healthParameters.Id;
         }
 
-        public HealthParameters GetByUserId(string userId)
+        public async Task<HealthParameters> GetByUserIdAsync(string userId)
         {
-            var healthParameters = this.healthParametersRepository
+            var healthParameters = await this.healthParametersRepository
                 .All()
                 .Where(a => a.ApplicationUserId == userId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return healthParameters;
         }

@@ -1,4 +1,4 @@
-﻿// <copyright file="RecipesServiceTest.cs" company="HealthAssistApp">
+﻿// <copyright file="RecipesServicesTest.cs" company="HealthAssistApp">
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace HealthAssistApp.Services.Data.Tests
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
-    public class RecipesServiceTest : BaseServicesTests
+    public class RecipesServicesTest : BaseServicesTests
     {
         private IRecipesService Service => this.ServiceProvider.GetRequiredService<IRecipesService>();
 

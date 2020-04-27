@@ -22,11 +22,6 @@ namespace HealthAssistApp.Services.Data
             this.healthDosierRepository = healthDosierRepository;
         }
 
-        public Task<string> CreateHealthDosierAsync(int diseaseId, string healthDosierId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> CreateHealthDosierAsync(
             int healthParametersId,
             int foodRegimenId,
