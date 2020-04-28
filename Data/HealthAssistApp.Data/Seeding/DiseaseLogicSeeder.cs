@@ -1,13 +1,19 @@
-﻿namespace HealthAssistApp.Data.Seeding
+﻿// <copyright file="DiseaseLogicSeeder.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Data.Seeding
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class HealthAssistAppSeeder : ISeeder
+    using HealthAssistApp.Data.Models.Enums;
+
+    public class DiseaseLogicSeeder : ISeeder
     {
-        public HealthAssistAppSeeder()
+        public DiseaseLogicSeeder()
         {
         }
 
@@ -122,9 +128,9 @@
             // Symptoms Digestive System
             var digestiveSymptoms = new List<string>
             {
-                "Cold limbs",
-                "Irregular heartbeat",
-                "Pain in the heart",
+                "Constipation",
+                "Stomach ache",
+                "Bad breath",
             };
 
             var digestiveSystemId = dbContext.BodySystems
@@ -166,9 +172,9 @@
             // Symptoms for Nervous
             var nervousSymptoms = new List<string>
             {
-                "Muscle spasms",
-                "Irregular heartbeat",
-                "Pain in the heart",
+                "Involuntairly eyelid movement",
+                "Tingling in the hands",
+                "Pain in the spine",
             };
 
             var nervousSystemId = dbContext.BodySystems
@@ -185,13 +191,39 @@
                 });
             }
 
-            // Recipes
-            if (dbContext.Recipes.Any())
+            // Diseases
+            if (dbContext.Diseases.Any())
             {
                 return;
             }
 
-            //var 
+            var diseases = new[]
+            {
+                (Name: "COVID-19",
+                Description: "Initially it starts with a temperature, which later develops to a whipping cough.",
+                Advice: "Stay isolated for 14 days, in case of prolonged fever, seek medical attention"),
+                (Name: "High cholesterol",
+                Description: "High cholesterol level might increase your risk or heart attack, etc.",
+                Advice: "Reduce the consumption of meat with fats and hydrogenated fats as well."),
+                (Name: "Digestive enzyme deficiency",
+                Description: "The lack of digestive enzymes reduces the ability of the organism to absorb nutrients.",
+                Advice: "Increase the consumption of fresh vegetables, adding Enzy-Mill might help."),
+            };
+
+            foreach (var disease in diseases)
+            {
+                await dbContext.Diseases.AddAsync(new Models.Disease
+                {
+                    Name = disease.Name,
+                    Description = disease.Description,
+                    Advice = disease.Advice,
+                });
+            }
+
+            if (dbContext.DiseaseSymptoms.Any())
+            {
+                return;
+            }
         }
     }
 }
