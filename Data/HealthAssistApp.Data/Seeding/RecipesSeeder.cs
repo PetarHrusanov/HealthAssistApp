@@ -89,6 +89,7 @@ namespace HealthAssistApp.Data.Seeding
                     GlycemicIndex = recipe.GlycemicIndex,
                     Calories = recipe.Calories,
                 });
+                await dbContext.SaveChangesAsync();
             }
         }
     }

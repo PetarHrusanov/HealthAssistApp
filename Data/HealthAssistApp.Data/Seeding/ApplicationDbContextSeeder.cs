@@ -27,6 +27,8 @@
                           {
                               new RolesSeeder(),
                               new RecipesSeeder(),
+                              new ExercisesSeeder(),
+                              new DiseaseLogicSeeder(),
                           };
 
             foreach (var seeder in seeders)

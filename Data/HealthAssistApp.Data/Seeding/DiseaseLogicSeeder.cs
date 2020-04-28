@@ -10,6 +10,7 @@ namespace HealthAssistApp.Data.Seeding
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Models.Enums;
+    using Microsoft.EntityFrameworkCore;
 
     public class DiseaseLogicSeeder : ISeeder
     {
@@ -42,6 +43,8 @@ namespace HealthAssistApp.Data.Seeding
                 {
                     Name = bodySystem,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Symptoms For Respiratory
@@ -68,6 +71,8 @@ namespace HealthAssistApp.Data.Seeding
                     Description = symptom,
                     BodySystemId = respiratorySystemId,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Symptoms
@@ -123,6 +128,8 @@ namespace HealthAssistApp.Data.Seeding
                     Description = symptom,
                     BodySystemId = circulatorySystemId,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Symptoms Digestive System
@@ -145,6 +152,8 @@ namespace HealthAssistApp.Data.Seeding
                     Description = symptom,
                     BodySystemId = digestiveSystemId,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Symptoms for Muscular
@@ -167,6 +176,8 @@ namespace HealthAssistApp.Data.Seeding
                     Description = symptom,
                     BodySystemId = muscleSystemId,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Symptoms for Nervous
@@ -189,6 +200,8 @@ namespace HealthAssistApp.Data.Seeding
                     Description = symptom,
                     BodySystemId = nervousSystemId,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             // Diseases
@@ -218,11 +231,57 @@ namespace HealthAssistApp.Data.Seeding
                     Description = disease.Description,
                     Advice = disease.Advice,
                 });
+
+                await dbContext.SaveChangesAsync();
             }
 
             if (dbContext.DiseaseSymptoms.Any())
             {
                 return;
+            }
+
+            // COVID-19 Symptoms
+            var covid = await dbContext.Diseases
+                .Where(d => d.Name == "COVID-19")
+                .Select(i => i.Id)
+                .FirstOrDefaultAsync();
+
+            var covidSymptoms = await dbContext.Symptoms
+                .Where(s => s.BodySystem.Name == "Respiratory System")
+                .Select(i => i.Id)
+                .ToListAsync();
+
+            foreach (var symptom in covidSymptoms)
+            {
+                await dbContext.DiseaseSymptoms.AddAsync(new Models.DiseaseSymptom
+                {
+                    DiseaseId = covid,
+                    SymptomId = symptom,
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            // Enzyme Deficiency Symptoms
+            var enzymeId = await dbContext.Diseases
+                .Where(d => d.Name == "Digestive enzyme deficiency")
+                .Select(i => i.Id)
+                .FirstOrDefaultAsync();
+
+            var enzymeSymptoms = await dbContext.Symptoms
+                .Where(s => s.BodySystem.Name == "Digestive System")
+                .Select(i => i.Id)
+                .ToListAsync();
+
+            foreach (var symptom in enzymeSymptoms)
+            {
+                await dbContext.DiseaseSymptoms.AddAsync(new Models.DiseaseSymptom
+                {
+                    DiseaseId = enzymeId,
+                    SymptomId = symptom,
+                });
+
+                await dbContext.SaveChangesAsync();
             }
         }
     }
