@@ -14,18 +14,29 @@ namespace HealthAssistApp.Web.Controllers
     public class DiseasesController: BaseController
     {
         private readonly IDiseasesService diseasesService;
+        private const int ItemsPerPage = 9;
 
         public DiseasesController(IDiseasesService diseasesService)
         {
             this.diseasesService = diseasesService;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> IndexAsync(int page = 1)
         {
             var viewModel = new IndexDiseasesViewModel
             {
-                Diseases = await this.diseasesService.GetAllAsync<DiseaseViewModel>(),
+                Diseases = this.diseasesService
+                .GetAllPaginatedAsync<DiseaseViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage),
             };
+
+            var count = await this.diseasesService.GetDiseasesCountAsync();
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 

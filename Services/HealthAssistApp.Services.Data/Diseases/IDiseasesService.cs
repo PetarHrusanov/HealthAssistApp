@@ -20,9 +20,13 @@ namespace HealthAssistApp.Services.Data
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 
+        IEnumerable<T> GetAllPaginatedAsync<T>(int? take = null, int skip = 0);
+
         Task<T> GetByIdAsync<T>(int id);
 
         Task<T> GetByNameAsync<T>(string name);
+
+        Task<int> GetDiseasesCountAsync();
 
         IEnumerable<T> GetByHealthDosier<T>(string healthDosierId);
 

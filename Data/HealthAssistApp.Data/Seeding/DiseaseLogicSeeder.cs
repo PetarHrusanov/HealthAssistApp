@@ -11,6 +11,7 @@ namespace HealthAssistApp.Data.Seeding
 
     using HealthAssistApp.Data.Models.Enums;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DiseaseLogicSeeder : ISeeder
     {

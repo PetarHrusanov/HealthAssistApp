@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Data.Seeding
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Models;
@@ -19,8 +20,12 @@ namespace HealthAssistApp.Data.Seeding
 
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
+            if (dbContext.Users.Any())
+            {
+                return;
+            }
+
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
             string email = "Administrator@abv.bg";
             string roleName = "Administrator";

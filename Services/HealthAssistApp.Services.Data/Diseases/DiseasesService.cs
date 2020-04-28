@@ -61,6 +61,21 @@ namespace HealthAssistApp.Services.Data
             return query;
         }
 
+        public IEnumerable<T> GetAllPaginatedAsync<T>(int? take, int skip)
+        {
+            var query = this.diseaseRepository
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip);
+
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
         public async Task<T> GetByIdAsync<T>(int id)
         {
             var disease = await this.diseaseRepository
@@ -95,6 +110,14 @@ namespace HealthAssistApp.Services.Data
             var disease = await this.diseaseRepository.All().Where(x => x.Name == name)
                 .To<T>().FirstOrDefaultAsync();
             return disease;
+        }
+
+        public async Task<int> GetDiseasesCountAsync()
+        {
+            var diseases = this.diseaseRepository
+                .All();
+
+            return diseases.Count();
         }
 
         public async Task<int> ModifyDiseaseAsync(
@@ -174,5 +197,6 @@ namespace HealthAssistApp.Services.Data
             this.diseaseSymptomRepository.Delete(diseaseSymptom);
             await this.diseaseSymptomRepository.SaveChangesAsync();
         }
+
     }
 }
