@@ -29,6 +29,7 @@
                               new RecipesSeeder(),
                               new ExercisesSeeder(),
                               new DiseaseLogicSeeder(),
+                              new AdministratorSeeder(),
                           };
 
             foreach (var seeder in seeders)
