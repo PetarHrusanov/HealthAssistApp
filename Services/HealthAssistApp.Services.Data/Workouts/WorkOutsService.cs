@@ -163,12 +163,44 @@ namespace HealthAssistApp.Services.Data
         public async Task<int> GetWorkoutProgramsByHealthDosierId(string healthDosierId)
         {
             var workoutProgramId = await this.healthDosierRepository
-                .All()
+                .AllAsNoTracking()
                 .Where(h => h.Id == healthDosierId)
                 .Select(w => w.WorkoutProgram)
                 .FirstAsync();
 
             return workoutProgramId.Id;
+        }
+
+        public async Task<int> GetProgramIdByHealthDosierIdAsync(string healthDosierId)
+        {
+            var workout = await this.healthDosierRepository
+                    .AllAsNoTracking()
+                    .Where(h => h.Id == healthDosierId)
+                    .Select(w => w.WorkoutProgram.Id)
+                    .FirstOrDefaultAsync();
+
+            return workout;
+        }
+
+        public async Task DeleteWorkoutProgramAsync(int id)
+        {
+            var workoutExercise = await this.exercisesWorkoutsRepository
+                .AllAsNoTracking()
+                .Where(w => w.WorkoutProgramId == id)
+                .ToListAsync();
+
+            foreach (var item in workoutExercise)
+            {
+                this.exercisesWorkoutsRepository.Delete(item);
+                await this.exercisesWorkoutsRepository.SaveChangesAsync();
+            }
+
+            var workout = await this.workoutRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(w => w.Id == id);
+
+            this.workoutRepository.Delete(workout);
+            await this.workoutRepository.SaveChangesAsync();
         }
     }
 }

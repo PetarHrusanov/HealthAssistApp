@@ -63,6 +63,25 @@ namespace HealthAssistApp.Services.Data.Tests
         }
 
         [Fact]
+        public async Task UserSideDeleteByUserIdAsyncTest()
+        {
+            var healthParametersId = await this.Service.CreateAsync(
+                1,
+                60,
+                1.75m,
+                "TestUser");
+
+            var checkModel = await this.DbContext.HealthParameters
+                .FirstOrDefaultAsync(h => h.Id == healthParametersId);
+            Assert.NotNull(checkModel);
+
+            await this.Service.UserSideDeleteUserIdAsync("TestUser");
+            var secondCheckModel = await this.DbContext.HealthParameters
+                .FirstOrDefaultAsync(h => h.Id == healthParametersId);
+            Assert.True(secondCheckModel.IsDeleted);
+        }
+
+        [Fact]
         public async Task NutritionalStatusTest()
         {
             var statusUnderweight = NutritionalStatus.Underweight;

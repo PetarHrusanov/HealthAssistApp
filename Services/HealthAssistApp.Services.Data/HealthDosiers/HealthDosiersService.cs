@@ -71,7 +71,7 @@ namespace HealthAssistApp.Services.Data
         public async Task<string> GetIdByUserId(string userId)
         {
             var healthDosierId = await this.healthDosierRepository
-                .All()
+                .AllAsNoTracking()
                 .Where(u => u.ApplicationUserId == userId)
                 .FirstOrDefaultAsync();
 
@@ -93,7 +93,7 @@ namespace HealthAssistApp.Services.Data
             var healthDosier = await this.healthDosierRepository
                 .AllAsNoTracking()
                 .FirstOrDefaultAsync(h => h.Id == id);
-            this.healthDosierRepository.Delete(healthDosier);
+            this.healthDosierRepository.HardDelete(healthDosier);
             await this.healthDosierRepository.SaveChangesAsync();
         }
     }

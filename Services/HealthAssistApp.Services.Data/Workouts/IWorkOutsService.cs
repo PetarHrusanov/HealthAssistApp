@@ -28,6 +28,10 @@ namespace HealthAssistApp.Services.Data
 
         Task<int> CreateWorkoutProgramAsync(ExerciseComplexity complexity, string userId);
 
+        Task<int> GetProgramIdByHealthDosierIdAsync(string healthDosierId);
+
+        Task DeleteWorkoutProgramAsync(int id);
+
         public Task<int> GetWorkoutProgramsByHealthDosierId(string healthDosierId);
 
         IEnumerable<T> GetExercisesByWorkoutId<T>(int workoutprogramId, int? take = null, int skip = 0);

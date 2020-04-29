@@ -100,7 +100,7 @@ namespace HealthAssistApp.Services.Data
                 .FirstOrDefaultAsync(h => h.ApplicationUserId == id);
 
             this.allergiesRepository.Delete(allergies);
-            await this.healthDosierRepository.SaveChangesAsync();
+            await this.allergiesRepository.SaveChangesAsync();
         }
 
         public async Task<T> ViewByUserIdAsync<T>(string userId)

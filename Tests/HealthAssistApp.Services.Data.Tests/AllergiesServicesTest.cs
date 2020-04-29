@@ -36,7 +36,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 "asd");
 
             var checkModel = this.DbContext.Allergies.FirstOrDefault(a => a.Id == newAllergy);
-            Assert.False(checkModel == null);
+            Assert.NotNull(checkModel);
         }
 
         [Fact]
@@ -95,6 +95,29 @@ namespace HealthAssistApp.Services.Data.Tests
             Assert.False(getByUserId.Peanuts);
             Assert.False(getByUserId.Wheat);
             Assert.False(getByUserId.Soybeans);
+        }
+
+        [Fact]
+        public async Task DeleteByUserIdAsync()
+        {
+            var newAllergy = await Service.CreateAsync(
+                 true,
+                 true,
+                 true,
+                 true,
+                 false,
+                 false,
+                 false,
+                 false,
+                 "TestUser");
+
+            var checkModel = this.DbContext.Allergies.FirstOrDefault(a => a.Id == newAllergy);
+            Assert.NotNull(checkModel);
+
+            await this.Service.DeleteByUserIdAsync("TestUser");
+            var secondCheckModel = await this.DbContext.HealthParameters
+                .FirstOrDefaultAsync(h => h.Id == newAllergy);
+            Assert.Null(secondCheckModel);
         }
 
         [Fact]

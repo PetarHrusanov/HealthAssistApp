@@ -43,6 +43,8 @@ namespace HealthAssistApp.Services.Data
 
         Task<string> CreateHealthDosierDiseaseAsync(int diseaseId, string healthDosierId);
 
+        Task DeleteHealthDosierDiseasesByHealthIdAsync(string id);
+
         Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId);
 
         Task DeleteDiseaseSymptomAsync(int diseaseId, int symptomId);

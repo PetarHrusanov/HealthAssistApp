@@ -23,6 +23,8 @@ namespace HealthAssistApp.Services.Data
 
         Task<int> CreateUserSymptomAsync(string description, string systemName, string userId);
 
+        Task DeleteUserSymptomsAsync(string id);
+
         Task<IEnumerable<string>> GetSystemNameFromUserId(string userId);
     }
 }

@@ -110,6 +110,20 @@ namespace HealthAssistApp.Services.Data
             return userSymptom.Id;
         }
 
+        public async Task DeleteUserSymptomsAsync(string id)
+        {
+            var userSymptoms = await this.userSymptomsRepository
+                .All()
+                .Where(u => u.ApplicationUserId == id)
+                .ToListAsync();
+
+            foreach (var item in userSymptoms)
+            {
+                this.userSymptomsRepository.Delete(item);
+                await this.userSymptomsRepository.SaveChangesAsync();
+            }
+        }
+
         public async Task<IEnumerable<string>> GetSystemNameFromUserId(string userId)
         {
             var systemNames = this.userSymptomsRepository

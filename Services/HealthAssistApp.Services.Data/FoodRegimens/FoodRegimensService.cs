@@ -70,10 +70,35 @@ namespace HealthAssistApp.Services.Data
             return foodRegimen.Id;
         }
 
+        public async Task DeleteMealsById(int id)
+        {
+            var meals = await this.mealsRepository
+                .AllAsNoTracking()
+                .Where(f => f.FoodRegimenId == id)
+                .ToListAsync();
+
+            foreach (var item in meals)
+            {
+                this.mealsRepository.Delete(item);
+                await this.mealsRepository.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var foodRegimen = await this.foodRegimensRepository
+                .All()
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            this.foodRegimensRepository.Delete(foodRegimen);
+
+            await this.foodRegimensRepository.SaveChangesAsync();
+        }
+
         public async Task<int> GetRegimenByHealthDosierIdAsync(string healthDosierId)
         {
             var foodRegimen = await this.healthDosierRepository
-                .All()
+                .AllAsNoTracking()
                 .Where(h => h.Id == healthDosierId)
                 .Select(f => f.FoodRegimen)
                 .FirstOrDefaultAsync();
@@ -86,7 +111,8 @@ namespace HealthAssistApp.Services.Data
             int? take = null,
             int skip = 0)
         {
-            var query = this.mealsRepository.All()
+            var query = this.mealsRepository
+                .AllAsNoTracking()
                 .OrderByDescending(x => x.CreatedOn)
                 .Where(x => x.FoodRegimenId == foodRegimenId)
                 .Skip(skip);
@@ -100,7 +126,9 @@ namespace HealthAssistApp.Services.Data
 
         public Recipe Recipe(List<Recipe> selectedRecipes, string mealType)
         {
-            var recipes = selectedRecipes.Where(r => r.PartOfMeal.ToString() == mealType.ToString()).ToList();
+            var recipes = selectedRecipes
+                .Where(r => r.PartOfMeal.ToString() == mealType.ToString())
+                .ToList();
 
             Random rnd = new Random();
             return recipes[rnd.Next(recipes.Count)];

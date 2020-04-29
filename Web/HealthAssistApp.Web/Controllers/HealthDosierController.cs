@@ -123,11 +123,18 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.healthDosiersService.UserSideDeleteAsync(id);
+            var healthDosierId = await this.healthDosiersService.GetIdByUserId(userId);
+            var foodRegimenId = await this.foodRegimensService.GetRegimenByHealthDosierIdAsync(healthDosierId);
+            var workoutId = await this.workOutsService.GetProgramIdByHealthDosierIdAsync(healthDosierId);
+            await this.diseasesService.DeleteHealthDosierDiseasesByHealthIdAsync(healthDosierId);
+            await this.healthDosiersService.UserSideDeleteAsync(healthDosierId);
             await this.healthParametersService.UserSideDeleteUserIdAsync(userId);
             await this.allergiesService.DeleteByUserIdAsync(userId);
-
-            return this.RedirectToAction("Index");
+            await this.foodRegimensService.DeleteMealsById(foodRegimenId);
+            await this.foodRegimensService.DeleteByIdAsync(foodRegimenId);
+            await this.workOutsService.DeleteWorkoutProgramAsync(workoutId);
+            await this.symptomsServices.DeleteUserSymptomsAsync(userId);
+            return this.RedirectToAction("Index", "Home");
         }
 
         [Authorize]

@@ -176,6 +176,20 @@ namespace HealthAssistApp.Services.Data
             return healthDosierId;
         }
 
+        public async Task DeleteHealthDosierDiseasesByHealthIdAsync(string id)
+        {
+            var healthDosierDiseases = await this.healthDosierDiseaseRepository
+                .AllAsNoTracking()
+                .Where(h => h.HealthDosierId == id)
+                .ToListAsync();
+
+            foreach (var item in healthDosierDiseases)
+            {
+                this.healthDosierDiseaseRepository.Delete(item);
+                await this.healthDosierDiseaseRepository.SaveChangesAsync();
+            }
+        }
+
         public async Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId)
         {
             var diseaseSymptom = new DiseaseSymptom

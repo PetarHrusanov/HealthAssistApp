@@ -19,6 +19,10 @@ namespace HealthAssistApp.Services.Data
             bool wheat,
             bool soybeans);
 
+        Task DeleteMealsById(int id);
+
+        Task DeleteByIdAsync(int id);
+
         Task<int> GetRegimenByHealthDosierIdAsync(string healthDosierId);
 
         IEnumerable<T> GetMealsByFoodRegimenId<T>(int foodRegimenId, int? take = null, int skip = 0);
