@@ -56,6 +56,7 @@
     <Folder Include="Methods\" />
     <Folder Include="Views\Workouts\" />
     <Folder Include="Areas\Administration\Views\HealthDosiers\" />
+    <Folder Include="Areas\Administration\Views\AdministrationTexts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />

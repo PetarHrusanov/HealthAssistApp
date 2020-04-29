@@ -19,7 +19,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
     {
         public int Id { get; set; }
 
-        [DisplayName("Modified On")]
+        [DisplayName("Created On")]
         public DateTime CreatedOn { get; set; }
 
         [DisplayName("Created On")]

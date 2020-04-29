@@ -28,6 +28,8 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<TextFilesForAdministration> TextFilesForAdministration { get; set; }
+
         // Disease Related Objects
         public DbSet<Disease> Diseases { get; set; }
 

@@ -1,6 +1,12 @@
-﻿@{
-    this.ViewData["Title"] = "Privacy Policy";
+﻿@using HealthAssistApp.Common
+@model HealthAssistApp.Web.ViewModels.Administration.AdminitrationTextFilesViewModels.AdminTextFilesDetailsViewModels
+@{
+    this.ViewData["Title"] = Model.Name;
 }
-<h1>@this.ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="text-center ">
+    <h1 class="display-3">@this.ViewData["Title"]</h1>
+</div>
+<p>
+    @Html.Raw(Model.SanitizedContent)
+</p>

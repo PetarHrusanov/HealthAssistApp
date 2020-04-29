@@ -57,6 +57,8 @@ namespace HealthAssistApp.Web
 
             services.AddSingleton(this.configuration);
 
+            services.AddTransient<IAdministrationTextService, AdministrationTextService>();
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

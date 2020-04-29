@@ -35,5 +35,6 @@
     <Folder Include="Workouts\" />
     <Folder Include="Settings\" />
     <Folder Include="BodySystems\" />
+    <Folder Include="TextFilesForAdministration\" />
   </ItemGroup>
 </Project>
