@@ -78,9 +78,12 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.recipesService.ModifyAsync(
+                return this.View(recipe);
+            }
+
+            await this.recipesService.ModifyAsync(
                     recipe.Id,
                     recipe.Name,
                     recipe.InstructionForPreparation,
@@ -90,7 +93,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                     recipe.PartOfMeal,
                     recipe.GlycemicIndex,
                     recipe.Calories);
-            }
 
             return this.RedirectToAction("Index");
         }

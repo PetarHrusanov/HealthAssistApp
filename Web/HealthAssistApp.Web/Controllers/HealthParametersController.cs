@@ -30,6 +30,12 @@ namespace HealthAssistApp.Web.Controllers
         public IActionResult Modify(string userId)
         {
             var healthParameters = this.db.HealthParameters.Where(a => a.ApplicationUserId == userId).FirstOrDefault();
+
+            if (healthParameters == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(userId);
         }
 

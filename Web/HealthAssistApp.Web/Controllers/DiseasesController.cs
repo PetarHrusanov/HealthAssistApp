@@ -37,12 +37,24 @@ namespace HealthAssistApp.Web.Controllers
             }
 
             viewModel.CurrentPage = page;
+
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(viewModel);
         }
 
         public async Task<IActionResult> ByNameAsync(string name)
         {
             var viewModel = await this.diseasesService.GetByNameAsync<DiseaseViewModel>(name);
+
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(viewModel);
         }
     }

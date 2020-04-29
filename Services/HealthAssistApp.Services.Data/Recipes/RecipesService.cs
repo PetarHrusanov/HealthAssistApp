@@ -95,10 +95,10 @@ namespace Recipes.Services.Data
             return recipe;
         }
 
-        public T GetByName<T>(string name)
+        public async Task<T> GetByNameAsync<T>(string name)
         {
-            var recipe = this.recipesRepository.All().Where(x => x.Name == name)
-                .To<T>().FirstOrDefault();
+            var recipe = await this.recipesRepository.All().Where(x => x.Name == name)
+                .To<T>().FirstOrDefaultAsync();
             return recipe;
         }
 

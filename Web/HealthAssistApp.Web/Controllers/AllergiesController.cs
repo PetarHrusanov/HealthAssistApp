@@ -28,13 +28,22 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> ByUserIdAsync(string userId)
         {
             var allergiesOutput = await this.allergiesService.ViewByUserIdAsync<AllergiesViewModel>(userId);
+            if (allergiesOutput== null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(allergiesOutput);
         }
 
         [Authorize]
         public async Task<IActionResult> ModifyAsync(string userId)
         {
-            var userAllergies = await this.allergiesService.GetByUserIdAsync(userId);
+            if (userId == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(userId);
         }
 

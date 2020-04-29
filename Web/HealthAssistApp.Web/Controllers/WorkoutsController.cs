@@ -50,6 +50,11 @@ namespace HealthAssistApp.Web.Controllers
 
             workoutProgram.HealthDosierId = healthDosierId;
 
+            if (workoutProgram == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(workoutProgram);
         }
 

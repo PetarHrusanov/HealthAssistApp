@@ -41,15 +41,24 @@ namespace HealthAssistApp.Web.Controllers
             }
 
             viewModel.CurrentPage = page;
+
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(viewModel);
         }
 
-        public IActionResult ByName(string name)
+        public async System.Threading.Tasks.Task<IActionResult> ByNameAsync(string name)
         {
-            var viewModel =
-                this.recipesService.GetByName<RecipeViewModel>(name);
-            //var ingredientsList = this.dbContext.Recipes.Where(x => x.Name == viewModel.Name).Select(x => x.Ingredients).ToList();
-            //viewModel.Ingredients = ingredientsList;
+            var viewModel = await this.recipesService.GetByNameAsync<RecipeViewModel>(name);
+
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(viewModel);
         }
     }

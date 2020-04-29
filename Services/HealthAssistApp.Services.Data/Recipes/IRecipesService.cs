@@ -30,7 +30,7 @@ namespace HealthAssistApp.Services.Data
 
         Task<T> GetByIdAsyn<T>(int id);
 
-        T GetByName<T>(string name);
+        Task<T> GetByNameAsync<T>(string name);
 
         Task<int> ModifyAsync(
             int id,

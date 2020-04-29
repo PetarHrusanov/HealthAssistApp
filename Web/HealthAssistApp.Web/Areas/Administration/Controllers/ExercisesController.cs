@@ -72,14 +72,16 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.workOutsService.ModifyAsync(
+                return this.View(exercise);
+            }
+
+            await this.workOutsService.ModifyAsync(
                     exercise.Id,
                     exercise.Name,
                     exercise.Instructions,
                     exercise.ExerciseComplexity);
-            }
 
             return this.RedirectToAction("Index");
         }

@@ -114,13 +114,15 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SymptomsInputViewModel symptomInput)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.symptomsService.ModifySymptomAsync(
+                return this.View(symptomInput);
+            }
+
+            await this.symptomsService.ModifySymptomAsync(
                     symptomInput.SymptomId,
                     symptomInput.Description,
                     symptomInput.BodySystemId);
-            }
 
             return this.RedirectToAction("Index");
         }

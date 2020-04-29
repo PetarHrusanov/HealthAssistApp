@@ -39,6 +39,11 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BodySystemsInputViewModel bodySystem)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(bodySystem);
+            }
+
             await this.bodySystemsService.CreateAsync(bodySystem.Name);
 
             return this.RedirectToAction("Index");
@@ -85,10 +90,12 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return this.NotFound();
             }
 
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
+                return this.View(bodySystem);
             }
+
+            await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
 
             return this.RedirectToAction("Index");
         }

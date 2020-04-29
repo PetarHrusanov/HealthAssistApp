@@ -101,6 +101,11 @@ namespace HealthAssistApp.Web.Controllers
             foodRegimen.CurrentPage = page;
             foodRegimen.HealthDosierId = healthDosierId;
 
+            if (foodRegimen == null)
+            {
+                return this.NotFound();
+            }
+
             return this.View(foodRegimen);
         }
 
