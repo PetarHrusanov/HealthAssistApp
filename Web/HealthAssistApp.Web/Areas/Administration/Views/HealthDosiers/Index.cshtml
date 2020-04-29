@@ -1,0 +1,51 @@
+﻿@model IEnumerable<HealthAssistApp.Web.ViewModels.Administration.HealthDosierViewModels.HealthDosierAdminOverviewViewModel>
+
+@{
+    ViewData["Title"] = "Diseases";
+}
+
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedOn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUserId)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create Disease</a>
+</p>

@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Services.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -95,6 +96,16 @@ namespace HealthAssistApp.Services.Data
                 .FirstOrDefaultAsync(h => h.Id == id);
             this.healthDosierRepository.HardDelete(healthDosier);
             await this.healthDosierRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
+        {
+            var healthDosiers = await this.healthDosierRepository
+                .All()
+                .To<T>()
+                .ToListAsync();
+
+            return healthDosiers;
         }
     }
 }

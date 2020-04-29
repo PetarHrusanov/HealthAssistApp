@@ -59,5 +59,10 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         {
             return this.RedirectToAction("Index", "DiseasesSymptoms");
         }
+
+        public async Task<IActionResult> HealthDosiers()
+        {
+            return this.RedirectToAction("Index", "HealthDosiers");
+        }
     }
 }

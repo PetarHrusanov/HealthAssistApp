@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Services.Data
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data.Models;
@@ -28,5 +29,7 @@ namespace HealthAssistApp.Services.Data
         Task<HealthDosier> GetByUserIdAsync(string userId);
 
         Task UserSideDeleteAsync(string id);
+
+        Task<IEnumerable<T>> GetAllAsync<T>();
     }
 }
