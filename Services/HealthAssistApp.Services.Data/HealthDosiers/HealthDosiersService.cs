@@ -93,7 +93,8 @@ namespace HealthAssistApp.Services.Data
         {
             var healthDosier = await this.healthDosierRepository
                 .AllAsNoTracking()
-                .FirstOrDefaultAsync(h => h.Id == id);
+                .Where(h => h.Id == id)
+                .FirstOrDefaultAsync();
             this.healthDosierRepository.HardDelete(healthDosier);
             await this.healthDosierRepository.SaveChangesAsync();
         }

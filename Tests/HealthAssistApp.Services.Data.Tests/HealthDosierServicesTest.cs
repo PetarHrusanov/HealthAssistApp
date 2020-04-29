@@ -46,5 +46,24 @@ namespace HealthAssistApp.Services.Data.Tests
             var actualModel = await this.Service.GetByUserIdAsync("User");
             Assert.Same(checkModel, actualModel);
         }
+
+        [Fact]
+        public async Task UserSideDelete()
+        {
+            var healthDosierId = await this.Service.CreateHealthDosierAsync(
+                1,
+                1,
+                1,
+                false,
+                false,
+                1,
+                "User");
+
+            var checkModel = await this.DbContext.HealthDosiers.FirstOrDefaultAsync(h => h.Id == healthDosierId);
+            Assert.NotNull(checkModel);
+            await this.Service.UserSideDeleteAsync(healthDosierId);
+            var secondCheckModel = await this.DbContext.HealthDosiers.FirstOrDefaultAsync(h => h.Id == healthDosierId);
+            Assert.Null(secondCheckModel);
+        }
     }
 }

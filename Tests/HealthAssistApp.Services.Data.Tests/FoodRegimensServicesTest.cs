@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Services.Data.Tests
 {
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Xunit;
 
@@ -12,29 +13,31 @@ namespace HealthAssistApp.Services.Data.Tests
     {
         private IFoodRegimensService Service => this.ServiceProvider.GetRequiredService<IFoodRegimensService>();
 
+        [Fact]
+        public async Task CreateRegimenAsync()
+        {
+            var foodRegimenId = await this.Service.CreateFoodRegimenAsync
+                (true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true);
 
+            var checkModel = await this.DbContext.FoodRegimens.FirstOrDefaultAsync(a => a.Id == foodRegimenId);
+            Assert.NotNull(checkModel);
+        }
+            
 
-        //[Fact]
-        //public async Task DeleteByIdAsync()
-        //{
-        //    var newAllergy = await Service.CreateAsync(
-        //         true,
-        //         true,
-        //         true,
-        //         true,
-        //         false,
-        //         false,
-        //         false,
-        //         false,
-        //         "TestUser");
+            //Task DeleteMealsById(int id);
 
-        //    var checkModel = this.DbContext.Allergies.FirstOrDefault(a => a.Id == newAllergy);
-        //    Assert.NotNull(checkModel);
+            //Task DeleteByIdAsync(int id);
 
-        //    await this.Service.DeleteByUserIdAsync("TestUser");
-        //    var secondCheckModel = await this.DbContext.HealthParameters
-        //        .FirstOrDefaultAsync(h => h.Id == newAllergy);
-        //    Assert.Null(secondCheckModel);
-        //}
-    }
+            //Task<int> GetRegimenByHealthDosierIdAsync(string healthDosierId);
+
+            //IEnumerable<T> GetMealsByFoodRegimenId<T>(int foodRegimenId, int? take = null, int skip = 0);
+
+        }
 }
