@@ -5,31 +5,43 @@
 namespace HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels
 {
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-
+    using System.Net;
+    using System.Text.RegularExpressions;
+    using Ganss.XSS;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
 
     public class RecipeAdminDetailsViewModel : IMapFrom<Recipe>
     {
-        [Required]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(110)]
         public string Name { get; set; }
 
-        [Required]
-        [MaxLength(5000)]
         public string InstructionForPreparation { get; set; }
+
+        [DisplayName("Instructions")]
+        public string ShortInstructionForPreparation
+        {
+            get
+            {
+                var content = WebUtility.HtmlDecode(Regex.Replace(this.InstructionForPreparation, @"<[^>]+>", string.Empty));
+                return content.Length > 300
+                        ? content.Substring(0, 300) + "..."
+                        : content;
+            }
+        }
+
+        [DisplayName("Instructions For Preparation")]
+        public string SanitizedInstructionForPreparation
+            => new HtmlSanitizer().Sanitize(this.InstructionForPreparation);
 
         public string ImageUrl { get; set; }
 
-        [Required]
         public bool Vegan { get; set; }
 
-        [Required]
         public bool Vegetarian { get; set; }
 
         public PartOfMeal PartOfMeal { get; set; }
@@ -40,7 +52,6 @@ namespace HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels
 
         public DateTime ModifiedOn { get; set; }
 
-        [Required]
         public int Calories { get; set; }
     }
 }

@@ -17,7 +17,7 @@
         <lo>@item.Name</lo>
     }</div>
     -->
-    <div class="col-sm-4">@Model.InstructionForPreparation</div>
+    <div class="col-sm-4">@Html.Raw(Model.SanitizedInstructionForPreparation)</div>
 </div>
 <div class="container">
     <table class="table table-bordered">

@@ -17,10 +17,10 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            Instructions
+            @Html.DisplayNameFor(model => model.ShortInstructionForPreparation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.InstructionForPreparation)
+            @Html.DisplayFor(model => model.ShortInstructionForPreparation)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ImageUrl)
