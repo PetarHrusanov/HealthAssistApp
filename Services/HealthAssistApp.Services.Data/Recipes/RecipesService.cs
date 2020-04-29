@@ -62,6 +62,29 @@ namespace Recipes.Services.Data
             return query;
         }
 
+        public IEnumerable<T> GetAllPaginatedAsync<T>(int? take, int skip)
+        {
+            var query = this.recipesRepository
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip);
+
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<int> GetRecipesCountAsync()
+        {
+            var diseases = this.recipesRepository
+                .All();
+
+            return diseases.Count();
+        }
+
         public async Task<T> GetByIdAsyn<T>(int id)
         {
             var recipe = await this.recipesRepository

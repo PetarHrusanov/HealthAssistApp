@@ -24,6 +24,10 @@ namespace HealthAssistApp.Services.Data
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 
+        IEnumerable<T> GetAllPaginatedAsync<T>(int? take, int skip);
+
+        Task<int> GetRecipesCountAsync();
+
         Task<T> GetByIdAsyn<T>(int id);
 
         T GetByName<T>(string name);

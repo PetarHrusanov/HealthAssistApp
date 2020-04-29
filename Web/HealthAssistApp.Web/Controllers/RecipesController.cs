@@ -17,6 +17,7 @@ namespace HealthAssistApp.Web.Controllers
     {
         private readonly IRecipesService recipesService;
         private readonly ApplicationDbContext dbContext;
+        private const int ItemsPerPage = 9;
 
         public RecipesController(IRecipesService recipesService, ApplicationDbContext dbContext)
         {
@@ -24,12 +25,22 @@ namespace HealthAssistApp.Web.Controllers
             this.dbContext = dbContext;
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> IndexAsync()
+        public async System.Threading.Tasks.Task<IActionResult> IndexAsync(int page = 1)
         {
             var viewModel = new IndexRecipesViewModel
             {
-                Recipes = await this.recipesService.GetAllAsync<RecipeViewModel>(),
+                Recipes = this.recipesService
+                .GetAllPaginatedAsync<RecipeViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage),
             };
+
+            var count = await this.recipesService.GetRecipesCountAsync();
+            viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 
