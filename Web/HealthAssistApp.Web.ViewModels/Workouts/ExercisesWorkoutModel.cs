@@ -21,6 +21,7 @@ namespace HealthAssistApp.Web.ViewModels.Workouts
         public string SanitizedInstructions
           => new HtmlSanitizer().Sanitize(this.Instructions);
 
+        [DisplayName("Exercise Complexity")]
         public ExerciseComplexity ExerciseComplexity { get; set; }
     }
 }

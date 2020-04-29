@@ -15,11 +15,11 @@
         <h2 class="text-center">Your Health Parameters</h2>
         <table class="table">
             <tr>
-                <th>Age</th>
-                <th>Weight</th>
-                <th>Height</th>
-                <th>Body Mass Index</th>
-                <th>Water Per Day</th>
+                <th>@Html.DisplayNameFor(model => model.HealthParameters.Age)</th>
+                <th>@Html.DisplayNameFor(model => model.HealthParameters.Weight)</th>
+                <th>@Html.DisplayNameFor(model => model.HealthParameters.Height)</th>
+                <th>@Html.DisplayNameFor(model => model.HealthParameters.BodyMassIndex)</th>
+                <th>@Html.DisplayNameFor(model => model.HealthParameters.WaterPerDay)</th>
             </tr>
             <tr>
                 <td>@Model.HealthParameters.Age</td>
@@ -33,6 +33,7 @@
     </div>
 </div>
 <hr />
+<h4>@Html.DisplayNameFor(model => model.NutritionalStatus)</h4>
 @switch (Model.NutritionalStatus)
 {
     case NutritionalStatus.Normal:
@@ -59,6 +60,7 @@
 <hr />
 @if (Model.Diseases.Count() > 0)
 {
+    <h4>@Html.DisplayNameFor(model => model.Diseases)</h4>
     <p>The HealthDosier Medical Analyser detected that there is a high chance that you have any of the following disease/s:</p>
     @foreach (var disease in Model.Diseases)
     {
@@ -75,12 +77,15 @@
     }
 }
 <hr />
+<h4>@Html.DisplayNameFor(model => model.AllergiesId)</h4>
 <p>You can check and modify your allergies here:</p>
 <a href="/Allergies/@Model.UserId" class="btn btn-primary">View</a>
 <hr />
+<h4>@Html.DisplayNameFor(model => model.FoodRegimenId)</h4>
 <p>You can check your Food Regimen:</p>
 <a href="/FoodRegimens/@Model.Id" class="btn btn-primary">View</a>
 <hr />
+<h4>@Html.DisplayNameFor(model => model.WorkingOutProgramId)</h4>
 <p>You can check your Workout Program:</p>
 <a href="/WorkoutPrograms/@Model.Id" class="btn btn-primary">View</a>
 <hr />

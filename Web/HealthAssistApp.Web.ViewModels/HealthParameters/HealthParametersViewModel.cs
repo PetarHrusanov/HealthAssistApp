@@ -2,6 +2,7 @@
 // Copyright (c) HealthAssistApp. All Rights Reserved.
 // </copyright>
 
+using System.ComponentModel;
 using HealthAssistApp.Services.Mapping;
 
 namespace HealthAssistApp.Web.ViewModels.HealthParameters
@@ -14,8 +15,10 @@ namespace HealthAssistApp.Web.ViewModels.HealthParameters
 
         public decimal Height { get; set; }
 
+        [DisplayName("Body Mass Index")]
         public decimal BodyMassIndex { get; set; }
 
+        [DisplayName("Required Water per Day in Liters")]
         public decimal WaterPerDay { get; set; }
     }
 }

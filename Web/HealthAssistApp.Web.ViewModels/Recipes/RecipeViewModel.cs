@@ -50,6 +50,7 @@
 
         public int Calories { get; set; }
 
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex GlycemicIndex { get; set; }
 
         public ICollection<RecipeIngredients> RecipeIngredients { get; set; }

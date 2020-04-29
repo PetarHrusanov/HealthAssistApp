@@ -53,14 +53,19 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
         public string SanitizedAdvice
            => new HtmlSanitizer().Sanitize(this.SanitizedAdvice);
 
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex? GlycemicIndex { get; set; }
 
+        [DisplayName("Created On")]
         public DateTime CreatedOn { get; set; }
 
+        [DisplayName("Modified On")]
         public DateTime? ModifiedOn { get; set; }
 
+        [DisplayName("Is Deleted")]
         public bool IsDeleted { get; set; }
 
+        [DisplayName("Deleted On")]
         public DateTime? DeletedOn { get; set; }
     }
 }

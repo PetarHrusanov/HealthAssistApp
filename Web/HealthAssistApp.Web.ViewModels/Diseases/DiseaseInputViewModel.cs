@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.ViewModels.Diseases
 {
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using HealthAssistApp.Data.Models.Enums;
@@ -22,6 +23,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
         [MaxLength(4000)]
         public string Advice { get; set; }
 
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex? GlycemicIndex { get; set; }
     }
 }

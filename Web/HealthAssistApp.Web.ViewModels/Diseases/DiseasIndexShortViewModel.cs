@@ -6,6 +6,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Net;
     using System.Text.RegularExpressions;
     using HealthAssistApp.Data.Models;
@@ -26,6 +27,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 
         public string Description { get; set; }
 
+        [DisplayName("Description")]
         public string ShortDescription
         {
             get
@@ -39,6 +41,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 
         public string Advice { get; set; }
 
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex? GlycemicIndex { get; set; }
 
         public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }
