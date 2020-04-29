@@ -6,7 +6,9 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
 
+    using Ganss.XSS;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
     using HealthAssistApp.Data.Models.Enums;
@@ -25,8 +27,17 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 
         public string Description { get; set; }
 
+        [DisplayName("Description")]
+        public string SanitizedDescriptions
+            => new HtmlSanitizer().Sanitize(this.Description);
+
         public string Advice { get; set; }
 
+        [DisplayName("Advice")]
+        public string SanitizedAdvice
+            => new HtmlSanitizer().Sanitize(this.Advice);
+
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex? GlycemicIndex { get; set; }
 
         public ICollection<DiseaseSymptom> DiseaseSymptoms { get; set; }

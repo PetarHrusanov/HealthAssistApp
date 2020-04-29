@@ -26,7 +26,7 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
 
         public string Description { get; set; }
 
-        public string ShortContent
+        public string ShortDescription
         {
             get
             {

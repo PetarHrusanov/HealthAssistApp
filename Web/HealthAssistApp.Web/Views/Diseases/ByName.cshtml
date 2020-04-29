@@ -8,16 +8,16 @@
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
 <div class="card-header">
-    <h2>@Html.DisplayNameFor(model => model.Description)</h2>
+    <h2>@Html.DisplayNameFor(model => model.SanitizedDescriptions)</h2>
     <p>
-        @Html.Raw(Model.Description)
+        @Html.Raw(Model.SanitizedDescriptions)
     </p>
     <hr />
     <h2>
-        @Html.DisplayNameFor(model => model.Advice)
+        @Html.DisplayNameFor(model => model.SanitizedAdvice)
     </h2>
     <p>
-        @Html.Raw(Model.Advice)
+        @Html.Raw(Model.SanitizedAdvice)
     </p>
 </div>
 
