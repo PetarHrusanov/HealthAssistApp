@@ -3,14 +3,19 @@
 @{
     this.ViewData["Title"] = @Model.Name;
 }
-
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
+@if (TempData["AllergiesInputSuccess"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["AllergiesInputSuccess"].ToString()
+    </div>
+}
 <div class="text-left ">
     <p>Please check if you feel any of the following symptoms:</p>
     <form asp-action="DiseaseTest" method="post">
-        <input type ="hidden" name="Name"value="@Model.Name">
+        <input type="hidden" name="Name" value="@Model.Name">
         <table class="table">
             <tr>
                 <th>Symptom Name</th>
@@ -23,7 +28,7 @@
                         @Model.Symptoms[i].Description
                     </td>
                     <td>
-                    <input asp-for=@Model.Symptoms[i].Selected type="checkbox" />
+                        <input asp-for=@Model.Symptoms[i].Selected type="checkbox" />
                         <input type="hidden" asp-for="@Model.Symptoms[i].Description" />
                     </td>
                 </tr>

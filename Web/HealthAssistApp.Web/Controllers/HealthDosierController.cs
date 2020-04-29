@@ -71,7 +71,7 @@ namespace HealthAssistApp.Web.Controllers
             // Health Parameters Logic
             var healthParameters = this.healthParametersService.ViewByUserId<HealthParametersViewModel>(userId);
 
-            // da go izkaram v Service
+            // da pomislq dali moje da se izkara v Service
             var diseasesForIndex = this.db.HealthDosierDiseases
                .Where(h => h.HealthDosierId == healthDosier.Id)
                .Select(d => d.Disease).Select(dv => new DiseaseViewModel
@@ -168,6 +168,8 @@ namespace HealthAssistApp.Web.Controllers
                 healthParameters.Height,
                 userId);
 
+            this.TempData["HealthParametersSuccess"] = "HealthAssisApp has successfully stored your health parameters!";
+
             return this.RedirectToAction("AllergiesInput");
         }
 
@@ -205,6 +207,8 @@ namespace HealthAssistApp.Web.Controllers
                 allergiesInput.Wheat,
                 allergiesInput.Soybeans,
                 userId);
+
+            this.TempData["AllergiesInputSuccess"] = "HealthAssisApp has successfully stored your allergies!";
 
             return this.RedirectToAction("DiseaseTest", "HealthDosier", new { system = this.SystemsForTests[0] });
         }
@@ -290,6 +294,8 @@ namespace HealthAssistApp.Web.Controllers
             string nextSystem = await this.GetNext(this.SystemsForTests, systems.Name);
             if (nextSystem == "Empty")
             {
+                this.TempData["DiseasesCompleted"] = "You have successfully gone through all the systems!";
+
                 return this.RedirectToAction("HealthDosierFinalising");
             }
 
@@ -377,6 +383,8 @@ namespace HealthAssistApp.Web.Controllers
                     symptomCount = 0;
                 }
             }
+
+            this.TempData["HealthDosierSuccess"] = "You have successfully created your Health Dosier!";
 
             return this.RedirectToAction("Index");
         }

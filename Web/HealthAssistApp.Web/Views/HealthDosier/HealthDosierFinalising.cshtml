@@ -4,10 +4,15 @@
 @{
     this.ViewData["Title"] = "Health Dosier Finalisation";
 }
-
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
+@if (TempData["DiseasesCompleted"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["DiseasesCompleted"].ToString()
+    </div>
+}
 <hr />
 <div class="text-left ">
     <p>Please check the following details</p>

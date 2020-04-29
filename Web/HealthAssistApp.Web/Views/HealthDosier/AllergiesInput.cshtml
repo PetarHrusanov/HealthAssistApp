@@ -6,6 +6,12 @@
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
+@if (TempData["HealthParametersSuccess"]!=null)
+{
+<div class="alert alert-success" role="alert">
+    @TempData["HealthParametersSuccess"].ToString()
+</div>
+}
 <hr />
 <div class="text-left ">
     <p>Please check if you have any of following allergies (if none, leave blank):</p>
