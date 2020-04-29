@@ -16,7 +16,7 @@
         @Html.DisplayNameFor(model => exercise.Instructions)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => exercise.Instructions)
+        @Html.Raw(exercise.SanitizedInstructions)
     </dd>
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => exercise.ExerciseComplexity)

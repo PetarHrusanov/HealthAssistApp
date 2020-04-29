@@ -37,10 +37,13 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Exercise exercise)
+        public async Task<IActionResult> Create(ExerciseAdminCreateViewModel exercise)
         {
-            await this.db.AddAsync(exercise);
-            await this.db.SaveChangesAsync();
+            await this.workOutsService.CreateExerciseAsync(
+                exercise.Name,
+                exercise.Instructions,
+                exercise.ExerciseComplexity);
+
             return this.RedirectToAction("Index");
         }
 

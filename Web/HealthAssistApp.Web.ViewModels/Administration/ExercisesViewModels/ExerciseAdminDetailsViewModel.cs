@@ -5,8 +5,11 @@
 namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
 {
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-
+    using System.Net;
+    using System.Text.RegularExpressions;
+    using Ganss.XSS;
     using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Data.Models.WorkingOut;
     using HealthAssistApp.Services.Mapping;
@@ -26,6 +29,21 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
         [Required]
         [MaxLength(4000)]
         public string Instructions { get; set; }
+
+        [DisplayName("Instructions")]
+        public string SanitizedInstructions
+           => new HtmlSanitizer().Sanitize(this.Instructions);
+
+        public string ShortInstructions
+        {
+            get
+            {
+                var content = WebUtility.HtmlDecode(Regex.Replace(this.Instructions, @"<[^>]+>", string.Empty));
+                return content.Length > 300
+                        ? content.Substring(0, 300) + "..."
+                        : content;
+            }
+        }
 
         [Required]
         public ExerciseComplexity ExerciseComplexity { get; set; }
