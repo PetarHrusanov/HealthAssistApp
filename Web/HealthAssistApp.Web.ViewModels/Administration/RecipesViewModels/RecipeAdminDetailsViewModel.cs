@@ -20,6 +20,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels
 
         public string Name { get; set; }
 
+        [DisplayName("Instructions")]
         public string InstructionForPreparation { get; set; }
 
         [DisplayName("Instructions")]
@@ -38,18 +39,23 @@ namespace HealthAssistApp.Web.ViewModels.Administration.RecipesViewModels
         public string SanitizedInstructionForPreparation
             => new HtmlSanitizer().Sanitize(this.InstructionForPreparation);
 
+        [DisplayName("Image Url")]
         public string ImageUrl { get; set; }
 
         public bool Vegan { get; set; }
 
         public bool Vegetarian { get; set; }
 
+        [DisplayName("Part of Meal")]
         public PartOfMeal PartOfMeal { get; set; }
 
+        [DisplayName("Glycemic Index")]
         public GlycemicIndex GlycemicIndex { get; set; }
 
+        [DisplayName("Created On")]
         public DateTime CreatedOn { get; set; }
 
+        [DisplayName("Modified On")]
         public DateTime ModifiedOn { get; set; }
 
         public int Calories { get; set; }

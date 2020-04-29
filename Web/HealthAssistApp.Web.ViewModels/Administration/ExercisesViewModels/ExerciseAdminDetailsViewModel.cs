@@ -9,6 +9,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
     using System.ComponentModel.DataAnnotations;
     using System.Net;
     using System.Text.RegularExpressions;
+
     using Ganss.XSS;
     using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Data.Models.WorkingOut;
@@ -18,8 +19,10 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
     {
         public int Id { get; set; }
 
+        [DisplayName("Modified On")]
         public DateTime CreatedOn { get; set; }
 
+        [DisplayName("Created On")]
         public DateTime ModifiedOn { get; set; }
 
         [Required]
@@ -34,6 +37,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
         public string SanitizedInstructions
            => new HtmlSanitizer().Sanitize(this.Instructions);
 
+        [DisplayName("Instructions")]
         public string ShortInstructions
         {
             get
@@ -46,6 +50,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
         }
 
         [Required]
+        [DisplayName("Complexity")]
         public ExerciseComplexity ExerciseComplexity { get; set; }
     }
 }

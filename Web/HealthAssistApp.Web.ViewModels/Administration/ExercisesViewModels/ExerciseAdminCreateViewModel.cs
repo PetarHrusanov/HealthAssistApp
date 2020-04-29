@@ -5,6 +5,7 @@
 namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
 {
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using HealthAssistApp.Data.Models.Enums;
@@ -22,6 +23,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.ExercisesViewModels
         public string Instructions { get; set; }
 
         [Required]
+        [DisplayName("Exercise Complexity")]
         public ExerciseComplexity ExerciseComplexity { get; set; }
     }
 }
