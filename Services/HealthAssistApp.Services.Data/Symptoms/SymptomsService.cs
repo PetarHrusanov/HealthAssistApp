@@ -51,15 +51,15 @@ namespace HealthAssistApp.Services.Data
             return symptom;
         }
 
-        public async Task<int> ModifySymptomAsync(int symptomId, string symptomDescription, int diseaseId)
+        public async Task<int> ModifySymptomAsync(int symptomId, string description, int bodySystemId)
         {
             var symptom = await this.symptomsRepository
                 .All()
                 .Where(s => s.Id == symptomId)
                 .FirstOrDefaultAsync();
 
-            symptom.Description = symptomDescription;
-            symptom.BodySystemId = diseaseId;
+            symptom.Description = description;
+            symptom.BodySystemId = bodySystemId;
 
             this.symptomsRepository.Update(symptom);
             await this.symptomsRepository.SaveChangesAsync();

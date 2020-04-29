@@ -64,6 +64,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> Create(SymptomsInputViewModel symptomsInput)
         {
             await this.symptomsService.CreateSymptomAsync(symptomsInput.Description, symptomsInput.BodySystemId);
+
+            this.TempData["CreatedSymptom"] = $"You have successfully created this symptom!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -83,7 +86,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.View(symptom);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -101,7 +104,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             var symptomInput = new SymptomsInputViewModel
             {
-                SymptomId = symptom.Id,
+                SymptomId = id,
                 Description = symptom.Description,
                 BodySystemId = symptom.BodySystemId,
                 bodySystems = bodySystemsDrop,
@@ -112,7 +115,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SymptomsInputViewModel symptomInput)
+        public async Task<IActionResult> Edit(SymptomsInputViewModel symptomInput)
         {
             if (!this.ModelState.IsValid)
             {
@@ -123,6 +126,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                     symptomInput.SymptomId,
                     symptomInput.Description,
                     symptomInput.BodySystemId);
+
+            this.TempData["ModifiedSymptom"] = $"You have successfully modified this symptom!";
 
             return this.RedirectToAction("Index");
         }
@@ -150,6 +155,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.symptomsService.DeleteSymptomAsync(id);
+
+            this.TempData["DeletedSymptom"] = $"You have successfully deleted this symptom!";
+
             return this.RedirectToAction("Index");
         }
 

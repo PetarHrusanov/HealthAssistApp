@@ -50,6 +50,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 recipe.PartOfMeal,
                 recipe.GlycemicIndex,
                 recipe.Calories);
+
+            this.TempData["CreatedRecipes"] = $"You have successfully created {recipe.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -94,6 +97,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                     recipe.GlycemicIndex,
                     recipe.Calories);
 
+            this.TempData["ModifiedRecipes"] = $"You have successfully modified {recipe.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -135,6 +140,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.recipesService.DeleteByIdAsync(id);
+
+            this.TempData["DeletedRecipes"] = $"You have successfully deleted this recipe!";
+
             return this.RedirectToAction("Index");
         }
 

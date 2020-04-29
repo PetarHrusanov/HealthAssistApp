@@ -29,7 +29,7 @@ namespace HealthAssistApp.Services.Data
         {
             this.diseaseRepository = diseaseRepository;
             this.healthDosierDiseaseRepository = healthDosierDiseaseRepository;
-            this.diseaseRepository = diseaseRepository;
+            this.diseaseSymptomRepository = diseaseSymptomRepository;
         }
 
         public async Task<int> CreateAsync(

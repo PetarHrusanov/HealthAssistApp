@@ -44,6 +44,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 disease.Advice,
                 disease.GlycemicIndex);
 
+            this.TempData["CreateDisease"] = $"You have successfully created {disease.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -82,6 +84,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                     disease.IsDeleted);
             }
 
+            this.TempData["ModifyDisease"] = $"You have successfully modified {disease.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -108,6 +112,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.diseaseasesService.DeleteByIdAsync(id);
+
+            this.TempData["DeleteDisease"] = $"You have successfully deleted this disease!";
 
             return this.RedirectToAction("Index");
         }

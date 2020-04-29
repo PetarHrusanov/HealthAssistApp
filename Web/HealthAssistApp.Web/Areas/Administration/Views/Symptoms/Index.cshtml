@@ -3,8 +3,25 @@
 @{
     ViewData["Title"] = "Symptoms";
 }
-
 <h1>Index</h1>
+@if (TempData["CreatedSymptom"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["CreatedSymptom"].ToString()
+    </div>
+}
+@if (TempData["ModifiedSymptom"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["ModifiedSymptom"].ToString()
+    </div>
+}
+@if (TempData["DeletedSymptom"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["DeletedSymptom"].ToString()
+    </div>
+}
 <table class="table">
     <thead>
         <tr>

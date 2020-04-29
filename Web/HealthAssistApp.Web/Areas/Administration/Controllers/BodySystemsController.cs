@@ -99,6 +99,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
 
+            this.TempData["ModifiedBodySystem"] = $"You have successfully modified {bodySystem.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -124,6 +126,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.bodySystemsService.DeleteByIdAsync(id);
+            this.TempData["DeleteBodySystem"] = $"You have successfully deleted the body system!";
+
             return this.RedirectToAction("Index");
         }
 

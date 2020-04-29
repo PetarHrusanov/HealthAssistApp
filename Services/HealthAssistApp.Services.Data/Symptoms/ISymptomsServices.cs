@@ -13,7 +13,7 @@ namespace HealthAssistApp.Services.Data
 
         Task<T> GetModelByIdAsync<T>(int id);
 
-        Task<int> ModifySymptomAsync(int symptomId, string description, int diseaseId);
+        Task<int> ModifySymptomAsync(int symptomId, string description, int bodySystemId);
 
         Task DeleteSymptomAsync(int id);
 

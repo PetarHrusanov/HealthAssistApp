@@ -44,6 +44,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 exercise.Instructions,
                 exercise.ExerciseComplexity);
 
+            this.TempData["CreateExercise"] = $"You have successfully created {exercise.Name}!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -82,6 +84,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                     exercise.Name,
                     exercise.Instructions,
                     exercise.ExerciseComplexity);
+
+            this.TempData["ModifiedExercise"] = $"You have successfully modified {exercise.Name}!";
 
             return this.RedirectToAction("Index");
         }
@@ -124,6 +128,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await this.workOutsService.DeleteByIdAsync(id);
+
+            this.TempData["DeletedExercise"] = $"You have successfully deleted this exercise!";
 
             return this.RedirectToAction("Index");
         }

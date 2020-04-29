@@ -66,14 +66,18 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DiseaseSymptomInputViewModel diseaseSymptom)
         {
-            var diseaseSymptomDb = new DiseaseSymptom
-            {
-                DiseaseId = diseaseSymptom.DiseaseId,
-                SymptomId = diseaseSymptom.SymptomId,
-            };
+            //var diseaseSymptomDb = new DiseaseSymptom
+            //{
+            //    DiseaseId = diseaseSymptom.DiseaseId,
+            //    SymptomId = diseaseSymptom.SymptomId,
+            //};
 
-            await this.db.AddAsync(diseaseSymptomDb);
-            await this.db.SaveChangesAsync();
+            await this.diseasesService.CreateDiseaseSymptomAsync(
+                diseaseSymptom.DiseaseId,
+                diseaseSymptom.SymptomId);
+
+            this.TempData["CreateDiseaseSymptom"] = $"You have successfully created this relation!";
+
             return this.RedirectToAction("Index");
         }
 
@@ -112,6 +116,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 .FirstOrDefaultAsync();
             this.db.DiseaseSymptoms.Remove(diseaseSymptom);
             await this.db.SaveChangesAsync();
+
+            this.TempData["DeleteDiseaseSymptom"] = $"You have successfully deleted this relation!";
+
             return this.RedirectToAction("Index");
         }
 
