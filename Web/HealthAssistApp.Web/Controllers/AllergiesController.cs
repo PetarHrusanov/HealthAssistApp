@@ -28,7 +28,7 @@ namespace HealthAssistApp.Web.Controllers
         public async Task<IActionResult> ByUserIdAsync(string userId)
         {
             var allergiesOutput = await this.allergiesService.ViewByUserIdAsync<AllergiesViewModel>(userId);
-            if (allergiesOutput== null)
+            if (allergiesOutput == null)
             {
                 return this.NotFound();
             }
@@ -37,14 +37,16 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> ModifyAsync(string userId)
+        public async Task<IActionResult> Modify(string userId)
         {
             if (userId == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(userId);
+            var viewModel = await this.allergiesService.ViewByUserIdAsync<AllergiesInputModel>(userId);
+
+            return this.View(viewModel);
         }
 
         [HttpPost]
@@ -68,6 +70,8 @@ namespace HealthAssistApp.Web.Controllers
                 allergiesInput.Wheat,
                 allergiesInput.Soybeans,
                 user);
+
+            this.TempData["AllergiesModified"] = "You have successfully modified your allergies!";
 
             return this.RedirectToAction("ByUserId", "Allergies", new { userId = user });
         }

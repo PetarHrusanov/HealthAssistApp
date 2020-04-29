@@ -15,6 +15,12 @@
         @TempData["HealthDosierSuccess"].ToString()
     </div>
 }
+@if (TempData["HealthParamModifies"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["HealthParamModifies"].ToString()
+    </div>
+}
 <hr />
 <div class="card-header">
     <div class="text-left ">
@@ -35,7 +41,9 @@
                 <td>@Model.HealthParameters.WaterPerDay</td>
             </tr>
         </table>
-        <div class="span12" style="text-align:center"><a href="/HealthParameters/Modify/@Model.UserId" class="btn btn-primary">Modify</a></div>
+        <div class="span12" style="text-align:center">
+        <a asp-controller="HealthParameters" asp-action="Modify" asp-route-userId="@Model.UserId" button class="btn btn-primary">Modify</a>
+        </div>
     </div>
 </div>
 <hr />

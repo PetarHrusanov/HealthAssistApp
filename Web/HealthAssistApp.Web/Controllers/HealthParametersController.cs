@@ -29,14 +29,12 @@ namespace HealthAssistApp.Web.Controllers
         [Authorize]
         public IActionResult Modify(string userId)
         {
-            var healthParameters = this.db.HealthParameters.Where(a => a.ApplicationUserId == userId).FirstOrDefault();
-
-            if (healthParameters == null)
+            if (userId == null)
             {
                 return this.NotFound();
             }
 
-            return this.View(userId);
+            return this.View();
         }
 
         [HttpPost]
@@ -55,6 +53,8 @@ namespace HealthAssistApp.Web.Controllers
                 healthParametersModify.Weight,
                 healthParametersModify.Height,
                 user);
+
+            this.TempData["HealthParamModifies"] = "You have successfully modified your health parameters!";
 
             return this.RedirectToAction("Index", "HealthDosier");
         }

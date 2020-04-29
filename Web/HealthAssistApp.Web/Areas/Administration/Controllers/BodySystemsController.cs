@@ -46,6 +46,8 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             await this.bodySystemsService.CreateAsync(bodySystem.Name);
 
+            this.TempData["CreateBodySystem"] = $"You have successfully created {bodySystem.Name}!";
+
             return this.RedirectToAction("Index");
         }
 

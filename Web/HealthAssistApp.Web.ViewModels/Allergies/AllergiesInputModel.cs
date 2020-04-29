@@ -1,7 +1,13 @@
-﻿using System;
+﻿// <copyright file="AllergiesInputModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
 namespace HealthAssistApp.Web.ViewModels.Allergies
 {
-    public class AllergiesInputModel
+    using HealthAssistApp.Data.Models.FoodModels;
+    using HealthAssistApp.Services.Mapping;
+
+    public class AllergiesInputModel : IMapFrom<Allergies>
     {
         public bool Milk { get; set; }
 

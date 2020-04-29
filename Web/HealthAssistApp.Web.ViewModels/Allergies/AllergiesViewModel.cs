@@ -1,12 +1,17 @@
-﻿namespace HealthAssistApp.Web.ViewModels.Allergies
+﻿// <copyright file="AllergiesViewModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Web.ViewModels.Allergies
 {
     using System;
 
+    using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Services.Mapping;
 
-    public class AllergiesViewModel : IMapFrom<HealthAssistApp.Data.Models.FoodModels.Allergies>
+    public class AllergiesViewModel : IMapFrom<Allergies>
     {
-        public string UserId { get; set; }
+        public string ApplicationUserId { get; set; }
 
         public bool Milk { get; set; }
 
