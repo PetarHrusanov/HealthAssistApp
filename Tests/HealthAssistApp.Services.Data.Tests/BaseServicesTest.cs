@@ -5,14 +5,16 @@
 namespace HealthAssistApp.Services.Data.Tests
 {
     using System;
-
+    using AutoMapper;
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Common;
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.FoodModels;
     using HealthAssistApp.Data.Repositories;
     using HealthAssistApp.Services.Data.BodySystems;
     using HealthAssistApp.Services.Mapping;
+    using HealthAssistApp.Web.ViewModels.Allergies;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -40,16 +42,13 @@ namespace HealthAssistApp.Services.Data.Tests
         //    this.SetServices();
         //}
 
+
         private ServiceCollection SetServices()
         {
             var services = new ServiceCollection();
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseInMemoryDatabase(Guid.NewGuid().ToString()));
-
-            // da si mock-na User-a vmesto da puskam tova
-            //services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-            //    .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -83,9 +82,6 @@ namespace HealthAssistApp.Services.Data.Tests
 
             // Working Out Service
             services.AddTransient<IWorkOutsService, WorkOutsService>();
-
-            //// AutoMapper
-            //AutoMapperConfig.RegisterMappings(typeof(EventListViewModel).GetTypeInfo().Assembly);
 
             return services;
         }

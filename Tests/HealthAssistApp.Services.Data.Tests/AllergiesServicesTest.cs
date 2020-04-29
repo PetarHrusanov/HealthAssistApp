@@ -114,21 +114,6 @@ namespace HealthAssistApp.Services.Data.Tests
                     Soybeans = source.Soybeans,
                 });
 
-            //var mockMapperTwo = new Mock<IMapper>();
-            //mockMapper.Setup(x => x.Map<Allergies>(It.IsAny<AllergiesViewModel>()))
-            //    .Returns((Allergies source) => new AllergiesViewModel()
-            //    {
-            //        UserId = source.ApplicationUserId,
-            //        Milk = source.Milk,
-            //        Eggs = source.Eggs,
-            //        Fish = source.Fish,
-            //        Crustacean = source.Crustacean,
-            //        TreeNuts = source.TreeNuts,
-            //        Peanuts = source.Peanuts,
-            //        Wheat = source.Wheat,
-            //        Soybeans = source.Soybeans,
-            //    });
-
             var newAllergy = await this.Service.CreateAsync(
                 true,
                 true,

@@ -15,9 +15,9 @@ namespace HealthAssistApp.Services.Data
 
     public class HealthDosiersService : IHealthDosiersService
     {
-        private readonly IRepository<HealthDosier> healthDosierRepository;
+        private readonly IDeletableEntityRepository<HealthDosier> healthDosierRepository;
 
-        public HealthDosiersService(IRepository<HealthDosier> healthDosierRepository)
+        public HealthDosiersService(IDeletableEntityRepository<HealthDosier> healthDosierRepository)
         {
             this.healthDosierRepository = healthDosierRepository;
         }
@@ -46,11 +46,22 @@ namespace HealthAssistApp.Services.Data
             return healthDosier.Id;
         }
 
-        public Task<T> GetByIdAsync<T>(string userId)
+        public Task<T> GetViewByUserIdAsync<T>(string userId)
         {
             var healthDosier = this.healthDosierRepository
                 .All()
                 .Where(h => h.ApplicationUserId == userId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return healthDosier;
+        }
+
+        public async Task<T> GetViewByIdAsync<T>(string id)
+        {
+            var healthDosier = await this.healthDosierRepository
+                .All()
+                .Where(h => h.Id == id)
                 .To<T>()
                 .FirstOrDefaultAsync();
 
@@ -75,6 +86,15 @@ namespace HealthAssistApp.Services.Data
                 .FirstOrDefaultAsync();
 
             return healthDosier;
+        }
+
+        public async Task UserSideDeleteAsync(string id)
+        {
+            var healthDosier = await this.healthDosierRepository
+                .AllAsNoTracking()
+                .FirstOrDefaultAsync(h => h.Id == id);
+            this.healthDosierRepository.Delete(healthDosier);
+            await this.healthDosierRepository.SaveChangesAsync();
         }
     }
 }

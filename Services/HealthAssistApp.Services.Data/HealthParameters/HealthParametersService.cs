@@ -16,9 +16,9 @@ namespace HealthAssistApp.Services.Data
 
     public class HealthParametersService : IHealthParametersService
     {
-        private readonly IRepository<HealthParameters> healthParametersRepository;
+        private readonly IDeletableEntityRepository<HealthParameters> healthParametersRepository;
 
-        public HealthParametersService(IRepository<HealthParameters> healthParametersRepository)
+        public HealthParametersService(IDeletableEntityRepository<HealthParameters> healthParametersRepository)
         {
             this.healthParametersRepository = healthParametersRepository;
         }
@@ -74,6 +74,16 @@ namespace HealthAssistApp.Services.Data
             await this.healthParametersRepository.SaveChangesAsync();
 
             return healthParameters.Id;
+        }
+
+        public async Task UserSideDeleteUserIdAsync(string userId)
+        {
+            var healthParam = await this.healthParametersRepository
+                .All()
+                .FirstOrDefaultAsync(h => h.ApplicationUserId == userId);
+
+            this.healthParametersRepository.Delete(healthParam);
+            await this.healthParametersRepository.SaveChangesAsync();
         }
 
         public T ViewByUserId<T>(string userId)

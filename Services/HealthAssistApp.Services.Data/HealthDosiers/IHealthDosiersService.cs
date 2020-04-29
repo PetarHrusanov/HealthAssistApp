@@ -19,10 +19,14 @@ namespace HealthAssistApp.Services.Data
             int allergiesId,
             string userId);
 
-        Task<T> GetByIdAsync<T>(string userId);
+        Task<T> GetViewByIdAsync<T>(string id);
+
+        Task<T> GetViewByUserIdAsync<T>(string userId);
 
         Task<string> GetIdByUserId(string userId);
 
         Task<HealthDosier> GetByUserIdAsync(string userId);
+
+        Task UserSideDeleteAsync(string id);
     }
 }

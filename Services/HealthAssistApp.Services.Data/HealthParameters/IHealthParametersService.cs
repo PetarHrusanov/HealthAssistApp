@@ -25,6 +25,8 @@ namespace HealthAssistApp.Services.Data
             decimal height,
             string userId);
 
+        Task UserSideDeleteUserIdAsync(string userId);
+
         T ViewByUserId<T>(string userId);
 
         NutritionalStatus NutritionalStatusByBodyMassIndex(decimal bodyMassIndex);

@@ -106,9 +106,28 @@ namespace HealthAssistApp.Web.Controllers
                 Id = healthDosier.Id,
             };
 
-            // da dobavq gledaneto na Workout Program 
-
             return this.View(healthDosierView);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var healthDosier = await this.healthDosiersService.GetViewByIdAsync<HealthDosierOverview>(id);
+
+            return this.View(healthDosier);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await this.healthDosiersService.UserSideDeleteAsync(id);
+            await this.healthParametersService.UserSideDeleteUserIdAsync(userId);
+            await this.allergiesService.DeleteByUserIdAsync(userId);
+
+            return this.RedirectToAction("Index");
         }
 
         [Authorize]
@@ -351,8 +370,6 @@ namespace HealthAssistApp.Web.Controllers
                     symptomCount = 0;
                 }
             }
-
-            //da opravq vzimaneto na User i tn da stava s metod 
 
             return this.RedirectToAction("Index");
         }

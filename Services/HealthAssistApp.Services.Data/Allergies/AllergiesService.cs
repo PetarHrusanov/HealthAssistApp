@@ -93,6 +93,16 @@ namespace HealthAssistApp.Services.Data
             return allergy.Id;
         }
 
+        public async Task DeleteByUserIdAsync(string id)
+        {
+            var allergies = await this.allergiesRepository
+                .All()
+                .FirstOrDefaultAsync(h => h.ApplicationUserId == id);
+
+            this.allergiesRepository.Delete(allergies);
+            await this.healthDosierRepository.SaveChangesAsync();
+        }
+
         public async Task<T> ViewByUserIdAsync<T>(string userId)
         {
             var allergy = await this.allergiesRepository
