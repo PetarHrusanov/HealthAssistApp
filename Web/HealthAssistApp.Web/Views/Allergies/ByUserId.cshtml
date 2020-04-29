@@ -3,7 +3,7 @@
 @{
     this.ViewData["Title"] = "Your Allergies";
 }
-<div class="card-header">
+    <div class="card-header">
         <div class="text-left ">
             <h2 class="text-center">Your Allergies</h2>
             <table class="table">
@@ -43,4 +43,11 @@
         </div>
         <p>You can check and modify your allergies here:</p>
         <a href="/Allergies/Modify/@Model.UserId" class="btn btn-primary">Modify</a>
-</div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <a asp-action="Back" button class="btn btn-primary">Back</a>
+            </div>
+        </div>
+    </div>

@@ -150,5 +150,10 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             await this.symptomsService.DeleteSymptomAsync(id);
             return this.RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "Dashboard");
+        }
     }
 }

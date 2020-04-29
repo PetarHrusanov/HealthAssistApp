@@ -52,5 +52,11 @@ namespace HealthAssistApp.Web.Controllers
 
             return this.RedirectToAction("Index", "HealthDosier");
         }
+
+        [Authorize]
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "HealthDosier");
+        }
     }
 }

@@ -45,5 +45,10 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
             return this.View(healthDosier);
         }
+
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "Dashboard");
+        }
     }
 }

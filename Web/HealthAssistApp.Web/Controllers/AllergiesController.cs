@@ -62,5 +62,11 @@ namespace HealthAssistApp.Web.Controllers
 
             return this.RedirectToAction("ByUserId", "Allergies", new { userId = user });
         }
+
+        [Authorize]
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "HealthDosier");
+        }
     }
 }

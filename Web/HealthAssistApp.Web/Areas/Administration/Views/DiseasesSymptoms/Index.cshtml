@@ -26,26 +26,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiseaseId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiseaseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SymptomId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SymptomName)
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-idS="@item.IdS">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiseaseId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiseaseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SymptomId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SymptomName)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-idS="@item.IdS">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 <p>
     <a class="btn btn-primary" asp-action="Create">Create Disease Symptom</a>
 </p>
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <a asp-action="Back" button class="btn btn-primary">Back</a>
+        </div>
+    </div>
+</div>
+

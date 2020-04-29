@@ -7,7 +7,7 @@ namespace HealthAssistApp.Web.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using HealthAssistApp.Data;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Workouts;
@@ -28,7 +28,7 @@ namespace HealthAssistApp.Web.Controllers
         }
 
         [Authorize]
-        public async System.Threading.Tasks.Task<IActionResult> ByHealthDosierAsync(string healthDosierId, int page = 1)
+        public async Task<IActionResult> ByHealthDosierAsync(string healthDosierId, int page = 1)
         {
             var workOutId = await this.workOutsService.GetWorkoutProgramsByHealthDosierId(healthDosierId);
 
@@ -51,6 +51,12 @@ namespace HealthAssistApp.Web.Controllers
             workoutProgram.HealthDosierId = healthDosierId;
 
             return this.View(workoutProgram);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "HealthDosier");
         }
     }
 }

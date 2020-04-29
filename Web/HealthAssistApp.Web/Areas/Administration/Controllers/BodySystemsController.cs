@@ -118,5 +118,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "Dashboard");
+        }
     }
 }

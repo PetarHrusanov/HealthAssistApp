@@ -135,5 +135,10 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             await this.recipesService.DeleteByIdAsync(id);
             return this.RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "Dashboard");
+        }
     }
 }

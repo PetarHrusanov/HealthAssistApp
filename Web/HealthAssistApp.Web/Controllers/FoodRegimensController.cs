@@ -103,5 +103,11 @@ namespace HealthAssistApp.Web.Controllers
 
             return this.View(foodRegimen);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Back()
+        {
+            return this.RedirectToAction("Index", "HealthDosier");
+        }
     }
 }
