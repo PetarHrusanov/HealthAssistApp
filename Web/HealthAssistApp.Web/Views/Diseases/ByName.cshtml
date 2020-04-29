@@ -10,14 +10,14 @@
 <div class="card-header">
     <h2>@Html.DisplayNameFor(model => model.Description)</h2>
     <p>
-        @Html.DisplayFor(model => model.Description)
+        @Html.Raw(Model.Description)
     </p>
     <hr />
     <h2>
         @Html.DisplayNameFor(model => model.Advice)
     </h2>
     <p>
-        @Html.DisplayFor(model => model.Advice)
+        @Html.Raw(Model.Advice)
     </p>
 </div>
 

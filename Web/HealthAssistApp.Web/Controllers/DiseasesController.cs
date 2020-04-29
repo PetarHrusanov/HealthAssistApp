@@ -26,7 +26,7 @@ namespace HealthAssistApp.Web.Controllers
             var viewModel = new IndexDiseasesViewModel
             {
                 Diseases = this.diseasesService
-                .GetAllPaginatedAsync<DiseaseViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage),
+                .GetAllPaginatedAsync<DiseasIndexShortViewModel>(ItemsPerPage, (page - 1) * ItemsPerPage),
             };
 
             var count = await this.diseasesService.GetDiseasesCountAsync();

@@ -5,7 +5,7 @@
 
     public class IndexDiseasesViewModel
     {
-        public IEnumerable<DiseaseViewModel> Diseases { get; set; }
+        public IEnumerable<DiseasIndexShortViewModel> Diseases { get; set; }
 
         public int CurrentPage { get; set; }
 
