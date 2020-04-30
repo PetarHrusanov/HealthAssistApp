@@ -48,27 +48,77 @@ namespace HealthAssistApp.Services.Data
             await this.foodRegimensRepository.AddAsync(foodRegimen);
             await this.foodRegimensRepository.SaveChangesAsync();
 
-            List<Recipe> recipes = await this.recipeRepository.AllAsNoTracking()
+            var recipes = await this.recipeRepository.AllAsNoTracking()
                     .ToListAsync();
 
-            var snacks = await this.recipeRepository
-                .AllAsNoTracking()
-                .Where(m => m.PartOfMeal == PartOfMeal.Snack)
-                .ToListAsync();
+            if (milk == true)
+            {
+                recipes = recipes.Where(r =>
+                !r.InstructionForPreparation.Contains("milk") ||
+                !r.InstructionForPreparation.Contains("youhurt") ||
+                !r.InstructionForPreparation.Contains("cheese"))
+                    .ToList();
+            }
 
-            var main = await this.recipeRepository
-                .AllAsNoTracking()
+            if (eggs == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("eggs") ||
+                !r.InstructionForPreparation.Contains("egg"))
+                    .ToList();
+            }
+
+            if (fish == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("fish"))
+                    .ToList();
+            }
+
+            if (crustacean == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("shrimp") ||
+                !r.InstructionForPreparation.Contains("crab") ||
+                !r.InstructionForPreparation.Contains("prawn") ||
+                !r.InstructionForPreparation.Contains("crayfish") ||
+                !r.InstructionForPreparation.Contains("krill"))
+                    .ToList();
+            }
+
+            if (treenuts == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("treenuts"))
+                    .ToList();
+            }
+
+            if (peanuts == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("peanuts"))
+                    .ToList();
+            }
+
+            if (wheat == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("wheat"))
+                    .ToList();
+            }
+
+            if (soybeans == true)
+            {
+                recipes = recipes.Where(r => !r.InstructionForPreparation.Contains("soybeans"))
+                    .ToList();
+            }
+
+            var snacks = recipes
+                .Where(m => m.PartOfMeal == PartOfMeal.Snack)
+                .ToList();
+
+            var main = recipes
                 .Where(m => m.PartOfMeal == PartOfMeal.MainMeal)
-                .ToListAsync();
+                .ToList();
 
             var random = new Random();
 
             for (int i = 0; i < 31; i++)
             {
-
-                //var snacks = await this.recipeRepository
-                //    .AllAsNoTracking()
-                //    .Where()
                 int breakfast = random.Next(snacks.Count);
                 int lunch = random.Next(main.Count);
                 int diner = random.Next(main.Count);
