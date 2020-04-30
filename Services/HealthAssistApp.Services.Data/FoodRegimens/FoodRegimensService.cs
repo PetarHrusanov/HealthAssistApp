@@ -11,6 +11,7 @@ namespace HealthAssistApp.Services.Data
 
     using HealthAssistApp.Data.Common.Repositories;
     using HealthAssistApp.Data.Models;
+    using HealthAssistApp.Data.Models.Enums;
     using HealthAssistApp.Services.Mapping;
     using Microsoft.EntityFrameworkCore;
 
@@ -47,19 +48,40 @@ namespace HealthAssistApp.Services.Data
             await this.foodRegimensRepository.AddAsync(foodRegimen);
             await this.foodRegimensRepository.SaveChangesAsync();
 
+            List<Recipe> recipes = await this.recipeRepository.AllAsNoTracking()
+                    .ToListAsync();
+
+            var snacks = await this.recipeRepository
+                .AllAsNoTracking()
+                .Where(m => m.PartOfMeal == PartOfMeal.Snack)
+                .ToListAsync();
+
+            var main = await this.recipeRepository
+                .AllAsNoTracking()
+                .Where(m => m.PartOfMeal == PartOfMeal.MainMeal)
+                .ToListAsync();
+
+            var random = new Random();
+
             for (int i = 0; i < 31; i++)
             {
-                List<Recipe> recipes = await this.recipeRepository.All().ToListAsync();
 
-                var breakfast = this.Recipe(recipes, "Snack");
-                var lunch = this.Recipe(recipes, "MainMeal");
-                var diner = this.Recipe(recipes, "MainMeal");
+                //var snacks = await this.recipeRepository
+                //    .AllAsNoTracking()
+                //    .Where()
+                int breakfast = random.Next(snacks.Count);
+                int lunch = random.Next(main.Count);
+                int diner = random.Next(main.Count);
+
+                var breakfastId = snacks[breakfast].Id;
+                var lunchId = main[lunch].Id;
+                var dinerId = main[diner].Id;
 
                 var meal = new Meal
                 {
-                    BreakfastId = breakfast.Id,
-                    LunchId = lunch.Id,
-                    DinerId = diner.Id,
+                    BreakfastId = breakfastId,
+                    LunchId = lunchId,
+                    DinerId = dinerId,
                     FoodRegimenId = foodRegimen.Id,
                 };
 

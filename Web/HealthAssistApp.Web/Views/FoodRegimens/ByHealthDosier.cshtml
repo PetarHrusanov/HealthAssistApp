@@ -4,7 +4,6 @@
 @{
     this.ViewData["Title"] = "Meals";
 }
-
 <div class="text-center ">
     <h1 class="display-3">@this.ViewData["Title"]</h1>
 </div>
@@ -16,7 +15,7 @@
             <img class="mw-100" src="@meal.Breakfast.ImageUrl" alt="Max-width 100%">
         </div>
 
-        <div class="col-sm-4">@meal.Breakfast.InstructionForPreparation</div>
+        <div class="col-sm-4">@Html.Raw(meal.Breakfast.SanitizedInstructionForPreparation)</div>
     </div>
     <div class="container">
         <table class="table table-bordered">
@@ -59,7 +58,7 @@
             <img class="mw-100" src="@meal.Lunch.ImageUrl" alt="Max-width 100%">
         </div>
 
-        <div class="col-sm-4">@meal.Lunch.InstructionForPreparation</div>
+        <div class="col-sm-4">@Html.Raw(meal.Lunch.SanitizedInstructionForPreparation)</div>
     </div>
     <div class="container">
         <table class="table table-bordered">
@@ -102,7 +101,7 @@
             <img class="mw-100" src="@meal.Diner.ImageUrl" alt="Max-width 100%">
         </div>
 
-        <div class="col-sm-4">@meal.Diner.InstructionForPreparation</div>
+        <div class="col-sm-4">@Html.Raw(meal.Diner.SanitizedInstructionForPreparation)</div>
     </div>
     <div class="container">
         <table class="table table-bordered">
