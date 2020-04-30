@@ -126,7 +126,7 @@ namespace HealthAssistApp.Services.Data.Tests
             var mockMapper = new Mock<IMapper>();
             mockMapper.Setup(x => x.Map<AllergiesViewModel>(It.IsAny<Allergies>()))
                 .Returns((Allergies source) => new AllergiesViewModel() {
-                    UserId = source.ApplicationUserId,
+                    ApplicationUserId = source.ApplicationUserId,
                     Milk = source.Milk,
                     Eggs = source.Eggs,
                     Fish = source.Fish,
@@ -158,7 +158,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 Peanuts = false,
                 Wheat = false,
                 Soybeans = false,
-                UserId = "asd",
+                ApplicationUserId = "asd",
             };
 
             var getByUserId = await this.Service.GetByUserIdAsync("asd");
