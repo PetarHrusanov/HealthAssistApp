@@ -47,6 +47,10 @@ namespace HealthAssistApp.Services.Data
 
         Task CreateDiseaseSymptomAsync(int diseaseId, int symptomId);
 
-        Task DeleteDiseaseSymptomAsync(int diseaseId, int symptomId);
+        Task DeleteDiseaseSymptomAsync(string idS);
+
+        Task<T> GetDiseaseSymptomAsync<T>(string idS);
+
+        Task<IEnumerable<T>> GetAllDiseaseSymptomsAsync<T>();
     }
 }

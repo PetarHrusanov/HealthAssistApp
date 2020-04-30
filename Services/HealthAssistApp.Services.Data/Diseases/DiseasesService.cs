@@ -202,15 +202,43 @@ namespace HealthAssistApp.Services.Data
             await this.diseaseSymptomRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteDiseaseSymptomAsync(int diseaseId, int symptomId)
+        public async Task DeleteDiseaseSymptomAsync(string idS)
         {
+            var separatedIdS = idS.Split("X");
+            int diseaseId = int.Parse(separatedIdS[0]);
+            int symptomsId = int.Parse(separatedIdS[1]);
             var diseaseSymptom = await this.diseaseSymptomRepository
-                .All()
-                .Where(d => d.DiseaseId == diseaseId && d.SymptomId == symptomId)
+                .AllAsNoTracking()
+                .Where(d => d.DiseaseId == diseaseId & d.SymptomId == symptomsId)
                 .FirstOrDefaultAsync();
             this.diseaseSymptomRepository.Delete(diseaseSymptom);
             await this.diseaseSymptomRepository.SaveChangesAsync();
         }
 
+        public async Task<T> GetDiseaseSymptomAsync<T>(string idS)
+        {
+            var separatedIdS = idS.Split("X");
+            int diseaseId = int.Parse(separatedIdS[0]);
+            int symptomsId = int.Parse(separatedIdS[1]);
+            var diseaseSymptom = await this.diseaseSymptomRepository
+                .AllAsNoTracking()
+                .Where(d => d.DiseaseId == diseaseId & d.SymptomId == symptomsId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            //var list = new List<string>(
+
+            return diseaseSymptom;
+        }
+
+        public async Task<IEnumerable<T>> GetAllDiseaseSymptomsAsync<T>()
+        {
+            var diseaseSymptom = await this.diseaseSymptomRepository
+                .AllAsNoTracking()
+                .To<T>()
+                .ToListAsync();
+
+            return diseaseSymptom;
+        }
     }
 }

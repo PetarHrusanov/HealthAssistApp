@@ -3,10 +3,12 @@
 // </copyright>
 
 using System.ComponentModel;
+using HealthAssistApp.Data.Models;
+using HealthAssistApp.Services.Mapping;
 
 namespace HealthAssistApp.Web.ViewModels.Administration.DiseasesSymptomsViewModels
 {
-    public class DiseaseSymptomViewModel
+    public class DiseaseSymptomViewModel : IMapFrom<DiseaseSymptom>
     {
         [DisplayName("Disease Id")]
         public int DiseaseId { get; set; }
@@ -20,6 +22,13 @@ namespace HealthAssistApp.Web.ViewModels.Administration.DiseasesSymptomsViewMode
         [DisplayName("Symptom Name")]
         public string SymptomName { get; set; }
 
-        public string IdS { get; set; }
+        public string IdS
+        {
+            get
+            {
+                var ids = $"{DiseaseId}X{SymptomId}";
+                return ids;
+            }
+        }
     }
 }

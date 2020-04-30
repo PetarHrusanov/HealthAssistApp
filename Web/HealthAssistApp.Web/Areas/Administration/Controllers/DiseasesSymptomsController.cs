@@ -33,25 +33,21 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
             this.symptomsServices = symptomsServices;
         }
 
-        // Recipes Logic
         public async Task<IActionResult> Index()
         {
-            // taka ne raboti da go obmislq
-            var diseaseSymptomViewModels = await this.db.DiseaseSymptoms.Select(d => new DiseaseSymptomViewModel
-            {
-                DiseaseId = d.DiseaseId,
-                DiseaseName = d.Disease.Name,
-                SymptomId = d.SymptomId,
-                SymptomName = d.Symptom.Description,
-                IdS = $"{d.DiseaseId}X{d.SymptomId}",
-            }).ToListAsync() as IEnumerable<DiseaseSymptomViewModel>;
+            var diseaseSymptomViewModels = await this.diseasesService
+                .GetAllDiseaseSymptomsAsync<DiseaseSymptomViewModel>();
+
             return this.View(diseaseSymptomViewModels);
         }
 
         public async Task<IActionResult> Create()
         {
-            var diseasesInput = await this.diseasesService.DiseasesDropDownMenuAsync<DiseasesDropDownViewModel>();
-            var symptomsInput = this.symptomsServices.SymptomsDropDownMenu<SymptomsDropDownViewModel>();
+            var diseasesInput = await this.diseasesService.
+                DiseasesDropDownMenuAsync<DiseasesDropDownViewModel>();
+
+            var symptomsInput = this.symptomsServices
+                .SymptomsDropDownMenu<SymptomsDropDownViewModel>();
 
             var inputDiseaseSymptom = new DiseaseSymptomInputViewModel
             {
@@ -66,12 +62,6 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DiseaseSymptomInputViewModel diseaseSymptom)
         {
-            //var diseaseSymptomDb = new DiseaseSymptom
-            //{
-            //    DiseaseId = diseaseSymptom.DiseaseId,
-            //    SymptomId = diseaseSymptom.SymptomId,
-            //};
-
             await this.diseasesService.CreateDiseaseSymptomAsync(
                 diseaseSymptom.DiseaseId,
                 diseaseSymptom.SymptomId);
@@ -88,19 +78,9 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
                 return NotFound();
             }
 
-            var separatedIdS = idS.Split("X");
-            int diseaseId = int.Parse(separatedIdS[0]);
-            int symptomsId = int.Parse(separatedIdS[1]);
-            var diseaseSymptom = await this.db.DiseaseSymptoms
-                .Where(d => d.DiseaseId == diseaseId & d.SymptomId == symptomsId)
-                .Select(s => new DiseaseSymptomViewModel
-                {
-                    DiseaseId = s.DiseaseId,
-                    DiseaseName = s.Disease.Name,
-                    SymptomId = s.SymptomId,
-                    SymptomName = s.Symptom.Description,
-                    IdS = $"{s.DiseaseId}X{s.SymptomId}",
-                }).FirstOrDefaultAsync();
+            var diseaseSymptom = await this.diseasesService
+                .GetDiseaseSymptomAsync<DiseaseSymptomViewModel>(idS);
+
             return this.View(diseaseSymptom);
         }
 
@@ -108,14 +88,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string idS)
         {
-            var separatedIdS = idS.Split("X");
-            int diseaseId = int.Parse(separatedIdS[0]);
-            int symptomsId = int.Parse(separatedIdS[1]);
-            var diseaseSymptom = await this.db.DiseaseSymptoms
-                .Where(d => d.DiseaseId == diseaseId & d.SymptomId == symptomsId)
-                .FirstOrDefaultAsync();
-            this.db.DiseaseSymptoms.Remove(diseaseSymptom);
-            await this.db.SaveChangesAsync();
+            await this.diseasesService.DeleteDiseaseSymptomAsync(idS);
 
             this.TempData["DeleteDiseaseSymptom"] = $"You have successfully deleted this relation!";
 

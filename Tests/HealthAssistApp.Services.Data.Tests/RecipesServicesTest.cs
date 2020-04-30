@@ -86,12 +86,5 @@ namespace HealthAssistApp.Services.Data.Tests
             var secondCheck = await this.DbContext.Recipes.FirstOrDefaultAsync(a => a.Id == recipesId);
             Assert.Null(secondCheck);
         }
-
-        //    var checkModel = await this.DbContext.Diseases.FirstOrDefaultAsync(a => a.Id == diabetesId);
-        //    Assert.NotNull(checkModel);
-        //    await this.Service.DeleteByIdAsync(diabetesId);
-        //    var secondCheck = await this.DbContext.Diseases.FirstOrDefaultAsync(a => a.Id == diabetesId);
-        //    Assert.Null(secondCheck);
-        //}
     }
 }
