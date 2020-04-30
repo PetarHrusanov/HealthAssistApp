@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -115,21 +116,43 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SymptomsInputViewModel symptomInput)
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("SymptomId,Description,BodySystemId")]SymptomsInputViewModel symptomInput)
         {
-            if (!this.ModelState.IsValid)
+            if (id != symptomInput.SymptomId)
             {
-                return this.View(symptomInput);
+                return NotFound();
             }
 
-            await this.symptomsService.ModifySymptomAsync(
-                    symptomInput.SymptomId,
-                    symptomInput.Description,
-                    symptomInput.BodySystemId);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                   await this.symptomsService.ModifySymptomAsync(
+                       symptomInput.SymptomId,
+                       symptomInput.Description,
+                       symptomInput.BodySystemId);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await this.symptomsService.GetModelByIdAsync<SymptomsAdminDetailsViewModel>(id) == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this symptom.");
+                    }
+                }
 
-            this.TempData["ModifiedSymptom"] = $"You have successfully modified this symptom!";
+                this.TempData["ModifiedSymptom"] = $"You have successfully modified this symptom!";
 
-            return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index");
+            }
+
+            return View(symptomInput);
+
         }
 
         public async Task<IActionResult> Delete(int id)

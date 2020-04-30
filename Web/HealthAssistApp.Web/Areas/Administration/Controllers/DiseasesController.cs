@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
@@ -67,26 +68,45 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, DiseaseAdminModifyViewModel disease)
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("Id,Name,Description,Advice,IsDeleted")]DiseaseAdminModifyViewModel disease)
         {
             if (id != disease.Id)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
             if (this.ModelState.IsValid)
             {
-                await this.diseaseasesService.ModifyDiseaseAsync(
+                try
+                {
+                    await this.diseaseasesService.ModifyDiseaseAsync(
                     disease.Id,
                     disease.Name,
                     disease.Description,
                     disease.Advice,
                     disease.IsDeleted);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await this.diseaseasesService.GetByIdAsync<DiseaseAdminDetailsViewModel>(id) == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this disease.");
+                    }
+                }
+
+                this.TempData["ModifyDisease"] = $"You have successfully modified {disease.Name}!";
+
+                return this.RedirectToAction("Index");
             }
 
-            this.TempData["ModifyDisease"] = $"You have successfully modified {disease.Name}!";
+            return View(disease);
 
-            return this.RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(int id)

@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
@@ -67,27 +68,43 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ExerciseAdminMofidyViewModel exercise)
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("Id,Name,Instructions,ExerciseComplexity")]ExerciseAdminMofidyViewModel exercise)
         {
             if (id != exercise.Id)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            if (!this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return this.View(exercise);
+                try
+                {
+                    await this.workOutsService.ModifyAsync(
+                        exercise.Id,
+                        exercise.Name,
+                        exercise.Instructions,
+                        exercise.ExerciseComplexity);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await this.workOutsService.GetByIdAsync<ExerciseAdminDetailsViewModel>(id)== null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this exercise.");
+                    }
+                }
+
+                this.TempData["ModifiedExercise"] = $"You have successfully modified {exercise.Name}!";
+
+                return this.RedirectToAction("Index");
             }
 
-            await this.workOutsService.ModifyAsync(
-                    exercise.Id,
-                    exercise.Name,
-                    exercise.Instructions,
-                    exercise.ExerciseComplexity);
-
-            this.TempData["ModifiedExercise"] = $"You have successfully modified {exercise.Name}!";
-
-            return this.RedirectToAction("Index");
+            return View(exercise);
         }
 
         public async Task<IActionResult> Details(int id)

@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
@@ -85,23 +86,37 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, BodySystem bodySystem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")]BodySystem bodySystem)
         {
             if (id != bodySystem.Id)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            if (!this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return this.View(bodySystem);
+                try
+                {
+                    await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (this.bodySystemsService.GetById<BodySystem>(id) == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this body system.");
+                    }
+                }
+
+                this.TempData["ModifiedBodySystem"] = $"You have successfully modified {bodySystem.Name}!";
+
+                return this.RedirectToAction("Index");
             }
 
-            await this.bodySystemsService.ModifyAsync(bodySystem.Id, bodySystem.Name);
-
-            this.TempData["ModifiedBodySystem"] = $"You have successfully modified {bodySystem.Name}!";
-
-            return this.RedirectToAction("Index");
+            return View(bodySystem);
         }
 
         public async Task<IActionResult> Delete(int id)

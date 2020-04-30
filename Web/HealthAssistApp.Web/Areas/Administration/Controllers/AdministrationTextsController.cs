@@ -11,6 +11,7 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Administration.AdminitrationTextFilesViewModels;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     public class AdministrationTextsController : AdministrationController
     {
@@ -67,26 +68,45 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AdminTextFilesModifyViewModel file)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Content")] AdminTextFilesModifyViewModel file)
         {
             if (id != file.Id)
             {
                 return this.NotFound();
             }
 
-            if (!this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return this.View(file);
-            }
-
-            await this.administrationTextService.ModifyAsync(
+                try
+                {
+                    await this.administrationTextService.ModifyAsync(
                     file.Id,
                     file.Name,
                     file.Content);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await this.administrationTextService.GetByIdAsync<AdminTextFilesDetailsViewModels>(id) == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this file.");
+                    }
+                }
 
-            this.TempData["ModifiedExercise"] = $"You have successfully modified {file.Name}!";
+                this.TempData["ModifiedExercise"] = $"You have successfully modified {file.Name}!";
 
-            return this.RedirectToAction("Index");
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(file);
+
+                //await this.administrationTextService.ModifyAsync(
+                //    file.Id,
+                //    file.Name,
+                //    file.Content);
         }
 
         public async Task<IActionResult> Details(int id)

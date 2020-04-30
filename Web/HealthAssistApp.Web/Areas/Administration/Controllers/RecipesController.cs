@@ -4,6 +4,7 @@
 
 namespace HealthAssistApp.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using HealthAssistApp.Data;
@@ -74,32 +75,48 @@ namespace HealthAssistApp.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, RecipesAdminModifyViewModel recipe)
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("Id,Name,InstructionForPreparation,ImageUrl,Vegan,Vegetarian,PartOfMeal,GlycemicIndex,Calories")]RecipesAdminModifyViewModel recipe)
         {
             if (id != recipe.Id)
             {
-                return this.NotFound();
+                return NotFound();
             }
 
-            if (!this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return this.View(recipe);
+                try
+                {
+                    await this.recipesService.ModifyAsync(
+                     recipe.Id,
+                     recipe.Name,
+                     recipe.InstructionForPreparation,
+                     recipe.ImageUrl,
+                     recipe.Vegan,
+                     recipe.Vegetarian,
+                     recipe.PartOfMeal,
+                     recipe.GlycemicIndex,
+                     recipe.Calories);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await this.recipesService.GetByIdAsyn<RecipeAdminDetailsViewModel>(id) == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw new Exception("A problem occurred while trying to edit this recipe.");
+                    }
+                }
+
+                this.TempData["ModifiedRecipes"] = $"You have successfully modified {recipe.Name}!";
+
+                return this.RedirectToAction("Index");
             }
 
-            await this.recipesService.ModifyAsync(
-                    recipe.Id,
-                    recipe.Name,
-                    recipe.InstructionForPreparation,
-                    recipe.ImageUrl,
-                    recipe.Vegan,
-                    recipe.Vegetarian,
-                    recipe.PartOfMeal,
-                    recipe.GlycemicIndex,
-                    recipe.Calories);
-
-            this.TempData["ModifiedRecipes"] = $"You have successfully modified {recipe.Name}!";
-
-            return this.RedirectToAction("Index");
+            return View(recipe);
         }
 
         public async Task<IActionResult> Details(int id)
