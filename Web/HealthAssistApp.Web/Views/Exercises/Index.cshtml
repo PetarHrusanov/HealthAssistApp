@@ -38,8 +38,6 @@
         {
             <li class="page-item">
                 <a class="page-link"
-                   asp-route="userWorkoutProgram"
-                   asp-route-healthDosierId="@this.Model.HealthDosierId"
                    asp-route-page="@(this.Model.CurrentPage - 1)">Previous</a>
             </li>
         }
@@ -50,8 +48,6 @@
                 var active = i == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @active">
                     <a class="page-link"
-                       asp-route="userWorkoutProgram"
-                       asp-route-healthDosierId="@this.Model.HealthDosierId"
                        asp-route-page="@i">@i</a>
                 </li>
             }
@@ -65,16 +61,12 @@
                     var act = i == this.Model.CurrentPage ? "active" : string.Empty;
                     <li class="page-item @act">
                         <a class="page-link"
-                           asp-route="userWorkoutProgram"
-                           asp-route-healthDosierId="@this.Model.HealthDosierId"
                            asp-route-page="@i">@i</a>
                     </li>
                 }
                 var active = this.Model.PagesCount == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @active">
                     <a class="page-link"
-                       asp-route="userWorkoutProgram"
-                       asp-route-healthDosierId="@this.Model.HealthDosierId"
                        asp-route-page="@this.Model.PagesCount">@this.Model.PagesCount</a>
                 </li>
 
@@ -84,8 +76,6 @@
                 var active = 1 == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @active">
                     <a class="page-link"
-                       asp-route="userWorkoutProgram"
-                       asp-route-healthDosierId="@this.Model.HealthDosierId"
                        asp-route-page="1">1</a>
                 </li>
                 for (int i = this.Model.CurrentPage - 2; i <= this.Model.PagesCount; i++)
@@ -93,8 +83,6 @@
                     var act = i == this.Model.CurrentPage ? "active" : string.Empty;
                     <li class="page-item @act">
                         <a class="page-link"
-                           asp-route="userWorkoutProgram"
-                           asp-route-healthDosierId="@this.Model.HealthDosierId"
                            asp-route-page="@i">@i</a>
                     </li>
                 }
@@ -103,9 +91,7 @@
             {
                 var act = 1 == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @act">
-                    <a class="page-link"
-                       asp-route="userWorkoutProgram"
-                       asp-route-healthDosierId="@this.Model.HealthDosierId"
+                    <a class="page-lin"
                        asp-route-page="1">1</a>
                 </li>
                 for (int i = this.Model.CurrentPage - 1; i <= this.Model.CurrentPage + 1; i++)
@@ -113,16 +99,12 @@
                     var active = i == this.Model.CurrentPage ? "active" : string.Empty;
                     <li class="page-item @active">
                         <a class="page-link"
-                           asp-route="userWorkoutProgram"
-                           asp-route-healthDosierId="@this.Model.HealthDosierId"
                            asp-route-page="@i">@i</a>
                     </li>
                 }
                 var acti = this.Model.PagesCount == this.Model.CurrentPage ? "active" : string.Empty;
                 <li class="page-item @acti">
                     <a class="page-link"
-                       asp-route="userWorkoutProgram"
-                       asp-route-healthDosierId="@this.Model.HealthDosierId"
                        asp-route-page="@this.Model.PagesCount">@this.Model.PagesCount</a>
                 </li>
             }
@@ -139,17 +121,8 @@
         {
             <li class="page-item">
                 <a class="page-link"
-                   asp-route="userWorkoutProgram"
-                   asp-route-healthDosierId="@this.Model.HealthDosierId"
                    asp-route-page="@(this.Model.CurrentPage + 1)">Next</a>
             </li>
         }
     </ul>
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col text-center">
-            <a asp-action="Back" button class="btn btn-primary">Back</a>
-        </div>
-    </div>
-</div>

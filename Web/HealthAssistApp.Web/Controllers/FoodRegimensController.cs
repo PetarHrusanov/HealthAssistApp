@@ -93,6 +93,7 @@ namespace HealthAssistApp.Web.Controllers
 
             foodRegimen.Meals = this.Pagination(regimenId, ItemsPerPage, (page - 1) * ItemsPerPage) as ICollection<MealViewModel>;
             foodRegimen.PagesCount = (int)Math.Ceiling(31D / ItemsPerPage);
+
             if (foodRegimen.PagesCount == 0)
             {
                 foodRegimen.PagesCount = 1;

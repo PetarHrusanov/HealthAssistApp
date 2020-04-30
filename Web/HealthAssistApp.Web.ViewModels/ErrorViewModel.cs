@@ -1,4 +1,8 @@
-﻿namespace HealthAssistApp.Web.ViewModels
+﻿// <copyright file="ErrorViewModel.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
+
+namespace HealthAssistApp.Web.ViewModels
 {
     public class ErrorViewModel
     {

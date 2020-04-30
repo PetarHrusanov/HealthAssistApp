@@ -26,6 +26,7 @@ namespace HealthAssistApp.Services.Data.Tests
                 .TextFilesForAdministration
                 .Where(i => i.Id == id)
                 .FirstOrDefaultAsync();
+
             Assert.NotNull(checkModel);
         }
 
@@ -59,7 +60,7 @@ namespace HealthAssistApp.Services.Data.Tests
 
             await this.Service.DeleteAsync(id);
             var secondCheckModel = await this.DbContext.TextFilesForAdministration.FirstOrDefaultAsync(a => a.Id == id);
-            Assert.NotNull(secondCheckModel);
+            Assert.Null(secondCheckModel);
         }
 
         //Task<T> GetByIdAsync<T>(int id);

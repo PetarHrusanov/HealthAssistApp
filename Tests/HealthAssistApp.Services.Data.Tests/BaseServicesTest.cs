@@ -83,6 +83,9 @@ namespace HealthAssistApp.Services.Data.Tests
             // Working Out Service
             services.AddTransient<IWorkOutsService, WorkOutsService>();
 
+            // Administration Texts Service
+            services.AddTransient<IAdministrationTextService, AdministrationTextService>();
+
             return services;
         }
     }

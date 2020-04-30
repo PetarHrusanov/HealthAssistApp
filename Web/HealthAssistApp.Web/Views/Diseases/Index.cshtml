@@ -10,7 +10,7 @@
 <div class="row">
     @foreach (var disease in Model.Diseases)
     {
-        <div class="col-md-4 media">
+        <div class="col-md-4 media col-md-offset-2">
             <div class="media-body">
                 <h5 class="mt-0">
                     <a href="/Diseases/@disease.Name">
@@ -20,10 +20,9 @@
                 @disease.ShortDescription
             </div>
         </div>
-        <hr />
     }
 </div>
-
+<hr />
 <nav>
     <ul class="pagination justify-content-center">
         @if (this.Model.CurrentPage == 1)

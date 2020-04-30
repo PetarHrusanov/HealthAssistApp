@@ -34,6 +34,7 @@ namespace HealthAssistApp.Web.Controllers
 
             var count = await this.workOutsService.GetExercisesCountAsync();
             viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
             if (viewModel.PagesCount == 0)
             {
                 viewModel.PagesCount = 1;

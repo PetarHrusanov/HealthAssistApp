@@ -161,8 +161,7 @@ namespace HealthAssistApp.Data.Seeding
             var muscularSymptoms = new List<string>
             {
                 "Muscle spasms",
-                "Irregular heartbeat",
-                "Pain in the heart",
+                "Teeth grinding",
             };
 
             var muscleSystemId = dbContext.BodySystems

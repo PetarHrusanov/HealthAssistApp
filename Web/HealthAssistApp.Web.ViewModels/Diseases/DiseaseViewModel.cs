@@ -7,7 +7,8 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-
+    using System.Net;
+    using System.Text.RegularExpressions;
     using Ganss.XSS;
     using HealthAssistApp.Data.Models;
     using HealthAssistApp.Data.Models.DiseaseModels;
@@ -30,6 +31,18 @@ namespace HealthAssistApp.Web.ViewModels.Diseases
         [DisplayName("Description")]
         public string SanitizedDescriptions
             => new HtmlSanitizer().Sanitize(this.Description);
+
+        [DisplayName("Description")]
+        public string ShortDescription
+        {
+            get
+            {
+                var content = WebUtility.HtmlDecode(Regex.Replace(this.Description, @"<[^>]+>", string.Empty));
+                return content.Length > 300
+                        ? content.Substring(0, 300) + "..."
+                        : content;
+            }
+        }
 
         public string Advice { get; set; }
 
