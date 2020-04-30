@@ -62,6 +62,29 @@ namespace HealthAssistApp.Services.Data
             return query;
         }
 
+        public IEnumerable<T> GetAllPaginatedAsync<T>(int? take, int skip)
+        {
+            var query = this.exercisesRepository
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip);
+
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public async Task<int> GetExercisesCountAsync()
+        {
+            var exercises = this.exercisesRepository
+                .All();
+
+            return exercises.Count();
+        }
+
         public async Task<T> GetByIdAsync<T>(int id)
         {
             var exercise = await this.exercisesRepository

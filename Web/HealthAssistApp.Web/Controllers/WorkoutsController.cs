@@ -8,6 +8,7 @@ namespace HealthAssistApp.Web.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using HealthAssistApp.Data;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.ViewModels.Workouts;

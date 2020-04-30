@@ -16,6 +16,10 @@ namespace HealthAssistApp.Services.Data
 
         Task<IEnumerable<T>> GetAll<T>();
 
+        IEnumerable<T> GetAllPaginatedAsync<T>(int? take = null, int skip = 0);
+
+        Task<int> GetExercisesCountAsync();
+
         Task<T> GetByIdAsync<T>(int id);
 
         Task<int> ModifyAsync(

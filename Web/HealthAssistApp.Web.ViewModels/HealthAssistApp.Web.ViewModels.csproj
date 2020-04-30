@@ -45,5 +45,6 @@
     <Folder Include="Administration\RecipesViewModels\" />
     <Folder Include="Administration\HealthDosierViewModels\" />
     <Folder Include="Administration\AdminitrationTextFilesViewModels\" />
+    <Folder Include="Exercises\" />
   </ItemGroup>
 </Project>
