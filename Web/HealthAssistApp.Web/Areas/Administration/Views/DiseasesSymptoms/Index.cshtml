@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.SymptomId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SymptomName)
+                @Html.DisplayNameFor(model => model.SymptomDescription)
             </th>
             <th></th>
         </tr>
@@ -48,7 +48,7 @@
                     @Html.DisplayFor(modelItem => item.SymptomId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SymptomName)
+                    @Html.DisplayFor(modelItem => item.SymptomDescription)
                 </td>
                 <td>
                     <a asp-action="Delete" asp-route-idS="@item.IdS">Delete</a>

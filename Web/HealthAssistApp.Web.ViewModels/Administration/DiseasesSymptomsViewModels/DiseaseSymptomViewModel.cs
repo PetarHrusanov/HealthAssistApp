@@ -20,7 +20,7 @@ namespace HealthAssistApp.Web.ViewModels.Administration.DiseasesSymptomsViewMode
         public int SymptomId { get; set; }
 
         [DisplayName("Symptom Name")]
-        public string SymptomName { get; set; }
+        public string SymptomDescription { get; set; }
 
         public string IdS
         {
