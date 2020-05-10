@@ -28,6 +28,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="HtmlSanitizer" Version="5.0.310" />
+    <PackageReference Include="PhantomJS" Version="2.1.1" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.6.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +60,8 @@
     <Folder Include="Areas\Administration\Views\HealthDosiers\" />
     <Folder Include="Areas\Administration\Views\AdministrationTexts\" />
     <Folder Include="Views\Exercises\" />
+    <Folder Include="Methods\PDF\" />
+    <Folder Include="Methods\PDFNewVersion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Recipes\All.cs" />

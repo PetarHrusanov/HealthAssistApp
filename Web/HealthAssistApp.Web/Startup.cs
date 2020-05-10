@@ -16,6 +16,8 @@ namespace HealthAssistApp.Web
     using HealthAssistApp.Services.Data.BodySystems;
     using HealthAssistApp.Services.Mapping;
     using HealthAssistApp.Services.Messaging;
+    using HealthAssistApp.Web.Methods;
+    using HealthAssistApp.Web.Methods.PDF;
     using HealthAssistApp.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
@@ -86,6 +88,10 @@ namespace HealthAssistApp.Web
 
             // Working Out Service
             services.AddTransient<IWorkOutsService, WorkOutsService>();
+
+            // Pdf
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddScoped<IHtmlToPdfConverter, HtmlToPdfConverter>();
 
         }
 

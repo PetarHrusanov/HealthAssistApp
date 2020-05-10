@@ -26,6 +26,13 @@
     </dd>
     <hr />
 }
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <a asp-action="GetPdf" button class="btn btn-primary">Download</a>
+        </div>
+    </div>
+</div>
 <nav>
     <ul class="pagination justify-content-center">
         @if (this.Model.CurrentPage == 1)
