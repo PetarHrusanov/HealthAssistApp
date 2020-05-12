@@ -8,7 +8,7 @@ namespace HealthAssistApp.Web.Controllers
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-
+    using DinkToPdf;
     using HealthAssistApp.Services.Data;
     using HealthAssistApp.Web.Methods;
     using HealthAssistApp.Web.Methods.PDF;
@@ -94,23 +94,53 @@ namespace HealthAssistApp.Web.Controllers
             };
 
             var htmlData = await this.viewRenderService.RenderToStringAsync("~/Views/Exercises/AllExercises.cshtml", viewModel);
+
+            // parvata opciq za pdf creation 
             //var fileContents = this.htmlToPdfConverter.Convert(this.environment.ContentRootPath, htmlData);
             //return this.File(fileContents, "application/pdf");
 
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string phantomJsRootFolder = Path.Combine(currentDirectory, "Methods", "PDFNewVersion", "PhantomJsRoot");
+            //// vtorata opciq 
+            //string currentDirectory = Directory.GetCurrentDirectory();
+            //string phantomJsRootFolder = Path.Combine(currentDirectory, "Methods", "PDFNewVersion", "PhantomJsRoot");
+            //string dedicatedDirectory = Path.Combine(currentDirectory, "Controllers");
 
-            // the pdf generator needs to know the path to the folder with .exe files.
-            PdfGenerator generator = new PdfGenerator(phantomJsRootFolder);
+            //// the pdf generator needs to know the path to the folder with .exe files.
+            //PdfGenerator generator = new PdfGenerator(phantomJsRootFolder);
 
-            string htmlToConvert = htmlData;
+            //string htmlToConvert = htmlData;
 
-            // Generate pdf from html and place in the current folder.
-            string pathOftheGeneratedPdf = generator.GeneratePdf(htmlToConvert, currentDirectory);
+            //// Generate pdf from html and place in the current folder.
+            //var pathOftheGeneratedPdf = generator.GeneratePdf(htmlToConvert, dedicatedDirectory);
 
-            //Console.WriteLine("Pdf generated at: " + pathOftheGeneratedPdf);
+            //// tuk svarshva vtorata opciq
+            ///
 
-            return RedirectToAction("Index");
+            var converter = new SynchronizedConverter(new PdfTools());
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings =
+                {
+                    Orientation = Orientation.Portrait,
+                    PaperSize = PaperKind.A4,
+                },
+
+                Objects =
+                {
+                    new ObjectSettings()
+                    {
+                        PagesCount = true,
+                        HtmlContent = htmlData,
+                        HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true, Spacing = 2.812 },
+                    },
+                },
+            };
+
+            byte[] pdf = converter.Convert(doc);
+
+            return File(pdf, "application/pdf");
+
+            //return RedirectToAction("Index");
         }
     }
 }

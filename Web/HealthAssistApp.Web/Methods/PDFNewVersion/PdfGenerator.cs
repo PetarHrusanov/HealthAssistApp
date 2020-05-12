@@ -1,9 +1,13 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.InteropServices;
+// <copyright file="PdfGenerator.cs" company="HealthAssistApp">
+// Copyright (c) HealthAssistApp. All Rights Reserved.
+// </copyright>
 
 namespace PhantomJs.NetCore {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Runtime.InteropServices;
+
     public class PdfGenerator {
 
         private string PhantomRootFolder;
@@ -18,20 +22,23 @@ namespace PhantomJs.NetCore {
             this.Platform = GetOsPlatform();
         }
 
-        enum OS {
+        enum OS
+        {
             LINUX,
             WINDOWS,
-            OSX
+            OSX,
         }
 
-        private OS GetOsPlatform() {
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+        private OS GetOsPlatform()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
                 return OS.WINDOWS;
             }
-        	else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-        		return OS.LINUX;
-        	}
-            else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return OS.LINUX;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
                 return OS.OSX;
             }
 
@@ -42,13 +49,12 @@ namespace PhantomJs.NetCore {
 
             // The output file must be located in the output folder.
             string outputFilePath = Path.Combine(outputFolder, String.Format("{0}.pdf", inputFileName));
-            
 
             string phantomJsAbsolutePath = Path.Combine(this.PhantomRootFolder,phantomJsExeToUse);
             ProcessStartInfo startInfo = new ProcessStartInfo(phantomJsAbsolutePath);
             startInfo.WorkingDirectory = this.PhantomRootFolder;
-            startInfo.Arguments = 
-                String.Format("rasterize.js \"{0}\" {1} \"A4\"",inputFileName,outputFilePath);
+            startInfo.Arguments =
+                string.Format("rasterize.js \"{0}\" {1} \"A4\"", inputFileName, outputFilePath);
             startInfo.UseShellExecute = false;
 
             Process proc = new Process() { StartInfo = startInfo };
@@ -59,7 +65,8 @@ namespace PhantomJs.NetCore {
             return outputFilePath;
         }
 
-        private string WriteHtmlToTempFile(string html) {
+        private string WriteHtmlToTempFile(string html)
+        {
             string filename = Path.GetRandomFileName() + ".html";
 
             string absolutePath = Path.Combine(this.PhantomRootFolder, filename);
@@ -78,24 +85,30 @@ namespace PhantomJs.NetCore {
          */
         public string GeneratePdf(string html, string outputFolder) {
 
-            if(!Directory.Exists(outputFolder)) {
+            if (!Directory.Exists(outputFolder))
+            {
                 throw new ArgumentException("The output folder is not a valid directory!");
             }
+
             string phantomExeToUse =
                 (this.Platform == OS.LINUX) ? "linux64_phantomjs.exe" :
                 (this.Platform == OS.WINDOWS) ? "windows_phantomjs.exe" :
                 "osx_phantomjs.exe";
+            //"phantomjs";
+
             // Write the passed html in a file.
             string htmlFileName = WriteHtmlToTempFile(html);
 
-            string pdfFileName = "";
-            try {
-                pdfFileName = ExecutePhantomJs(phantomExeToUse,htmlFileName,outputFolder);
-            } finally {
-                // delete the temp file.
-                File.Delete(Path.Combine(this.PhantomRootFolder,htmlFileName));
+            string pdfFileName = "pdfFile";
+            try
+            {
+                pdfFileName = ExecutePhantomJs(phantomExeToUse, htmlFileName, outputFolder);
             }
-
+            finally
+            {
+                // delete the temp file.
+                File.Delete(Path.Combine(this.PhantomRootFolder, htmlFileName));
+            }
 
             return pdfFileName;
         }

@@ -5,7 +5,8 @@
 namespace HealthAssistApp.Web
 {
     using System.Reflection;
-
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
     using HealthAssistApp.Data;
     using HealthAssistApp.Data.Common;
     using HealthAssistApp.Data.Common.Repositories;
@@ -92,7 +93,7 @@ namespace HealthAssistApp.Web
             // Pdf
             services.AddScoped<IViewRenderService, ViewRenderService>();
             services.AddScoped<IHtmlToPdfConverter, HtmlToPdfConverter>();
-
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
