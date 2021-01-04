@@ -27,7 +27,7 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.113" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="HtmlSanitizer" Version="5.0.310" />
+    <PackageReference Include="HtmlSanitizer" Version="5.0.372" />
     <PackageReference Include="PhantomJS" Version="2.1.1" />
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.6.1" />
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
